@@ -31,6 +31,17 @@
                         <div class="form-box">
                             <input type="password" name="password_confirmation" id="password_confirmation" placeholder="Confirm Password" required="required" data-error="Password confirmation is required." class="form-control">
                         </div>
+                        <!-- Nouveau sélecteur de rôle stylé -->
+                        <div class="form-box">
+                            <div class="styled-select">
+                                <select name="role" id="role" required class="form-control">
+                                    <option value="" disabled selected>Select your role</option>
+                                    <option value="client">Client</option>
+                                    <option value="restaurant_manager">Gérant de restaurant</option>
+                                </select>
+                                <div class="select-arrow"></div>
+                            </div>
+                        </div>
                         <div class="form-box text-center">
                             <button class="hvr-underline-from-center orange-btn" type="submit">Register</button>
                         </div>
@@ -43,3 +54,58 @@
         </div>
     </div>
 @endsection
+
+<style>
+    /* Style pour le sélecteur personnalisé */
+    .styled-select {
+        position: relative;
+        width: 100%;
+    }
+    
+    .styled-select select {
+        width: 100%;
+        border: 2px dotted #ccc;
+        background: #f5f5f5;
+        color: #202020;
+        padding: 12px;
+        text-transform: capitalize;
+        border-radius: 4px;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        cursor: pointer;
+        font-family: 'Roboto', sans-serif;
+        font-size: 14px;
+        transition: all 0.3s ease-in-out;
+    }
+    
+    .styled-select select:focus {
+        border-color: #e75b1e;
+        outline: none;
+    }
+    
+    .styled-select .select-arrow {
+        position: absolute;
+        top: 50%;
+        right: 15px;
+        transform: translateY(-50%);
+        width: 0;
+        height: 0;
+        border-left: 6px solid transparent;
+        border-right: 6px solid transparent;
+        border-top: 6px solid #202020;
+        pointer-events: none;
+    }
+    
+    /* Style pour les options */
+    .styled-select select option {
+        padding: 10px;
+        background: #f5f5f5;
+        color: #202020;
+    }
+    
+    .styled-select select option:hover {
+        background: #e75b1e;
+        color: #fff;
+    }
+</style>
