@@ -20,14 +20,14 @@ class LoginController extends Controller
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
             
-            // Gestion des gérants non approuvés
+           
             if ($user->role->name === 'Gérant' && !$user->is_approved) {
                 Auth::logout();
                 return redirect()->back()
                     ->with('error', 'Votre compte est en attente d\'approbation.');
             }
             
-            // Redirection en fonction du rôle
+           
             switch ($user->role->name) {
                 case 'Administrateur':
                     return redirect()->route('admin.dashboard');

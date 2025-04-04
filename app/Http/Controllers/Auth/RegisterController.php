@@ -25,13 +25,10 @@ class RegisterController extends Controller
     {
         $user = $this->userService->createUser($request->validated());
         
-        // dd( $user);
-        // exit;
         if ($request->role === 'restaurant_manager') {
-            return redirect()->route('pages.login')
+            return redirect()->route('login') 
                 ->with('info', 'Votre compte est en attente d\'approbation par un administrateur.');
         }
-        
         
         Auth::login($user);
         return redirect('/');

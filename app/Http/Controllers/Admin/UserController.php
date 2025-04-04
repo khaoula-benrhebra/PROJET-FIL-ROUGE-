@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
@@ -16,11 +15,18 @@ class UserController extends Controller
         $this->userService = $userService;
     }
     
+    // public function index()
+    // {
+    //     $pendingManagers = $this->userService->getPendingManagers();
+    //     return view('pages.admin.dashboard', compact('pendingManagers')); // Assurez-vous que c'est la bonne vue
+    // }
+
     public function index()
-    {
-        $pendingManagers = $this->userService->getPendingManagers();
-        return view('admin.users.index', compact('pendingManagers'));
-    }
+{
+    $pendingManagers = $this->userService->getPendingManagers();
+    $allManagers = $this->userService->getAllManagers();
+    return view('pages.admin.dashboard', compact('pendingManagers', 'allManagers'));
+}
     
     public function approve($id)
     {
@@ -30,8 +36,11 @@ class UserController extends Controller
     
     public function delete($id)
     {
-        
-        return redirect()->back()->with('success', 'Utilisateur supprimé avec succès.');
+        try {
+            $this->userService->deleteUser($id);
+            return redirect()->back()->with('success', 'Utilisateur supprimé avec succès.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Erreur lors de la suppression de l\'utilisateur.');
+        }
     }
-
 }

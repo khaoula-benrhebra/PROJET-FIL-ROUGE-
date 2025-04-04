@@ -585,69 +585,50 @@
                 </div>
             </div>
 
-            <!-- Gestion des Utilisateurs -->
+         
+
             <div class="content-section">
                 <div class="section-header">
-                    <h2>Utilisateurs en Attente d'Approbation</h2>
+                    <h2>Gestion des Gérants</h2>
                 </div>
                 <div class="user-cards">
-                    <div class="user-card">
-                        <div class="user-card-header">
-                            <h3>Nouvel Utilisateur</h3>
-                        </div>
-                        <div class="user-card-body">
-                            <div class="user-avatar">
-                                <i class="fas fa-user"></i>
+                    @forelse ($allManagers as $manager)
+                        <div class="user-card">
+                            <div class="user-card-header" style="{{ $manager->is_approved ? 'background-color: var(--success);' : '' }}">
+                                <h3>{{ $manager->is_approved ? 'Gérant Approuvé' : 'Nouvel Utilisateur' }}</h3>
                             </div>
-                            <div class="user-info">
-                                <h3>Jean Dupont</h3>
-                                <p>jean.dupont@example.com</p>
-                                <p>Inscrit le: 02/04/2025</p>
-                            </div>
-                            <div class="user-action-buttons">
-                                <button class="user-action-btn btn-approve">Approuver</button>
-                                <button class="user-action-btn btn-decline">Supprimer</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="user-card">
-                        <div class="user-card-header">
-                            <h3>Nouvel Utilisateur</h3>
-                        </div>
-                        <div class="user-card-body">
-                            <div class="user-avatar">
-                                <i class="fas fa-user"></i>
-                            </div>
-                            <div class="user-info">
-                                <h3>Marie Martin</h3>
-                                <p>marie.martin@example.com</p>
-                                <p>Inscrit le: 01/04/2025</p>
-                            </div>
-                            <div class="user-action-buttons">
-                                <button class="user-action-btn btn-approve">Approuver</button>
-                                <button class="user-action-btn btn-decline">Supprimer</button>
+                            <div class="user-card-body">
+                                <div class="user-avatar">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <div class="user-info">
+                                    <h3>{{ $manager->name }}</h3>
+                                    <p>{{ $manager->email }}</p>
+                                    <p>Inscrit le: {{ $manager->created_at->format('d/m/Y') }}</p>
+                                    @if($manager->is_approved)
+                                        <p class="text-success"><i class="fas fa-check-circle"></i> Approuvé</p>
+                                    @else
+                                        <p class="text-warning"><i class="fas fa-clock"></i> En attente</p>
+                                    @endif
+                                </div>
+                                <div class="user-action-buttons">
+                                    @if(!$manager->is_approved)
+                                        <form action="{{ route('admin.users.approve', $manager->id) }}" method="POST" class="approve-form">
+                                            @csrf
+                                            <button type="submit" class="user-action-btn btn-approve">Approuver</button>
+                                        </form>
+                                    @endif
+                                    <form action="{{ route('admin.users.delete', $manager->id) }}" method="POST" class="delete-form">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="user-action-btn btn-decline">Supprimer</button>
+                                    </form>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="user-card">
-                        <div class="user-card-header">
-                            <h3>Nouvel Utilisateur</h3>
-                        </div>
-                        <div class="user-card-body">
-                            <div class="user-avatar">
-                                <i class="fas fa-user"></i>
-                            </div>
-                            <div class="user-info">
-                                <h3>Pierre Lefebvre</h3>
-                                <p>pierre.lefebvre@example.com</p>
-                                <p>Inscrit le: 31/03/2025</p>
-                            </div>
-                            <div class="user-action-buttons">
-                                <button class="user-action-btn btn-approve">Approuver</button>
-                                <button class="user-action-btn btn-decline">Supprimer</button>
-                            </div>
-                        </div>
-                    </div>
+                    @empty
+                        <p>Aucun gérant trouvé.</p>
+                    @endforelse
                 </div>
             </div>
         </div>

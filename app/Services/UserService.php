@@ -20,19 +20,22 @@ class UserService
     
     public function createUser(array $data)
     {
-        // Déterminer le rôle
         $roleName = $data['role'] === 'restaurant_manager' ? 'Gérant' : 'Client';
         $role = $this->roleRepository->findByName($roleName);
         
-        // Créer l'utilisateur
+        if (!$role) {
+            throw new \Exception("Rôle '$roleName' non trouvé dans la base de données.");
+        }
+        
         $userData = [
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
             'role_id' => $role->id,
-            'is_approved' => $roleName === 'Client' // Approuver automatiquement les clients
+            'is_approved' => $roleName === 'Client' 
         ];
-      
+        
+        // dd($userData); // Ajoutez ceci temporairement
         
         return $this->userRepository->create($userData);
     }
@@ -41,9 +44,19 @@ class UserService
     {
         return $this->userRepository->getPendingManagers();
     }
+
+    public function getAllManagers()
+{
+    return $this->userRepository->getAllManagers();
+}
     
     public function approveManager($id)
     {
         return $this->userRepository->approveManager($id);
+    }
+    
+    public function deleteUser($id)
+    {
+        return $this->userRepository->delete($id);
     }
 }

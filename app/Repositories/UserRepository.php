@@ -19,6 +19,16 @@ class UserRepository extends BaseRepository
             ->where('is_approved', false)
             ->get();
     }
+
+
+    public function getAllManagers()
+{
+    return $this->model
+        ->whereHas('role', function($query) {
+            $query->where('name', 'Gérant');
+        })
+        ->get();
+}
     
     public function approveManager($id)
     {
