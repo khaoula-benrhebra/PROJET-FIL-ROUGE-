@@ -60,12 +60,18 @@ Route::middleware(['auth'])->group(function () {
         });
     });
     
-    // Routes pour le gérant (nécessite un compte approuvé)
-    Route::middleware(['role:Gérant'])->prefix('gerant')->group(function () {
-        Route::get('/dashboard', function () {
-            return view('pages.gerant.dashboard');
-        })->name('gerant.dashboard');
-    });
+ 
+
+        // Routes pour le gérant (nécessite un compte approuvé)
+        Route::middleware(['role:Gérant'])->prefix('gerant')->group(function () {
+            Route::get('/dashboard', function () {
+                return view('pages.gerant.dashboard');
+            })->name('gerant.dashboard');
+            
+        });
+
+
+
     
     // Routes pour le client
     Route::middleware(['role:Client'])->prefix('client')->group(function () {

@@ -17,13 +17,26 @@
                         <h2 class="block-title text-center">Login</h2>
                         <p class="title-caption text-center">Please login to your account</p>
                     </div>
+                    @if(session('error'))
+                        <div class="alert alert-danger">
+                            {{ session('error') }}
+                        </div>
+                    @endif
+
+                    @if(session('info'))
+                        <div class="alert alert-info">
+                            {{ session('info') }}
+                        </div>
+                    @endif
                     <form id="login-form" method="post" class="login-box" action="{{ route('login.submit') }}">
                         @csrf <!-- Token CSRF pour la sécurité Laravel -->
                         <div class="form-box">
-                            <input type="email" name="email" id="email" placeholder="Email Address" required="required" class="form-control" data-error="Email is required">
+                            <input type="email" name="email" id="email" placeholder="Email Address" required="required"
+                                class="form-control" data-error="Email is required">
                         </div>
                         <div class="form-box">
-                            <input type="password" name="password" id="password" placeholder="Password" required="required" class="form-control" data-error="Password is required">
+                            <input type="password" name="password" id="password" placeholder="Password" required="required"
+                                class="form-control" data-error="Password is required">
                         </div>
                         <div class="form-box">
                             <label class="custom-checkbox">

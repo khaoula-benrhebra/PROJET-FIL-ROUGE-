@@ -1,16 +1,58 @@
+<!-- admin.blade.php -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title') - Restaurant Admin</title>
-    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/admin.css') }}" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Paprika" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    @yield('styles') 
 </head>
 <body>
-    @yield('content')
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-user">
+            <div class="user-image">
+                <img src="{{ asset('images/staff-01.jpg') }}" alt="Gérant">
+            </div>
+            <div class="user-info">
+                <h4>John Doggett</h4>
+                <p>Gérant</p>
+            </div>
+        </div>
+        <div class="sidebar-menu">
+            <a href="#categories" class="menu-item" onclick="showTab('categories')">
+                <i class="fas fa-list"></i> Catégories
+           -res/views/</a>
+            <a href="#users" class="menu-item" onclick="showTab('users')">
+                <i class="fas fa-users"></i> Utilisateurs
+            </a>
+            <a href="#statistics" class="menu-item" onclick="showTab('statistics')">
+                <i class="fas fa-chart-bar"></i> Statistiques
+            </a>
+            <a href="#settings" class="menu-item">
+                <i class="fas fa-cog"></i> Paramètres
+            </a>
+            <a href="#logout" class="menu-item">
+                <i class="fas fa-sign-out-alt"></i> Déconnexion
+            </a>
+        </div>
+    </div>
 
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="header">
+            <button class="toggle-sidebar">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+
+        @yield('content') <!-- Section pour le contenu spécifique -->
+    </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
@@ -29,7 +71,7 @@
                     .then(response => response.json())
                     .then(data => {
                         if (data.success) {
-                            form.closest('.user-card').remove(); // Supprime la carte du DOM
+                            form.closest('.user-card').remove();
                             alert(data.success);
                         } else {
                             alert('Erreur lors de l\'approbation.');
@@ -38,7 +80,7 @@
                     .catch(error => console.error('Erreur:', error));
                 });
             });
-    
+
             // Gestion des formulaires de suppression
             document.querySelectorAll('.delete-form').forEach(form => {
                 form.addEventListener('submit', function (e) {
@@ -55,7 +97,7 @@
                     .then(response => response.json())
                     .then(data => {
                         if (data.success) {
-                            form.closest('.user-card').remove(); // Supprime la carte du DOM
+                            form.closest('.user-card').remove();
                             alert(data.success);
                         } else {
                             alert('Erreur lors de la suppression.');
@@ -64,7 +106,7 @@
                     .catch(error => console.error('Erreur:', error));
                 });
             });
-    
+
             // Gestion de l'onglet actif
             window.showTab = function(tabId) {
                 document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
@@ -74,6 +116,6 @@
             };
         });
     </script>
-    
+    @yield('scripts') <!-- Section pour ajouter des scripts supplémentaires si besoin -->
 </body>
 </html>

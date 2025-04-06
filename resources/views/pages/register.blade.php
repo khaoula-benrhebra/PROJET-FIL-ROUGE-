@@ -17,19 +17,35 @@
                         <h2 class="block-title text-center">Register</h2>
                         <p class="title-caption text-center">Create an account to enjoy our services.</p>
                     </div>
+                    @if(session('error'))
+                        <div class="alert alert-danger">
+                            {{ session('error') }}
+                        </div>
+                    @endif
+
+                    @if(session('info'))
+                        <div class="alert alert-info">
+                            {{ session('info') }}
+                        </div>
+                    @endif
                     <form id="register-form" method="post" class="reservations-box" action="{{ route('register.submit') }}">
                         @csrf <!-- Token CSRF pour la sécurité Laravel -->
                         <div class="form-box">
-                            <input type="text" name="name" id="name" placeholder="Full Name" required="required" data-error="Name is required." class="form-control">
+                            <input type="text" name="name" id="name" placeholder="Full Name" required="required"
+                                data-error="Name is required." class="form-control">
                         </div>
                         <div class="form-box">
-                            <input type="email" name="email" id="email" placeholder="E-Mail ID" required="required" data-error="Email is required." class="form-control">
+                            <input type="email" name="email" id="email" placeholder="E-Mail ID" required="required"
+                                data-error="Email is required." class="form-control">
                         </div>
                         <div class="form-box">
-                            <input type="password" name="password" id="password" placeholder="Password" required="required" data-error="Password is required." class="form-control">
+                            <input type="password" name="password" id="password" placeholder="Password" required="required"
+                                data-error="Password is required." class="form-control">
                         </div>
                         <div class="form-box">
-                            <input type="password" name="password_confirmation" id="password_confirmation" placeholder="Confirm Password" required="required" data-error="Password confirmation is required." class="form-control">
+                            <input type="password" name="password_confirmation" id="password_confirmation"
+                                placeholder="Confirm Password" required="required"
+                                data-error="Password confirmation is required." class="form-control">
                         </div>
                         <!-- Nouveau sélecteur de rôle stylé -->
                         <div class="form-box">
@@ -46,7 +62,8 @@
                             <button class="hvr-underline-from-center orange-btn" type="submit">Register</button>
                         </div>
                         <div class="text-center">
-                            <p>Already have an account? <a href="{{ route('login') }}" class="orange-text">Login here</a></p>
+                            <p>Already have an account? <a href="{{ route('login') }}" class="orange-text">Login here</a>
+                            </p>
                         </div>
                     </form>
                 </div>
@@ -61,7 +78,7 @@
         position: relative;
         width: 100%;
     }
-    
+
     .styled-select select {
         width: 100%;
         border: 2px dotted #ccc;
@@ -78,12 +95,12 @@
         font-size: 14px;
         transition: all 0.3s ease-in-out;
     }
-    
+
     .styled-select select:focus {
         border-color: #e75b1e;
         outline: none;
     }
-    
+
     .styled-select .select-arrow {
         position: absolute;
         top: 50%;
@@ -96,14 +113,14 @@
         border-top: 6px solid #202020;
         pointer-events: none;
     }
-    
+
     /* Style pour les options */
     .styled-select select option {
         padding: 10px;
         background: #f5f5f5;
         color: #202020;
     }
-    
+
     .styled-select select option:hover {
         background: #e75b1e;
         color: #fff;
