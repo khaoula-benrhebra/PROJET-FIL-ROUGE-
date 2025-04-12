@@ -25,9 +25,8 @@ class UserRepository extends BaseRepository
 {
     return $this->model
         ->whereHas('role', function($query) {
-            $query->where('name', 'Gérant');
-        })
-        ->get();
+            $query->where('name', 'Gérant'); 
+    })->get();
 }
     
     public function approveManager($id)

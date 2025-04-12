@@ -12,7 +12,7 @@ class LoginController extends Controller
     {
         return view('pages.login');
     }
-    
+
     public function login(LoginRequest $request)
     {
         $credentials = $request->only('email', 'password');
@@ -20,14 +20,12 @@ class LoginController extends Controller
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
             
-           
             if ($user->role->name === 'Gérant' && !$user->is_approved) {
                 Auth::logout();
                 return redirect()->back()
                     ->with('error', 'Votre compte est en attente d\'approbation.');
             }
             
-           
             switch ($user->role->name) {
                 case 'Administrateur':
                     return redirect()->route('admin.dashboard');
@@ -35,7 +33,7 @@ class LoginController extends Controller
                     return redirect()->route('gerant.dashboard');
                 case 'Client':
                 default:
-                    return redirect()->intended('/');
+                    return redirect()->route('home'); // Redirection vers la page d'accueil
             }
         }
         

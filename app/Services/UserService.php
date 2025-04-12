@@ -35,7 +35,7 @@ class UserService
             'is_approved' => $roleName === 'Client' 
         ];
         
-        // dd($userData); // Ajoutez ceci temporairement
+        // dd($userData); 
         
         return $this->userRepository->create($userData);
     }
