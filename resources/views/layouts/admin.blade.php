@@ -13,7 +13,6 @@
     @yield('styles') 
 </head>
 <body>
-    <!-- Sidebar -->
     <div class="sidebar">
         <div class="sidebar-user">
             <div class="user-image">
@@ -43,7 +42,7 @@
         </div>
     </div>
 
-    <!-- Main Content -->
+    
     <div class="main-content">
         <div class="header">
             <button class="toggle-sidebar">
@@ -56,7 +55,7 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            // Gestion des formulaires d'approbation
+           
             document.querySelectorAll('.approve-form').forEach(form => {
                 form.addEventListener('submit', function (e) {
                     e.preventDefault();
@@ -81,7 +80,7 @@
                 });
             });
 
-            // Gestion des formulaires de suppression
+          
             document.querySelectorAll('.delete-form').forEach(form => {
                 form.addEventListener('submit', function (e) {
                     e.preventDefault();
@@ -107,7 +106,6 @@
                 });
             });
 
-            // Gestion de l'onglet actif
             window.showTab = function(tabId) {
                 document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
                 document.querySelectorAll('.menu-item').forEach(item => item.classList.remove('active'));
@@ -116,6 +114,6 @@
             };
         });
     </script>
-    @yield('scripts') <!-- Section pour ajouter des scripts supplémentaires si besoin -->
+    @yield('scripts')
 </body>
 </html>

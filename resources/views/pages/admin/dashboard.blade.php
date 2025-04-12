@@ -1,10 +1,10 @@
-<!-- dashboard.blade.php -->
+
 @extends('layouts.admin') 
 
 @section('title', 'Dashboard')
 
 @section('content')
-    <!-- Dashboard Tab -->
+    
     <div id="dashboard" class="tab-content active">
         <div class="stats-container">
             <div class="stat-card">
@@ -142,19 +142,18 @@
         </div>
     </div>
 
-    <!-- Autres onglets -->
+   
     <div id="categories" class="tab-content">
         <h2>Catégories</h2>
-        <!-- Contenu spécifique aux catégories -->
     </div>
 
     <div id="users" class="tab-content">
         <h2>Utilisateurs</h2>
-        <!-- Contenu spécifique aux utilisateurs -->
+        
     </div>
 
     <div id="statistics" class="tab-content">
         <h2>Statistiques</h2>
-        <!-- Contenu spécifique aux statistiques -->
+       
     </div>
 @endsection

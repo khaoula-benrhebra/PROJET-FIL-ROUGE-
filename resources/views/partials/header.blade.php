@@ -1,3 +1,4 @@
+
 <div id="site-header">
     <header id="header" class="header-block-top">
         <div class="container">
@@ -22,11 +23,31 @@
                                 <li><a href="{{ route('home') }}">Home</a></li>
                                 <li><a href="{{ route('about') }}">About us</a></li>
                                 <li><a href="{{ route('menu') }}">Menu</a></li>
-                                <li><a href="{{ route('blog') }}">Blog</a></li>
                                 <li><a href="{{ route('pricing') }}">Pricing</a></li>
-                                <li><a href="{{ route('contact') }}">Contact us</a></li>
-                                <li><a href="{{ route('login') }}">Login</a></li>
-                                <li><a href="{{ route('register') }}">Register</a></li>
+                                <li><a href="{{ route('contact') }}">Contact</a></li>
+
+                                @guest
+                                    <li><a href="{{ route('login') }}">Login</a></li>
+                                    <li><a href="{{ route('register') }}">Register</a></li>
+                                @else
+                                    @if(Auth::user()->role->name === 'Client')
+                                        <li class="profile-icon-container">
+                                            <a href="{{ route('client.profile') }}" class="profile-icon">
+                                                <div class="profile-circle">
+                                                    <img src="{{ asset('images/default-profile.png') }}" alt="Profile">
+                                                </div>
+                                            </a>
+                                        </li>
+                                    @endif
+                                    <li>
+                                        <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                            Logout
+                                        </a>
+                                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                            @csrf
+                                        </form>
+                                    </li>
+                                @endguest
                             </ul>
                         </div>
                     </nav>

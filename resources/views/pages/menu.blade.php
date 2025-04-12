@@ -70,10 +70,10 @@
                     </div>
                     <div class="tab-menu">
                         <div class="slider slider-nav">
-                            <div class="tab-title-menu"><h2>STARTERS</h2><p><i class="flaticon-canape"></i></p></div>
-                            <div class="tab-title-menu"><h2>MAIN DISHES</h2><p><i class="flaticon-dinner"></i></p></div>
-                            <div class="tab-title-menu"><h2>DESSERTS</h2><p><i class="flaticon-desert"></i></p></div>
-                            <div class="tab-title-menu"><h2>DRINKS</h2><p><i class="flaticon-coffee"></i></p></div>
+                            <div class="tab-title-menu"><h2>ITALIAN</h2><p><i class="flaticon-canape"></i></p></div>
+                            <div class="tab-title-menu"><h2>JAPANESE</h2><p><i class="flaticon-dinner"></i></p></div>
+                            <div class="tab-title-menu"><h2>CHINESE</h2><p><i class="flaticon-desert"></i></p></div>
+                            <div class="tab-title-menu"><h2>MOROCCAN</h2><p><i class="flaticon-coffee"></i></p></div>
                         </div>
                         <div class="slider slider-single">
                             <div>

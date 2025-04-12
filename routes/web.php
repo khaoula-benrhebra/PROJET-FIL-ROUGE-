@@ -71,12 +71,11 @@ Route::middleware(['auth'])->group(function () {
         });
 
 
-
-    
-    // Routes pour le client
-    Route::middleware(['role:Client'])->prefix('client')->group(function () {
+    Route::middleware(['auth', 'role:Client'])->prefix('client')->group(function () {
         Route::get('/dashboard', function () {
             return view('client.dashboard');
         })->name('client.dashboard');
+      
+        Route::get('/profile', 'App\Http\Controllers\Client\ProfileController@index')->name('client.profile');
     });
 });

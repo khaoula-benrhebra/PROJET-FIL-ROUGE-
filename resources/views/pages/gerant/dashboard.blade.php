@@ -4,9 +4,9 @@
 
 @section('content')
 <div class="dashboard-container">
-    <!-- Main content area -->
+ 
     <div class="dashboard-content">
-        <!-- Statistiques -->
+       
         <div class="dashboard-section">
             <h2 class="section-title">Statistiques</h2>
             <div class="stats-container">
@@ -41,7 +41,7 @@
             </div>
         </div>
 
-        <!-- Réservations récentes -->
+        
         <div class="dashboard-section">
             <h2 class="section-title">Réservations récentes</h2>
             <div class="table-responsive">
