@@ -1,4 +1,3 @@
-<!-- admin.blade.php -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,29 +15,39 @@
     <div class="sidebar">
         <div class="sidebar-user">
             <div class="user-image">
-                <img src="{{ asset('images/staff-01.jpg') }}" alt="Gérant">
+                @if(auth()->user()->getFirstMedia('profile'))
+                    <img src="{{ auth()->user()->getFirstMedia('profile')->getUrl() }}" alt="{{ auth()->user()->name }}">
+                @else
+                    <img src="{{ asset('images/staff-01.jpg') }}" alt="Défaut">
+                @endif
             </div>
             <div class="user-info">
-                <h4>John Doggett</h4>
-                <p>Gérant</p>
+                <h4>{{ auth()->user()->name }}</h4>
+                <p>Administrateur</p>
             </div>
         </div>
         <div class="sidebar-menu">
+            <a href="{{ route('home') }}" class="menu-item">
+                <i class="fas fa-home"></i> Accueil
+            </a>
             <a href="#categories" class="menu-item" onclick="showTab('categories')">
                 <i class="fas fa-list"></i> Catégories
-           -res/views/</a>
+            </a>
             <a href="#users" class="menu-item" onclick="showTab('users')">
                 <i class="fas fa-users"></i> Utilisateurs
             </a>
             <a href="#statistics" class="menu-item" onclick="showTab('statistics')">
                 <i class="fas fa-chart-bar"></i> Statistiques
             </a>
-            <a href="#settings" class="menu-item">
+            <a href="{{ route('admin.profile') }}" class="menu-item">
                 <i class="fas fa-cog"></i> Paramètres
             </a>
-            <a href="#logout" class="menu-item">
-                <i class="fas fa-sign-out-alt"></i> Déconnexion
-            </a>
+            <form action="{{ route('logout') }}" method="POST" style="margin:0">
+                @csrf
+                <button type="submit" class="menu-item" style="width:100%;text-align:left;background:none;border:none;cursor:pointer;">
+                    <i class="fas fa-sign-out-alt"></i> Déconnexion
+                </button>
+            </form>
         </div>
     </div>
 
