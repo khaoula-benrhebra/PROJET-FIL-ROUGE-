@@ -1,9 +1,8 @@
 <?php
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('pages.home');
-})->name('home');
+// Routes publiques
+Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::get('/about', function () {
     return view('pages.about');
@@ -25,22 +24,11 @@ Route::get('/contact', function () {
     return view('pages.contact');
 })->name('contact');
 
-
-// Route::get('/dashboard', function () {
-//     return view('pages.gerant.dashboard');
-// })->name('gerant.dashboard');
-
-// Route::get('/dashboard', function () {
-//     return view('pages.gerant.dashboard');
-// })->name('gerant.dashboard');
-
+// Routes d'authentification
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Admin\UserController;
 
-
-
-// Routes d'authentification
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [LoginController::class, 'login'])->name('login.submit');
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
@@ -51,46 +39,47 @@ Route::post('/register', [RegisterController::class, 'register'])->name('registe
 Route::middleware(['auth'])->group(function () {
     
     // Routes pour l'administrateur
-    Route::middleware(['auth'])->group(function () {
-        Route::middleware(['role:Administrateur'])->prefix('admin')->group(function () {
-            Route::get('/dashboard', [UserController::class, 'index'])->name('admin.dashboard');
-            Route::get('/users', [UserController::class, 'index'])->name('admin.users.index');
-            Route::post('/users/{id}/approve', [UserController::class, 'approve'])->name('admin.users.approve');
-            Route::delete('/users/{id}', [UserController::class, 'delete'])->name('admin.users.delete');
+    Route::middleware(['role:Administrateur'])->prefix('admin')->group(function () {
+        Route::get('/dashboard', [UserController::class, 'index'])->name('admin.dashboard');
+        Route::get('/users', [UserController::class, 'index'])->name('admin.users.index');
+        Route::post('/users/{id}/approve', [UserController::class, 'approve'])->name('admin.users.approve');
+        Route::delete('/users/{id}', [UserController::class, 'delete'])->name('admin.users.delete');
 
-
-            Route::get('/profile', 'App\Http\Controllers\Admin\ProfileController@index')->name('admin.profile');
+        Route::get('/profile', 'App\Http\Controllers\Admin\ProfileController@index')->name('admin.profile');
         Route::get('/profile/edit', 'App\Http\Controllers\Admin\ProfileController@edit')->name('admin.profile.edit');
         Route::put('/profile', 'App\Http\Controllers\Admin\ProfileController@update')->name('admin.profile.update');
         Route::delete('/profile/image', 'App\Http\Controllers\Admin\ProfileController@deleteImage')->name('admin.profile.delete_image');
-        });
+
+        // Routes pour la gestion des catégories
+        Route::get('/categories', [App\Http\Controllers\Admin\CategoryController::class, 'index'])->name('admin.categories.index');
+        Route::get('/categories/create', [App\Http\Controllers\Admin\CategoryController::class, 'create'])->name('admin.categories.create');
+        Route::post('/categories', [App\Http\Controllers\Admin\CategoryController::class, 'store'])->name('admin.categories.store');
+        Route::get('/categories/{id}/edit', [App\Http\Controllers\Admin\CategoryController::class, 'edit'])->name('admin.categories.edit');
+        Route::put('/categories/{id}', [App\Http\Controllers\Admin\CategoryController::class, 'update'])->name('admin.categories.update');
+        Route::delete('/categories/{id}', [App\Http\Controllers\Admin\CategoryController::class, 'destroy'])->name('admin.categories.destroy');
     });
     
- 
+    // Routes pour le gérant (nécessite un compte approuvé)
+    Route::middleware(['role:Gérant'])->prefix('gerant')->group(function () {
+        Route::get('/dashboard', function () {
+            return view('pages.gerant.dashboard');
+        })->name('gerant.dashboard');
 
-        // Routes pour le gérant (nécessite un compte approuvé)
-        Route::middleware(['role:Gérant'])->prefix('gerant')->group(function () {
-            Route::get('/dashboard', function () {
-                return view('pages.gerant.dashboard');
-            })->name('gerant.dashboard');
+        Route::get('/profile', 'App\Http\Controllers\Gerant\ProfileController@index')->name('gerant.profile');
+        Route::get('/profile/edit', 'App\Http\Controllers\Gerant\ProfileController@edit')->name('gerant.profile.edit');
+        Route::put('/profile', 'App\Http\Controllers\Gerant\ProfileController@update')->name('gerant.profile.update');
+        Route::delete('/profile/image', 'App\Http\Controllers\Gerant\ProfileController@deleteImage')->name('gerant.profile.delete_image');
+    });
 
-
-            Route::get('/profile', 'App\Http\Controllers\Gerant\ProfileController@index')->name('gerant.profile');
-    Route::get('/profile/edit', 'App\Http\Controllers\Gerant\ProfileController@edit')->name('gerant.profile.edit');
-    Route::put('/profile', 'App\Http\Controllers\Gerant\ProfileController@update')->name('gerant.profile.update');
-    Route::delete('/profile/image', 'App\Http\Controllers\Gerant\ProfileController@deleteImage')->name('gerant.profile.delete_image');
-            
-        });
-
-
-    Route::middleware(['auth', 'role:Client'])->prefix('client')->group(function () {
+    // Routes pour le client
+    Route::middleware(['role:Client'])->prefix('client')->group(function () {
         Route::get('/dashboard', function () {
             return view('client.dashboard');
         })->name('client.dashboard');
       
         Route::get('/profile', 'App\Http\Controllers\Client\ProfileController@index')->name('client.profile');
-    Route::get('/profile/edit', 'App\Http\Controllers\Client\ProfileController@edit')->name('client.profile.edit');
-    Route::put('/profile', 'App\Http\Controllers\Client\ProfileController@update')->name('client.profile.update');
-    Route::delete('/profile/image', 'App\Http\Controllers\Client\ProfileController@deleteImage')->name('client.profile.delete_image');
+        Route::get('/profile/edit', 'App\Http\Controllers\Client\ProfileController@edit')->name('client.profile.edit');
+        Route::put('/profile', 'App\Http\Controllers\Client\ProfileController@update')->name('client.profile.update');
+        Route::delete('/profile/image', 'App\Http\Controllers\Client\ProfileController@deleteImage')->name('client.profile.delete_image');
     });
 });

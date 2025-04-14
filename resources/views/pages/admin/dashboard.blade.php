@@ -36,66 +36,79 @@
             </div>
         </div>
 
-        <!-- Gestion des Catégories -->
-        <div class="content-section">
-            <div class="section-header">
-                <h2>Gestion Rapide des Catégories</h2>
-                <button class="btn btn-primary"><i class="fas fa-plus"></i> Nouvelle Catégorie</button>
+            <div class="content-section">
+                <div class="section-header">
+                    <h2>Gestion des Catégories</h2>
+                    <a href="{{ route('admin.categories.create') }}" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> Nouvelle Catégorie
+                    </a>
+                </div>
+                
+                <div class="table-container">
+                    @if(isset($categories))
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nom</th>
+                                    <th>Description</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse($categories as $category)
+                                    <tr>
+                                        <td>{{ $category->id }}</td>
+                                        <td>{{ $category->name }}</td>
+                                        <td>{{ $category->description ?? 'Aucune description' }}</td>
+                                        <td>
+                                            <div class="action-buttons">
+                                                <a href="{{ route('admin.categories.edit', $category->id) }}" class="action-btn edit">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+                                                <button type="button" class="action-btn delete category-delete-btn" 
+                                                        data-id="{{ $category->id }}" data-name="{{ $category->name }}">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="4" class="empty-table">Aucune catégorie trouvée.</td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    @else
+                        <div class="empty-state">
+                            <i class="fas fa-list"></i>
+                            <p>Aucune catégorie trouvée. Commencez par en créer une !</p>
+                            <a href="{{ route('admin.categories.create') }}" class="btn btn-primary mt-3">
+                                <i class="fas fa-plus"></i> Créer une catégorie
+                            </a>
+                        </div>
+                    @endif
+                </div>
             </div>
-            <div class="table-container">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Nom</th>
-                            <th>Description</th>
-                            <th>Nb de Repas</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>Entrées</td>
-                            <td>Toutes les entrées et amuse-bouches</td>
-                            <td>12</td>
-                            <td>
-                                <div class="action-buttons">
-                                    <button class="action-btn edit"><i class="fas fa-edit"></i></button>
-                                    <button class="action-btn delete"><i class="fas fa-trash"></i></button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>Plats Principaux</td>
-                            <td>Plats principaux pour tous les goûts</td>
-                            <td>18</td>
-                            <td>
-                                <div class="action-buttons">
-                                    <button class="action-btn edit"><i class="fas fa-edit"></i></button>
-                                    <button class="action-btn delete"><i class="fas fa-trash"></i></button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td>Desserts</td>
-                            <td>Desserts variés et gourmands</td>
-                            <td>10</td>
-                            <td>
-                                <div class="action-buttons">
-                                    <button class="action-btn edit"><i class="fas fa-edit"></i></button>
-                                    <button class="action-btn delete"><i class="fas fa-trash"></i></button>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+            
+            <div id="deleteCategoryModal" class="modal">
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <h3>Confirmer la suppression</h3>
+                    <p>Êtes-vous sûr de vouloir supprimer la catégorie <span id="categoryNameToDelete"></span> ?</p>
+                    <div class="modal-actions">
+                        <button id="cancelCategoryDelete" class="btn btn-secondary">Annuler</button>
+                        <form id="deleteCategoryForm" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger">Supprimer</button>
+                        </form>
+                    </div>
+                </div>
             </div>
-        </div>
-
-        <!-- Gestion des Gérants -->
+        
+       
         <div class="content-section">
             <div class="section-header">
                 <h2>Gestion des Gérants</h2>
@@ -156,4 +169,38 @@
         <h2>Statistiques</h2>
        
     </div>
+
+    <script>
+        
+document.addEventListener('DOMContentLoaded', function () {
+  
+    document.querySelectorAll('.category-delete-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const categoryId = this.dataset.id;
+            const categoryName = this.dataset.name;
+            
+            document.getElementById('categoryNameToDelete').textContent = categoryName;
+            document.getElementById('deleteCategoryForm').action = `{{ url('admin/categories') }}/${categoryId}`;
+            
+           
+            const modal = document.getElementById('deleteCategoryModal');
+            modal.style.display = "block";
+
+            document.querySelector('#deleteCategoryModal .close').onclick = function() {
+                modal.style.display = "none";
+            }
+
+            document.getElementById('cancelCategoryDelete').onclick = function() {
+                modal.style.display = "none";
+            }
+
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            }
+        });
+    });
+});
+    </script>
 @endsection
