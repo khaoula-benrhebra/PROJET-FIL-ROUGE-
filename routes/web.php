@@ -57,6 +57,12 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/users', [UserController::class, 'index'])->name('admin.users.index');
             Route::post('/users/{id}/approve', [UserController::class, 'approve'])->name('admin.users.approve');
             Route::delete('/users/{id}', [UserController::class, 'delete'])->name('admin.users.delete');
+
+
+            Route::get('/profile', 'App\Http\Controllers\Admin\ProfileController@index')->name('admin.profile');
+        Route::get('/profile/edit', 'App\Http\Controllers\Admin\ProfileController@edit')->name('admin.profile.edit');
+        Route::put('/profile', 'App\Http\Controllers\Admin\ProfileController@update')->name('admin.profile.update');
+        Route::delete('/profile/image', 'App\Http\Controllers\Admin\ProfileController@deleteImage')->name('admin.profile.delete_image');
         });
     });
     
@@ -67,6 +73,12 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/dashboard', function () {
                 return view('pages.gerant.dashboard');
             })->name('gerant.dashboard');
+
+
+            Route::get('/profile', 'App\Http\Controllers\Gerant\ProfileController@index')->name('gerant.profile');
+    Route::get('/profile/edit', 'App\Http\Controllers\Gerant\ProfileController@edit')->name('gerant.profile.edit');
+    Route::put('/profile', 'App\Http\Controllers\Gerant\ProfileController@update')->name('gerant.profile.update');
+    Route::delete('/profile/image', 'App\Http\Controllers\Gerant\ProfileController@deleteImage')->name('gerant.profile.delete_image');
             
         });
 
@@ -77,5 +89,8 @@ Route::middleware(['auth'])->group(function () {
         })->name('client.dashboard');
       
         Route::get('/profile', 'App\Http\Controllers\Client\ProfileController@index')->name('client.profile');
+    Route::get('/profile/edit', 'App\Http\Controllers\Client\ProfileController@edit')->name('client.profile.edit');
+    Route::put('/profile', 'App\Http\Controllers\Client\ProfileController@update')->name('client.profile.update');
+    Route::delete('/profile/image', 'App\Http\Controllers\Client\ProfileController@deleteImage')->name('client.profile.delete_image');
     });
 });

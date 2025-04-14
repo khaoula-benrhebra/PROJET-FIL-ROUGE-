@@ -290,20 +290,20 @@
                             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                 <div class="form-box">
                                     <select name="preferred_food" id="preferred_food" class="selectpicker">
-                                        <option selected disabled>preferred food</option>
-                                        <option>Indian</option>
-                                        <option>Continental</option>
-                                        <option>Mexican</option>
+                                        <option selected disabled>Catégorie</option>
+                                        <option>Morrocan</option>
+                                        <option>indian</option>
+                                        <option>turkich</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                 <div class="form-box">
                                     <select name="occasion" id="occasion" class="selectpicker">
-                                        <option selected disabled>Occasion</option>
-                                        <option>Wedding</option>
-                                        <option>Birthday</option>
-                                        <option>Anniversary</option>
+                                        <option selected disabled>Restaurant</option>
+                                        <option>Foohd health</option>
+                                        <option>Food test</option>
+                                        <option>test Food</option>
                                     </select>
                                 </div>
                             </div>

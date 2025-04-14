@@ -6,9 +6,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-class User extends Authenticatable
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+
+class User extends Authenticatable implements HasMedia
 {
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, HasApiTokens, InteractsWithMedia;
 
     protected $fillable = [
         'name', 'email', 'password', 'role_id', 'is_approved'
@@ -31,5 +34,11 @@ class User extends Authenticatable
     public function hasPermission($permission)
     {
         return $this->role->permissions()->where('id', $permission)->exists();
+    }
+    
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('profile')
+            ->singleFile();
     }
 }

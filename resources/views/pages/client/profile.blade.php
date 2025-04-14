@@ -1,13 +1,27 @@
-
 @extends('layouts.profile')
 
 @section('title', 'Mon Profil')
 
 @section('content')
+<div style="background: #f5f5f5; padding: 10px; margin-bottom: 20px;">
+    <p>URL de l'image: {{ $user->getFirstMediaUrl('profile') }}</p>
+    <p>Media count: {{ $user->getMedia('profile')->count() }}</p>
+    <p>User ID: {{ $user->id }}</p>
+</div>
 <div class="profile-card">
+    @if(session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+    
     <div class="profile-header">
         <div class="profile-avatar">
-            <img src="{{ asset('images/default-profile.png') }}" alt="Profile Image">
+            @if($user->getFirstMediaUrl('profile'))
+                <img src="{{ $user->getFirstMediaUrl('profile') }}" alt="Profile Image">
+            @else
+                <img src="{{ asset('images/default-profile.png') }}" alt="Default Profile Image">
+            @endif
         </div>
         <h1 class="profile-name">{{ $user->name }}</h1>
         <p class="profile-role">{{ $user->role->name }}</p>
@@ -34,7 +48,7 @@
         </div>
         
         <div class="profile-actions">
-            <a href="#" class="btn btn-edit">Modifier mon profil</a>
+            <a href="{{ route('client.profile.edit') }}" class="btn btn-edit">Modifier mon profil</a>
         </div>
     </div>
 </div>

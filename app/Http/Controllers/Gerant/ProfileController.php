@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Client;
+namespace App\Http\Controllers\Gerant;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UpdateProfileRequest;
@@ -15,20 +15,20 @@ class ProfileController extends Controller
     public function __construct(ProfileService $profileService)
     {
         $this->middleware('auth');
+        $this->middleware('role:Gérant');
         $this->profileService = $profileService;
     }
     
     public function index()
     {
         $user = Auth::user();
-
-        return view('pages.client.profile', compact('user'));
+        return view('pages.gerant.profile', compact('user'));
     }
     
     public function edit()
     {
         $user = Auth::user();
-        return view('pages.client.profile_edit', compact('user'));
+        return view('pages.gerant.profile_edit', compact('user'));
     }
     
     public function update(UpdateProfileRequest $request)
@@ -37,7 +37,7 @@ class ProfileController extends Controller
         
         try {
             $this->profileService->updateProfile($user, $request->validated());
-            return redirect()->route('client.profile')->with('success', 'Profil mis à jour avec succès.');
+            return redirect()->route('gerant.profile')->with('success', 'Profil mis à jour avec succès.');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', $e->getMessage());
         }

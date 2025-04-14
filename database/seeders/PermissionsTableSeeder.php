@@ -32,7 +32,7 @@ class PermissionsTableSeeder extends Seeder
         
       
         $adminRole = Role::where('name', 'Administrateur')->first();
-        $gerantRole = Role::where('name', 'Gerant')->first();
+        $gerantRole = Role::where('name', 'Gérant')->first();
         $clientRole = Role::where('name', 'Client')->first();
         
     

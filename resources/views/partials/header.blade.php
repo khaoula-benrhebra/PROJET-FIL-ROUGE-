@@ -1,4 +1,3 @@
-
 <div id="site-header">
     <header id="header" class="header-block-top">
         <div class="container">
@@ -34,7 +33,11 @@
                                         <li class="profile-icon-container">
                                             <a href="{{ route('client.profile') }}" class="profile-icon">
                                                 <div class="profile-circle">
-                                                    <img src="{{ asset('images/default-profile.png') }}" alt="Profile">
+                                                    @if(Auth::user()->getFirstMediaUrl('profile'))
+                                                        <img src="{{ Auth::user()->getFirstMediaUrl('profile') }}" alt="Profile">
+                                                    @else
+                                                        <img src="{{ asset('images/default-profile.png') }}" alt="Profile">
+                                                    @endif
                                                 </div>
                                             </a>
                                         </li>
