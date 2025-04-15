@@ -1412,10 +1412,6 @@ html, body{ height: 100%; }
 .panel-pricing:hover
 
 
-/*------------------------------------------------------------------
-    RESERVATIONS AREA
--------------------------------------------------------------------*/
-
 .reservations-main{
 	
 }
@@ -1499,7 +1495,7 @@ html, body{ height: 100%; }
     padding: 5px;
 }
 
-::-webkit-input-placeholder { /* Chrome */
+::-webkit-input-placeholder {
   color:#202020;
 }
 :-ms-input-placeholder { /* IE 10+ */
@@ -1890,17 +1886,6 @@ textarea:focus, input:focus, select:focus, .bootstrap-select .dropdown-toggle:fo
 	background: #e75b1e;
 }
 
-.strong-blue-bg{
-	background: #1E69B8;
-}
-
-.moderate-green-bg{
-	background: #8dc63f;
-}
-
-.vivid-yellow-bg{
-	background: #fdcb03;
-}
 
 
 

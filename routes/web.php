@@ -1,6 +1,7 @@
 <?php
 use Illuminate\Support\Facades\Route;
 
+
 // Routes publiques
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
@@ -16,13 +17,18 @@ Route::get('/blog', function () {
     return view('pages.blog');
 })->name('blog');
 
-Route::get('/pricing', function () {
-    return view('pages.pricing');
-})->name('pricing');
+// Route::get('/pricing', function () {
+//     return view('pages.pricing');
+// })->name('pricing');
 
 Route::get('/contact', function () {
     return view('pages.contact');
 })->name('contact');
+
+Route::get('/restaurants', function () {
+    return view('pages.restaurants');
+})->name('restaurants');
+
 
 // Routes d'authentification
 use App\Http\Controllers\Auth\LoginController;

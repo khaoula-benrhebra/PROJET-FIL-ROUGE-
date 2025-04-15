@@ -56,9 +56,9 @@ class CategoryController extends Controller
     {
         try {
             $this->categoryService->deleteCategory($id);
-            return response()->json(['success' => 'Catégorie supprimée avec succès']);
+            return redirect()->route('admin.categories.index')->with('success', 'Catégorie supprimée avec succès');
         } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 422);
+            return redirect()->route('admin.categories.index')->with('error', $e->getMessage());
         }
     }
     

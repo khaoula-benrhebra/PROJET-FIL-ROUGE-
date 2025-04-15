@@ -3,12 +3,11 @@
 @section('title', 'Login')
 
 @section('content')
-    <!-- Custom Header pour Login -->
+    
     <div class="custom-header login" style="width: 100%; height: 300px; background-color: #f5f5f5;">
-        <!-- Vous pouvez ajouter une image ici via CSS ou en modifiant ce div -->
+       
     </div>
 
-    <!-- Contenu Login -->
     <div id="login" class="login-main pad-top-100 pad-bottom-100">
         <div class="container">
             <div class="row">
@@ -29,7 +28,7 @@
                         </div>
                     @endif
                     <form id="login-form" method="post" class="login-box" action="{{ route('login.submit') }}">
-                        @csrf <!-- Token CSRF pour la sécurité Laravel -->
+                        @csrf
                         <div class="form-box">
                             <input type="email" name="email" id="email" placeholder="Email Address" required="required"
                                 class="form-control" data-error="Email is required">
