@@ -17,10 +17,6 @@ Route::get('/blog', function () {
     return view('pages.blog');
 })->name('blog');
 
-// Route::get('/pricing', function () {
-//     return view('pages.pricing');
-// })->name('pricing');
-
 Route::get('/contact', function () {
     return view('pages.contact');
 })->name('contact');
@@ -75,6 +71,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/profile/edit', 'App\Http\Controllers\Gerant\ProfileController@edit')->name('gerant.profile.edit');
         Route::put('/profile', 'App\Http\Controllers\Gerant\ProfileController@update')->name('gerant.profile.update');
         Route::delete('/profile/image', 'App\Http\Controllers\Gerant\ProfileController@deleteImage')->name('gerant.profile.delete_image');
+
+        Route::get('/restaurant', [App\Http\Controllers\Gerant\RestaurantController::class, 'index'])->name('gerant.restaurant');
     });
 
     // Routes pour le client

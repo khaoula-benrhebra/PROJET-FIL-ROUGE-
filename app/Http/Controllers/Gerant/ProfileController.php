@@ -12,10 +12,11 @@ class ProfileController extends Controller
 {
     protected $profileService;
     
-    public function __construct(ProfileService $profileService)
+    public function __construct(ProfileService $profileService) 
     {
         $this->middleware('auth');
         $this->middleware('role:Gérant');
+       
         $this->profileService = $profileService;
     }
     
@@ -54,4 +55,6 @@ class ProfileController extends Controller
             return redirect()->back()->with('error', $e->getMessage());
         }
     }
+    
+
 }

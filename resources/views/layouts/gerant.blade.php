@@ -5,12 +5,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@yield('title')</title>
-    
-   
     <link rel="shortcut icon" href="{{ asset('images/favicon.ico') }}" type="image/x-icon">
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/font-awesome.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/profileGerant.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/restaurant.css') }}">
 </head>
 <body class="dashboard-body">
     <div class="dashboard-wrapper">
@@ -21,16 +21,22 @@
             
             <div class="sidebar-user">
                 <div class="user-image">
-                    <img src="{{ asset('images/staff-01.jpg') }}" alt="Gérant">
+                    @if(Auth::user()->getFirstMediaUrl('profile'))
+                        <img src="{{ Auth::user()->getFirstMediaUrl('profile') }}" alt="{{ Auth::user()->name }}">
+                    @else
+                        <img src="{{ asset('images/staff-01.jpg') }}" alt="Gérant">
+                    @endif
                 </div>
                 <div class="user-info">
-                    <h4>John Doggett</h4>
-                    <p>Gérant</p>
+                    <h4>{{ Auth::user()->name }}</h4>
+                    <p>{{ Auth::user()->role->name }}</p>
                 </div>
             </div>
             
             <ul class="sidebar-menu">
-               
+                <li>
+                    <a href="{{ route('gerant.dashboard') }}"><i class="fa fa-dashboard"></i> <span>Tableau de bord</span></a>
+                </li>
                 <li>
                     <a href="#"><i class="fa fa-calendar"></i> <span>Réservations</span></a>
                 </li>
@@ -39,13 +45,21 @@
                 </li>
                
                 <li>
-                    <a href="#"><i class="fa fa-bar-chart"></i> <span>Statistiques</span></a>
+                    <a href="{{ route('gerant.restaurant') }}"><i class="fa fa-coffee"></i> <span>Mon Restaurant</span></a>
                 </li>
                 <li>
-                    <a href="#"><i class="fa fa-cog"></i> <span>Paramètres</span></a>
+                    <a href="{{ route('gerant.profile') }}"><i class="fa fa-user"></i> <span>Mon Profil</span></a>
                 </li>
                 <li>
-                    <a href="#"><i class="fa fa-sign-out"></i> <span>Déconnexion</span></a>
+                    <a href="{{ route('gerant.profile') }}"><i class="fa fa-cog"></i> <span>Paramètres</span></a>
+                </li>
+                <li>
+                    <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                        <i class="fa fa-sign-out"></i> <span>Déconnexion</span>
+                    </a>
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                        @csrf
+                    </form>
                 </li>
             </ul>
         </div>

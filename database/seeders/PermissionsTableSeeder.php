@@ -17,6 +17,9 @@ class PermissionsTableSeeder extends Seeder
             'add_categories' => 'Ajouter les catégories',
             'update_categories' => 'Modifier les catégories',
             'delete_categories' => 'Supprimer les catégories',
+            'add_restaurant'=>'Ajouter un restaurant',
+            'update_restaurant'=>'Modifier un restaurant',
+            'delete_restaurant'=>'Supprimer un restaurant',
             'manage_meals' => 'Gérer les repas',
             'view_statistics' => 'Voir les statistiques',
             'create_reservation' => 'Créer une réservation',
@@ -46,6 +49,7 @@ class PermissionsTableSeeder extends Seeder
             $permissionIds['update_categories'],
             $permissionIds['delete_categories'],
             $permissionIds['manage_profile'],
+            $permissionIds['delete_restaurant'],
             $permissionIds['manage_meals'],
             $permissionIds['view_statistics'],
             $permissionIds['manage_reservations']
@@ -59,7 +63,9 @@ class PermissionsTableSeeder extends Seeder
             $permissionIds['manage_reservations'],
             $permissionIds['respond_to_review'],
             $permissionIds['view_statistics'],
-            $permissionIds['manage_profile']
+            $permissionIds['manage_profile'],
+            $permissionIds['add_restaurant'],
+            $permissionIds['update_restaurant']
         ];
         $gerantRole->permissions()->attach($gerantPermissions);
         

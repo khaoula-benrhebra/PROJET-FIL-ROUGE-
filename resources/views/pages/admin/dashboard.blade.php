@@ -1,4 +1,3 @@
-
 @extends('layouts.admin') 
 
 @section('title', 'Dashboard')
@@ -32,6 +31,116 @@
                 <div class="stat-info">
                     <h3>67</h3>
                     <p>Commandes</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-utensils"></i>
+                </div>
+                <div class="stat-info">
+                    <h3>12</h3>
+                    <p>Restaurants</p>
+                </div>
+            </div>
+        </div>
+
+       
+        <div class="content-section">
+            <div class="section-header">
+                <h2>Gestion des Restaurants</h2>
+            </div>
+            
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nom du Restaurant</th>
+                            <th>Gérant</th>
+                            <th>Adresse</th>
+                            <th>Catégories</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>Le Petit Bistrot</td>
+                            <td>Jean Dupont</td>
+                            <td>12 rue de Paris, 75001 Paris</td>
+                            <td>Français, Continental</td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button type="button" class="action-btn delete restaurant-delete-btn" 
+                                            data-id="1" data-name="Le Petit Bistrot">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>Saveurs d'Asie</td>
+                            <td>Marie Leclerc</td>
+                            <td>45 avenue Victor Hugo, 75016 Paris</td>
+                            <td>Asiatique, Fusion</td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button type="button" class="action-btn delete restaurant-delete-btn" 
+                                            data-id="2" data-name="Saveurs d'Asie">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>La Trattoria</td>
+                            <td>Pierre Martin</td>
+                            <td>8 boulevard Saint-Michel, 75005 Paris</td>
+                            <td>Italien, Méditerranéen</td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button type="button" class="action-btn delete restaurant-delete-btn" 
+                                            data-id="3" data-name="La Trattoria">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>Le Gourmet</td>
+                            <td>Sophie Petit</td>
+                            <td>23 rue du Commerce, 75015 Paris</td>
+                            <td>Gastronomique, Français</td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button type="button" class="action-btn delete restaurant-delete-btn" 
+                                            data-id="4" data-name="Le Gourmet">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        
+        <div id="deleteRestaurantModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h3>Confirmer la suppression</h3>
+                <p>Êtes-vous sûr de vouloir supprimer le restaurant <span id="restaurantNameToDelete"></span> ?</p>
+                <div class="modal-actions">
+                    <button id="cancelRestaurantDelete" class="btn btn-secondary">Annuler</button>
+                    <form id="deleteRestaurantForm" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger">Supprimer</button>
+                    </form>
                 </div>
             </div>
         </div>
@@ -174,6 +283,7 @@
         
 document.addEventListener('DOMContentLoaded', function () {
   
+ 
     document.querySelectorAll('.category-delete-btn').forEach(btn => {
         btn.addEventListener('click', function() {
             const categoryId = this.dataset.id;
@@ -191,6 +301,34 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             document.getElementById('cancelCategoryDelete').onclick = function() {
+                modal.style.display = "none";
+            }
+
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            }
+        });
+    });
+
+
+    document.querySelectorAll('.restaurant-delete-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const restaurantId = this.dataset.id;
+            const restaurantName = this.dataset.name;
+            
+            document.getElementById('restaurantNameToDelete').textContent = restaurantName;
+            document.getElementById('deleteRestaurantForm').action = `{{ url('admin/restaurants') }}/${restaurantId}`;
+            
+            const modal = document.getElementById('deleteRestaurantModal');
+            modal.style.display = "block";
+
+            document.querySelector('#deleteRestaurantModal .close').onclick = function() {
+                modal.style.display = "none";
+            }
+
+            document.getElementById('cancelRestaurantDelete').onclick = function() {
                 modal.style.display = "none";
             }
 
