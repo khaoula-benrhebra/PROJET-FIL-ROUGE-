@@ -21,10 +21,9 @@ Route::get('/contact', function () {
     return view('pages.contact');
 })->name('contact');
 
-Route::get('/restaurants', function () {
-    return view('pages.restaurants');
-})->name('restaurants');
-
+// Mise à jour pour utiliser le contrôleur
+Route::get('/restaurants', [App\Http\Controllers\RestaurantController::class, 'index'])->name('restaurants');
+Route::get('/restaurant/{id}', [App\Http\Controllers\RestaurantController::class, 'show'])->name('restaurant.show');
 
 // Routes d'authentification
 use App\Http\Controllers\Auth\LoginController;
@@ -59,6 +58,9 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/categories/{id}/edit', [App\Http\Controllers\Admin\CategoryController::class, 'edit'])->name('admin.categories.edit');
         Route::put('/categories/{id}', [App\Http\Controllers\Admin\CategoryController::class, 'update'])->name('admin.categories.update');
         Route::delete('/categories/{id}', [App\Http\Controllers\Admin\CategoryController::class, 'destroy'])->name('admin.categories.destroy');
+
+        Route::get('/restaurants', [App\Http\Controllers\Admin\RestaurantController::class, 'index'])->name('admin.restaurants.index');
+        Route::delete('/restaurants/{id}', [App\Http\Controllers\Admin\RestaurantController::class, 'destroy'])->name('admin.restaurants.destroy');
     });
     
     // Routes pour le gérant (nécessite un compte approuvé)
@@ -72,7 +74,12 @@ Route::middleware(['auth'])->group(function () {
         Route::put('/profile', 'App\Http\Controllers\Gerant\ProfileController@update')->name('gerant.profile.update');
         Route::delete('/profile/image', 'App\Http\Controllers\Gerant\ProfileController@deleteImage')->name('gerant.profile.delete_image');
 
-        Route::get('/restaurant', [App\Http\Controllers\Gerant\RestaurantController::class, 'index'])->name('gerant.restaurant');
+        Route::get('/restaurant', [App\Http\Controllers\Gerant\RestaurantController::class, 'index'])->name('gerant.restaurant.index');
+        Route::get('/restaurant/create', [App\Http\Controllers\Gerant\RestaurantController::class, 'create'])->name('gerant.restaurant.create');
+        Route::post('/restaurant', [App\Http\Controllers\Gerant\RestaurantController::class, 'store'])->name('gerant.restaurant.store');
+        Route::get('/restaurant/edit', [App\Http\Controllers\Gerant\RestaurantController::class, 'edit'])->name('gerant.restaurant.edit');
+        Route::put('/restaurant', [App\Http\Controllers\Gerant\RestaurantController::class, 'update'])->name('gerant.restaurant.update');
+        Route::post('/restaurant/toggle-category', [App\Http\Controllers\Gerant\RestaurantController::class, 'toggleCategory'])->name('gerant.restaurant.toggle-category');
     });
 
     // Routes pour le client

@@ -14,214 +14,86 @@
         <h1>Explorez les saveurs du monde</h1>
     </div>
     <div class="header-search-box">
-        <form action="#" method="GET">
-            <input type="text" placeholder="Rechercher un restaurant...">
-            <select>
+        <form action="{{ route('restaurants') }}" method="GET">
+            <input type="text" name="search" placeholder="Rechercher un restaurant..." value="{{ request('search') }}">
+            <select name="category">
                 <option value="">Toutes les catégories</option>
-                <option value="1">Cuisine Française</option>
-                <option value="2">Cuisine Italienne</option>
-                <option value="3">Cuisine Asiatique</option>
-                <option value="4">Fast Food</option>
-                <option value="5">Végétarien</option>
+                @foreach($categories as $category)
+                    <option value="{{ $category->id }}" {{ request('category') == $category->id ? 'selected' : '' }}>
+                        {{ $category->name }}
+                    </option>
+                @endforeach
             </select>
             <button type="submit"><i class="fa fa-search"></i> Rechercher</button>
         </form>
     </div>
 </div>
 
-   
-    <div class="restaurants-section">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <h2 class="section-title">Nos restaurants partenaires</h2>
-                </div>
+<div class="restaurants-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h2 class="section-title">Nos restaurants partenaires</h2>
             </div>
-            
-            <div class="row">
-                
-                <div class="col-lg-4 col-md-6 col-sm-12">
-                    <div class="restaurant-card">
-                        <div class="restaurant-image">
-                            <img src="{{ asset('images/restaurant-01.jpg') }}" alt="Restaurant 1">
-                            <div class="category-tag">Cuisine Française</div>
-                        </div>
-                        <div class="restaurant-content">
-                            <h3>Le Gourmet Parisien</h3>
-                            <div class="restaurant-info">
-                                <p><i class="fa fa-map-marker"></i> 123 Avenue des Champs-Élysées, Paris</p>
-                                <div class="rating">
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star-half-o"></i>
-                                    <span>(120 avis)</span>
-                                </div>
-                            </div>
-                            <p class="restaurant-description">Une cuisine française authentique dans un cadre élégant au cœur de Paris.</p>
-                            <div class="restaurant-footer">
-                                <a href="#" class="btn view-btn">Voir le restaurant</a>
-                                <a href="#" class="btn reserve-btn">Réserver</a>
-                            </div>
+        </div>
+        
+        <div class="row">
+            @forelse($restaurants as $restaurant)
+            <div class="col-lg-4 col-md-6 col-sm-12">
+                <div class="restaurant-card">
+                    <div class="restaurant-image">
+                        @if($restaurant->getFirstMediaUrl('restaurant'))
+                            <img src="{{ $restaurant->getFirstMediaUrl('restaurant') }}" alt="{{ $restaurant->name }}">
+                        @else
+                            <img src="{{ asset('images/default-restaurant.jpg') }}" alt="{{ $restaurant->name }}">
+                        @endif
+                        <div class="category-tag">
+                            {{ $restaurant->categories->first() ? $restaurant->categories->first()->name : 'Non catégorisé' }}
                         </div>
                     </div>
-                </div>
-                
-               
-                <div class="col-lg-4 col-md-6 col-sm-12">
-                    <div class="restaurant-card">
-                        <div class="restaurant-image">
-                            <img src="{{ asset('images/restaurant-02.jpg') }}" alt="Restaurant 2">
-                            <div class="category-tag">Cuisine Italienne</div>
-                        </div>
-                        <div class="restaurant-content">
-                            <h3>La Bella Vita</h3>
-                            <div class="restaurant-info">
-                                <p><i class="fa fa-map-marker"></i> 45 Rue de la République, Lyon</p>
-                                <div class="rating">
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star-o"></i>
-                                    <span>(98 avis)</span>
-                                </div>
-                            </div>
-                            <p class="restaurant-description">Savourez l'authentique cuisine italienne dans une ambiance chaleureuse et familiale.</p>
-                            <div class="restaurant-footer">
-                                <a href="#" class="btn view-btn">Voir le restaurant</a>
-                                <a href="#" class="btn reserve-btn">Réserver</a>
+                    <div class="restaurant-content">
+                        <h3>{{ $restaurant->name }}</h3>
+                        <div class="restaurant-info">
+                            <p><i class="fa fa-map-marker"></i> {{ $restaurant->address }}</p>
+                            <div class="rating">
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star-half-o"></i>
+                                <i class="fa fa-star-o"></i>
+                                <span>(0 avis)</span>
                             </div>
                         </div>
-                    </div>
-                </div>
-                
-         
-                <div class="col-lg-4 col-md-6 col-sm-12">
-                    <div class="restaurant-card">
-                        <div class="restaurant-image">
-                            <img src="{{ asset('images/restaurant-03.jpg') }}" alt="Restaurant 3">
-                            <div class="category-tag">Cuisine Asiatique</div>
-                        </div>
-                        <div class="restaurant-content">
-                            <h3>Sakura Sushi</h3>
-                            <div class="restaurant-info">
-                                <p><i class="fa fa-map-marker"></i> 78 Rue du Commerce, Toulouse</p>
-                                <div class="rating">
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <span>(156 avis)</span>
-                                </div>
-                            </div>
-                            <p class="restaurant-description">Découvrez nos délicieux sushis et plats japonais préparés par nos chefs experts.</p>
-                            <div class="restaurant-footer">
-                                <a href="#" class="btn view-btn">Voir le restaurant</a>
-                                <a href="#" class="btn reserve-btn">Réserver</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="col-lg-4 col-md-6 col-sm-12">
-                    <div class="restaurant-card">
-                        <div class="restaurant-image">
-                            <img src="{{ asset('images/restaurant-04.jpg') }}" alt="Restaurant 4">
-                            <div class="category-tag">Fast Food</div>
-                        </div>
-                        <div class="restaurant-content">
-                            <h3>Burger Express</h3>
-                            <div class="restaurant-info">
-                                <p><i class="fa fa-map-marker"></i> 22 Avenue Jean Jaurès, Bordeaux</p>
-                                <div class="rating">
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star-half-o"></i>
-                                    <i class="fa fa-star-o"></i>
-                                    <span>(87 avis)</span>
-                                </div>
-                            </div>
-                            <p class="restaurant-description">Les meilleurs burgers faits maison avec des ingrédients frais et de qualité.</p>
-                            <div class="restaurant-footer">
-                                <a href="#" class="btn view-btn">Voir le restaurant</a>
-                                <a href="#" class="btn reserve-btn">Réserver</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 col-sm-12">
-                    <div class="restaurant-card">
-                        <div class="restaurant-image">
-                            <img src="{{ asset('images/restaurant-05.jpg') }}" alt="Restaurant 5">
-                            <div class="category-tag">Végétarien</div>
-                        </div>
-                        <div class="restaurant-content">
-                            <h3>Green Garden</h3>
-                            <div class="restaurant-info">
-                                <p><i class="fa fa-map-marker"></i> 56 Rue des Fleurs, Montpellier</p>
-                                <div class="rating">
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star-half-o"></i>
-                                    <span>(112 avis)</span>
-                                </div>
-                            </div>
-                            <p class="restaurant-description">Une cuisine végétarienne inventive et savoureuse dans un cadre verdoyant.</p>
-                            <div class="restaurant-footer">
-                                <a href="#" class="btn view-btn">Voir le restaurant</a>
-                                <a href="#" class="btn reserve-btn">Réserver</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="col-lg-4 col-md-6 col-sm-12">
-                    <div class="restaurant-card">
-                        <div class="restaurant-image">
-                            <img src="{{ asset('images/restaurant-06.jpg') }}" alt="Restaurant 6">
-                            <div class="category-tag">Cuisine Française</div>
-                        </div>
-                        <div class="restaurant-content">
-                            <h3>La Belle Époque</h3>
-                            <div class="restaurant-info">
-                                <p><i class="fa fa-map-marker"></i> 89 Rue de la Paix, Nice</p>
-                                <div class="rating">
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star-o"></i>
-                                    <span>(93 avis)</span>
-                                </div>
-                            </div>
-                            <p class="restaurant-description">Savourez une cuisine française raffinée dans un cadre élégant et chaleureux.</p>
-                            <div class="restaurant-footer">
-                                <a href="#" class="btn view-btn">Voir le restaurant</a>
-                                <a href="#" class="btn reserve-btn">Réserver</a>
-                            </div>
+                        <p class="restaurant-description">
+                            {{ Str::limit($restaurant->description, 100) ?? 'Aucune description disponible.' }}
+                        </p>
+                        <div class="restaurant-footer">
+                            <a href="{{ route('restaurant.show', $restaurant->id) }}" class="btn view-btn">Voir le restaurant</a>
+                            <a href="#" class="btn reserve-btn">Réserver</a>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="pagination-container">
-                        <ul class="pagination">
-                            <li class="page-item disabled"><a class="page-link" href="#"><i class="fa fa-angle-left"></i></a></li>
-                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                            <li class="page-item"><a class="page-link" href="#"><i class="fa fa-angle-right"></i></a></li>
-                        </ul>
-                    </div>
+            @empty
+            <div class="col-lg-12">
+                <div class="empty-restaurants">
+                    <i class="fa fa-utensils"></i>
+                    <h3>Aucun restaurant trouvé</h3>
+                    <p>Essayez de modifier vos critères de recherche ou revenez plus tard.</p>
+                </div>
+            </div>
+            @endforelse
+        </div>
+        
+        @if(isset($restaurants) && method_exists($restaurants, 'links'))
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="pagination-container">
+                    {{ $restaurants->links() }}
                 </div>
             </div>
         </div>
+        @endif
     </div>
+</div>
 @endsection

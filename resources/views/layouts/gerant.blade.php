@@ -45,7 +45,7 @@
                 </li>
                
                 <li>
-                    <a href="{{ route('gerant.restaurant') }}"><i class="fa fa-coffee"></i> <span>Mon Restaurant</span></a>
+                    <a href="{{ route('gerant.restaurant.index') }}"><i class="fa fa-coffee"></i> <span>Mon Restaurant</span></a>
                 </li>
                 <li>
                     <a href="{{ route('gerant.profile') }}"><i class="fa fa-user"></i> <span>Mon Profil</span></a>
