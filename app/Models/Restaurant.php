@@ -28,4 +28,9 @@ class Restaurant extends Model implements HasMedia
         $this->addMediaCollection('restaurant')
             ->singleFile();
     }
+
+    public function menus()
+{
+    return $this->hasMany(Menu::class);
+}
 }

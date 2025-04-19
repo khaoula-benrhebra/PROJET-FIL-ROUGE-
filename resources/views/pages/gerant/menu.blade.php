@@ -27,7 +27,7 @@
                     <i class="fa fa-coffee section-icon"></i>
                     <h3>Petit Déjeuner</h3>
                 </div>
-                <button class="btn btn-primary add-item-btn" data-toggle="modal" data-target="#addItemModal" data-meal-type="petit-dejeuner">
+                <button class="btn btn-primary add-item-btn" data-meal-type="petit-dejeuner">
                     <i class="fa fa-plus"></i> Ajouter un item
                 </button>
             </div>
@@ -99,7 +99,7 @@
                     <i class="fa fa-cutlery section-icon"></i>
                     <h3>Déjeuner</h3>
                 </div>
-                <button class="btn btn-primary add-item-btn" data-toggle="modal" data-target="#addItemModal" data-meal-type="dejeuner">
+                <button class="btn btn-primary add-item-btn" data-meal-type="dejeuner">
                     <i class="fa fa-plus"></i> Ajouter un item
                 </button>
             </div>
@@ -152,7 +152,7 @@
                     <i class="fa fa-glass section-icon"></i>
                     <h3>Dîner</h3>
                 </div>
-                <button class="btn btn-primary add-item-btn" data-toggle="modal" data-target="#addItemModal" data-meal-type="diner">
+                <button class="btn btn-primary add-item-btn" data-meal-type="diner">
                     <i class="fa fa-plus"></i> Ajouter un item
                 </button>
             </div>
@@ -205,8 +205,8 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title" id="addItemModalLabel">Ajouter un item au menu</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body">
                 <form id="menuItemForm">
@@ -256,179 +256,4 @@
         </div>
     </div>
 </div>
-@endsection
-
-@section('scripts')
-<script>/**
-    * Script pour la gestion du menu - Version JavaScript pur (sans jQuery)
-    */
-   document.addEventListener('DOMContentLoaded', function() {
-       console.log("Menu script initialized");
-       
-       // Navigation fluide lorsqu'on clique sur les liens rapides
-       const quickNavLinks = document.querySelectorAll('.quick-nav-link');
-       quickNavLinks.forEach(function(link) {
-           link.addEventListener('click', function(e) {
-               e.preventDefault();
-               const targetId = this.getAttribute('href');
-               const targetElement = document.querySelector(targetId);
-               const offsetTop = targetElement.getBoundingClientRect().top + window.pageYOffset - 100;
-               
-               window.scrollTo({
-                   top: offsetTop,
-                   behavior: 'smooth'
-               });
-           });
-       });
-       
-       // Surbrillance du lien actif lors du défilement
-       window.addEventListener('scroll', function() {
-           const scrollPosition = window.pageYOffset;
-           
-           // Vérifier quelle section est visible
-           const menuSections = document.querySelectorAll('.menu-section');
-           menuSections.forEach(function(section) {
-               const targetId = section.getAttribute('id');
-               const offset = section.getBoundingClientRect().top + window.pageYOffset - 150;
-               const height = section.offsetHeight;
-               
-               if (scrollPosition >= offset && scrollPosition < offset + height) {
-                   // Enlever la classe active de tous les liens
-                   quickNavLinks.forEach(function(link) {
-                       link.classList.remove('active');
-                   });
-                   // Ajouter la classe active au lien correspondant
-                   document.querySelector('.quick-nav-link[href="#' + targetId + '"]').classList.add('active');
-               }
-           });
-       });
-       
-       // Configurer les catégories par type de repas
-       const categories = {
-           'petit-dejeuner': ['Viennoiseries', 'Boissons', 'Plats chauds', 'Fruits', 'Céréales'],
-           'dejeuner': ['Entrées', 'Plats principaux', 'Desserts', 'Boissons', 'Salades'],
-           'diner': ['Entrées', 'Plats principaux', 'Desserts', 'Boissons', 'Fromages']
-       };
-       
-       // Récupérer le modal
-       const addItemModal = document.getElementById('addItemModal');
-       
-       // Gérer l'ouverture du modal
-       const addItemButtons = document.querySelectorAll('.add-item-btn');
-       addItemButtons.forEach(function(button) {
-           button.addEventListener('click', function() {
-               const mealType = this.getAttribute('data-meal-type');
-               console.log("Opening modal for meal type: " + mealType);
-               
-               // Mettre à jour le type de repas dans le formulaire
-               document.getElementById('mealType').value = mealType;
-               
-               // Vider et remplir le select avec les catégories appropriées
-               const categorySelect = document.getElementById('itemCategory');
-               categorySelect.innerHTML = '<option value="">Sélectionner une catégorie</option>';
-               
-               if (categories[mealType]) {
-                   categories[mealType].forEach(function(category) {
-                       const option = document.createElement('option');
-                       option.value = category;
-                       option.textContent = category;
-                       categorySelect.appendChild(option);
-                   });
-               }
-               
-               // Bootstrap modal functionality
-               // Si tu n'utilises pas Bootstrap, tu devras gérer l'affichage/masquage toi-même
-           });
-       });
-       
-       // Simuler l'enregistrement d'un item
-       const saveMenuItem = document.getElementById('saveMenuItem');
-       if (saveMenuItem) {
-           saveMenuItem.addEventListener('click', function() {
-               const mealType = document.getElementById('mealType').value;
-               const itemName = document.getElementById('itemName').value;
-               
-               console.log("Saving menu item: " + itemName + " for meal type: " + mealType);
-               
-               // Validation basique
-               if (!itemName || itemName.trim() === '') {
-                   alert('Veuillez entrer un nom pour cet item.');
-                   return;
-               }
-               
-               // Dans une vraie application, vous feriez une requête fetch() ici
-               alert('Item ajouté au menu (simulation)');
-               
-               // Fermer le modal (dépend de Bootstrap ou ton propre code)
-               // Modal.hide(); // pour Bootstrap 5
-               // Pour Bootstrap 4, c'est différent
-               
-               // Réinitialiser le formulaire
-               document.getElementById('menuItemForm').reset();
-           });
-       }
-       
-       // Boutons d'édition
-       const editButtons = document.querySelectorAll('.edit-btn');
-       editButtons.forEach(function(button) {
-           button.addEventListener('click', function() {
-               console.log("Edit button clicked");
-               const menuItem = this.closest('.menu-item');
-               const itemName = menuItem.querySelector('.item-name').textContent;
-               alert('Modification de l\'item: ' + itemName + ' (simulation)');
-           });
-       });
-       
-       // Boutons de suppression
-       const deleteButtons = document.querySelectorAll('.delete-btn');
-       deleteButtons.forEach(function(button) {
-           button.addEventListener('click', function() {
-               console.log("Delete button clicked");
-               const menuItem = this.closest('.menu-item');
-               const itemName = menuItem.querySelector('.item-name').textContent;
-               if (confirm('Êtes-vous sûr de vouloir supprimer ' + itemName + ' ?')) {
-                   // Dans une vraie application, vous feriez une requête fetch() ici
-                   
-                   // Animation de suppression
-                   menuItem.style.opacity = '0';
-                   menuItem.style.transform = 'scale(0.8)';
-                   setTimeout(function() {
-                       menuItem.remove();
-                   }, 300);
-               }
-           });
-       });
-       
-       // Délégation d'événements pour les boutons ajoutés dynamiquement
-       document.addEventListener('click', function(e) {
-           // Vérifier si le clic est sur un bouton d'édition
-           if (e.target.closest('.edit-btn')) {
-               const editBtn = e.target.closest('.edit-btn');
-               if (!editBtn.hasAttribute('data-event-bound')) {
-                   const menuItem = editBtn.closest('.menu-item');
-                   const itemName = menuItem.querySelector('.item-name').textContent;
-                   alert('Modification de l\'item: ' + itemName + ' (simulation)');
-                   editBtn.setAttribute('data-event-bound', 'true');
-               }
-           }
-           
-           // Vérifier si le clic est sur un bouton de suppression
-           if (e.target.closest('.delete-btn')) {
-               const deleteBtn = e.target.closest('.delete-btn');
-               if (!deleteBtn.hasAttribute('data-event-bound')) {
-                   const menuItem = deleteBtn.closest('.menu-item');
-                   const itemName = menuItem.querySelector('.item-name').textContent;
-                   if (confirm('Êtes-vous sûr de vouloir supprimer ' + itemName + ' ?')) {
-                       menuItem.style.opacity = '0';
-                       menuItem.style.transform = 'scale(0.8)';
-                       setTimeout(function() {
-                           menuItem.remove();
-                       }, 300);
-                   }
-                   deleteBtn.setAttribute('data-event-bound', 'true');
-               }
-           }
-       });
-   });
-</script>
 @endsection
