@@ -20,7 +20,7 @@ class UpdateRestaurantRequest extends FormRequest
             'description' => 'nullable|string',
             'categories' => 'required|array',
             'categories.*' => 'exists:categories,id',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240'
         ];
     }
     
@@ -35,7 +35,7 @@ class UpdateRestaurantRequest extends FormRequest
             'categories.*.exists' => 'Une des catégories sélectionnées n\'existe pas.',
             'image.image' => 'Le fichier doit être une image.',
             'image.mimes' => 'L\'image doit être de type: jpeg, png, jpg ou gif.',
-            'image.max' => 'L\'image ne doit pas dépasser 2Mo.'
+            'image.max' => 'L\'image ne doit pas dépasser 10Mo.'
         ];
     }
 }

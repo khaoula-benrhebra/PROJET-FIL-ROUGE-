@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('css/profileGerant.css') }}">
     <link rel="stylesheet" href="{{ asset('css/restaurant.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/menu.css') }}">
 </head>
 <body class="dashboard-body">
     <div class="dashboard-wrapper">
@@ -41,7 +42,7 @@
                     <a href="#"><i class="fa fa-calendar"></i> <span>Réservations</span></a>
                 </li>
                 <li>
-                    <a href="#"><i class="fa fa-cutlery"></i> <span>Menu</span></a>
+                    <a href="{{ route('gerant.menu') }}"><i class="fa fa-cutlery"></i> <span>Menu</span></a>
                 </li>
                
                 <li>

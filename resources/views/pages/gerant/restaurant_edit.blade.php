@@ -70,7 +70,7 @@
                     @endif
                 </div>
                 <input type="file" class="form-control-file @error('image') is-invalid @enderror" id="image" name="image" style="display: none;">
-                <small class="form-text text-muted">Format recommandé: JPG, PNG (max: 2Mo)</small>
+                <small class="form-text text-muted">Format recommandé: JPG, PNG (max: 10Mo)</small>
                 @error('image')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror

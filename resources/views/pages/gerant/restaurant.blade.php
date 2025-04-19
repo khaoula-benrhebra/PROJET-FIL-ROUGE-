@@ -95,7 +95,7 @@
                 <div class="form-group">
                     <label for="image">Image du restaurant</label>
                     <input type="file" class="form-control-file @error('image') is-invalid @enderror" id="image" name="image">
-                    <small class="form-text text-muted">Format recommandé: JPG, PNG (max: 2Mo)</small>
+                    <small class="form-text text-muted">Format recommandé: JPG, PNG (max: 10Mo)</small>
                     @error('image')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
@@ -164,14 +164,13 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Traitement des toggles des catégories
+       
         const toggles = document.querySelectorAll('.category-toggle');
         toggles.forEach(toggle => {
             toggle.addEventListener('change', function() {
                 const categoryId = this.dataset.id;
                 const isChecked = this.checked;
-                
-                // Envoyer une requête AJAX pour mettre à jour les catégories
+              
                 fetch('{{ route("gerant.restaurant.toggle-category") }}', {
                     method: 'POST',
                     headers: {
@@ -186,7 +185,6 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        // Succès
                         const messageDiv = document.createElement('div');
                         messageDiv.className = 'alert alert-success';
                         messageDiv.textContent = data.message;
@@ -194,21 +192,17 @@
                         const container = document.querySelector('.restaurant-container');
                         container.insertBefore(messageDiv, container.firstChild);
                         
-                        // Faire disparaître le message après 3 secondes
                         setTimeout(() => {
                             messageDiv.remove();
                         }, 3000);
                     } else {
-                        // Erreur
                         alert(data.message || 'Une erreur est survenue');
-                        // Remettre le toggle dans son état précédent
                         this.checked = !isChecked;
                     }
                 })
                 .catch(error => {
                     console.error('Erreur:', error);
                     alert('Une erreur est survenue');
-                    // Remettre le toggle dans son état précédent
                     this.checked = !isChecked;
                 });
             });

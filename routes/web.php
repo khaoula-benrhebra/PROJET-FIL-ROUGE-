@@ -64,22 +64,27 @@ Route::middleware(['auth'])->group(function () {
     });
     
     // Routes pour le gérant (nécessite un compte approuvé)
-    Route::middleware(['role:Gérant'])->prefix('gerant')->group(function () {
+    Route::middleware(['role:Gérant'])->prefix('gerant')->name('gerant.')->group(function () {
         Route::get('/dashboard', function () {
             return view('pages.gerant.dashboard');
-        })->name('gerant.dashboard');
-
-        Route::get('/profile', 'App\Http\Controllers\Gerant\ProfileController@index')->name('gerant.profile');
-        Route::get('/profile/edit', 'App\Http\Controllers\Gerant\ProfileController@edit')->name('gerant.profile.edit');
-        Route::put('/profile', 'App\Http\Controllers\Gerant\ProfileController@update')->name('gerant.profile.update');
-        Route::delete('/profile/image', 'App\Http\Controllers\Gerant\ProfileController@deleteImage')->name('gerant.profile.delete_image');
-
-        Route::get('/restaurant', [App\Http\Controllers\Gerant\RestaurantController::class, 'index'])->name('gerant.restaurant.index');
-        Route::get('/restaurant/create', [App\Http\Controllers\Gerant\RestaurantController::class, 'create'])->name('gerant.restaurant.create');
-        Route::post('/restaurant', [App\Http\Controllers\Gerant\RestaurantController::class, 'store'])->name('gerant.restaurant.store');
-        Route::get('/restaurant/edit', [App\Http\Controllers\Gerant\RestaurantController::class, 'edit'])->name('gerant.restaurant.edit');
-        Route::put('/restaurant', [App\Http\Controllers\Gerant\RestaurantController::class, 'update'])->name('gerant.restaurant.update');
-        Route::post('/restaurant/toggle-category', [App\Http\Controllers\Gerant\RestaurantController::class, 'toggleCategory'])->name('gerant.restaurant.toggle-category');
+        })->name('dashboard');
+    
+        Route::get('/profile', 'App\Http\Controllers\Gerant\ProfileController@index')->name('profile');
+        Route::get('/profile/edit', 'App\Http\Controllers\Gerant\ProfileController@edit')->name('profile.edit');
+        Route::put('/profile', 'App\Http\Controllers\Gerant\ProfileController@update')->name('profile.update');
+        Route::delete('/profile/image', 'App\Http\Controllers\Gerant\ProfileController@deleteImage')->name('profile.delete_image');
+    
+        Route::get('/restaurant', [App\Http\Controllers\Gerant\RestaurantController::class, 'index'])->name('restaurant.index');
+        Route::get('/restaurant/create', [App\Http\Controllers\Gerant\RestaurantController::class, 'create'])->name('restaurant.create');
+        Route::post('/restaurant', [App\Http\Controllers\Gerant\RestaurantController::class, 'store'])->name('restaurant.store');
+        Route::get('/restaurant/edit', [App\Http\Controllers\Gerant\RestaurantController::class, 'edit'])->name('restaurant.edit');
+        Route::put('/restaurant', [App\Http\Controllers\Gerant\RestaurantController::class, 'update'])->name('restaurant.update');
+        Route::post('/restaurant/toggle-category', [App\Http\Controllers\Gerant\RestaurantController::class, 'toggleCategory'])->name('restaurant.toggle-category');
+    
+        Route::get('/menu', [App\Http\Controllers\Gerant\MenuController::class, 'index'])->name('menu');
+        Route::get('/menu/create', [App\Http\Controllers\Gerant\MenuController::class, 'create'])->name('menu.create');
+        Route::get('/menu/edit/{id}', [App\Http\Controllers\Gerant\MenuController::class, 'edit'])->name('menu.edit');
+    
     });
 
     // Routes pour le client
