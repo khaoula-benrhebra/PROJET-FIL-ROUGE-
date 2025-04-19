@@ -1,0 +1,256 @@
+/* Styles pour la page de gestion du menu - nouvelle version */
+
+/* Navigation rapide */
+.quick-nav {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.quick-nav-link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px 20px;
+    margin: 0 15px;
+    color: #555;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.quick-nav-link i {
+    font-size: 24px;
+    margin-bottom: 5px;
+    color: #e75b1e;
+}
+
+.quick-nav-link:hover {
+    color: #e75b1e;
+    transform: translateY(-3px);
+}
+
+/* Sections du menu */
+.menu-section {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    padding: 25px;
+    margin-bottom: 40px;
+}
+
+.menu-section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #efefef;
+}
+
+.menu-title {
+    display: flex;
+    align-items: center;
+}
+
+.section-icon {
+    font-size: 24px;
+    margin-right: 15px;
+    color: #e75b1e;
+    width: 40px;
+    height: 40px;
+    background-color: rgba(231, 91, 30, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.menu-title h3 {
+    margin: 0;
+    color: #333;
+    font-size: 22px;
+    font-weight: 600;
+}
+
+.add-item-btn {
+    background-color: #e75b1e;
+    border-color: #e75b1e;
+    padding: 8px 15px;
+    transition: all 0.3s ease;
+}
+
+.add-item-btn:hover, 
+.add-item-btn:focus {
+    background-color: #d34d13;
+    border-color: #d34d13;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Items du menu */
+.menu-items {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(450px, 1fr));
+    gap: 20px;
+}
+
+.menu-item {
+    display: flex;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    padding: 15px;
+    align-items: center;
+    transition: all 0.3s ease;
+    border: 1px solid #f0f0f0;
+}
+
+.menu-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    border-color: #e0e0e0;
+}
+
+.item-image {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-right: 15px;
+    flex-shrink: 0;
+    border: 2px solid #f0f0f0;
+}
+
+.item-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.item-details {
+    flex-grow: 1;
+}
+
+.item-name {
+    color: #e75b1e;
+    margin: 0 0 5px;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.item-description {
+    margin: 0;
+    color: #666;
+    font-size: 14px;
+}
+
+.item-price {
+    margin: 0 15px;
+}
+
+.price-circle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px;
+    height: 60px;
+    border: 1px solid #e75b1e;
+    border-radius: 50%;
+    color: #333;
+    font-weight: 600;
+    font-size: 16px;
+}
+
+.item-actions {
+    display: flex;
+    flex-direction: column;
+}
+
+.action-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    margin-bottom: 5px;
+    color: white;
+    transition: all 0.3s;
+}
+
+.edit-btn {
+    background-color: #3498db;
+}
+
+.delete-btn {
+    background-color: #e74c3c;
+}
+
+.action-btn:hover {
+    opacity: 0.8;
+    transform: scale(1.05);
+}
+
+/* Modal */
+.modal-content {
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.modal-header {
+    background-color: #f9f9f9;
+    border-bottom: 1px solid #e1e1e1;
+}
+
+.modal-footer {
+    background-color: #f9f9f9;
+    border-top: 1px solid #e1e1e1;
+}
+
+/* Responsive */
+@media (max-width: 991px) {
+    .menu-items {
+        grid-template-columns: 1fr;
+    }
+    
+    .quick-nav {
+        flex-wrap: wrap;
+    }
+}
+
+@media (max-width: 767px) {
+    .menu-section-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .add-item-btn {
+        margin-top: 15px;
+    }
+    
+    .menu-item {
+        flex-wrap: wrap;
+    }
+    
+    .item-price, .item-actions {
+        margin-top: 15px;
+    }
+    
+    .item-actions {
+        flex-direction: row;
+        width: 100%;
+        justify-content: flex-end;
+    }
+    
+    .action-btn {
+        margin-right: 5px;
+        margin-bottom: 0;
+    }
+    
+    .quick-nav-link {
+        margin: 5px;
+    }
+}

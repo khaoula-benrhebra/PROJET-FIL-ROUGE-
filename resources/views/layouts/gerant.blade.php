@@ -11,7 +11,8 @@
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('css/profileGerant.css') }}">
     <link rel="stylesheet" href="{{ asset('css/restaurant.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/menu.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/menu-gerant.css') }}">
+  
 </head>
 <body class="dashboard-body">
     <div class="dashboard-wrapper">
