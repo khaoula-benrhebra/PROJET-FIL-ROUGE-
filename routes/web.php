@@ -74,9 +74,17 @@ Route::middleware(['auth'])->group(function () {
         Route::put('/profile', 'App\Http\Controllers\Gerant\ProfileController@update')->name('profile.update');
         Route::delete('/profile/image', 'App\Http\Controllers\Gerant\ProfileController@deleteImage')->name('profile.delete_image');
 
-        Route::get('/menu', function () {
-            return view('pages.gerant.menu');
-        })->name('menu');
+        // Dans le groupe de routes Route::middleware(['role:Gérant'])->prefix('gerant')->name('gerant.')...
+
+Route::get('/menu', [App\Http\Controllers\Gerant\MenuController::class, 'index'])->name('menu');
+Route::get('/meals/create', [App\Http\Controllers\Gerant\MenuController::class, 'createMeal'])->name('meals.create');
+Route::post('/meals', [App\Http\Controllers\Gerant\MenuController::class, 'storeMeal'])->name('meals.store');
+Route::get('/meals/{id}/edit', [App\Http\Controllers\Gerant\MenuController::class, 'editMeal'])->name('meals.edit');
+Route::put('/meals/{id}', [App\Http\Controllers\Gerant\MenuController::class, 'updateMeal'])->name('meals.update');
+Route::delete('/meals/{id}', [App\Http\Controllers\Gerant\MenuController::class, 'deleteMeal'])->name('meals.delete');
+Route::get('/meals/{id}', [App\Http\Controllers\Gerant\MenuController::class, 'getMeal'])->name('meals.get');
+
+
     
         Route::get('/restaurant', [App\Http\Controllers\Gerant\RestaurantController::class, 'index'])->name('restaurant.index');
         Route::get('/restaurant/create', [App\Http\Controllers\Gerant\RestaurantController::class, 'create'])->name('restaurant.create');

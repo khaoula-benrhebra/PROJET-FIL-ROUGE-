@@ -21,239 +21,154 @@
         </div>
         
         <!-- Petit Déjeuner Section -->
-        <div id="petit-dejeuner-section" class="menu-section">
+        <div id="petit-dejeuner-section" class="menu-section" data-menu-id="{{ $menusByType['petit-dejeuner'][0]->id ?? '' }}">
             <div class="menu-section-header">
                 <div class="menu-title">
                     <i class="fa fa-coffee section-icon"></i>
                     <h3>Petit Déjeuner</h3>
                 </div>
-                <button class="btn btn-primary add-item-btn" data-meal-type="petit-dejeuner">
+                <a href="{{ route('gerant.meals.create', ['menu_id' => $menusByType['petit-dejeuner'][0]->id ?? '', 'type' => 'petit-dejeuner']) }}" class="btn btn-primary">
                     <i class="fa fa-plus"></i> Ajouter un item
-                </button>
+                </a>
             </div>
             
             <div class="menu-items">
-                <div class="menu-item">
-                    <div class="item-image">
-                        <img src="{{ asset('images/placeholder-food.jpg') }}" alt="Croissant">
-                    </div>
-                    <div class="item-details">
-                        <h4 class="item-name">Croissant</h4>
-                        <p class="item-description">Croissant au beurre fait maison</p>
-                    </div>
-                    <div class="item-price">
-                        <div class="price-circle">
-                            <span>2.50 €</span>
+                @if(isset($menusByType['petit-dejeuner']))
+                    @foreach($menusByType['petit-dejeuner'][0]->meals as $meal)
+                        <div class="menu-item" data-meal-id="{{ $meal->id }}">
+                            <div class="item-image">
+                                @if($meal->getFirstMediaUrl('meal'))
+                                    <img src="{{ $meal->getFirstMediaUrl('meal') }}" alt="{{ $meal->name }}">
+                                @else
+                                    <img src="{{ asset('images/placeholder-food.jpg') }}" alt="{{ $meal->name }}">
+                                @endif
+                            </div>
+                            <div class="item-details">
+                                <h4 class="item-name">{{ $meal->name }}</h4>
+                                <p class="item-description">{{ $meal->description }}</p>
+                            </div>
+                            <div class="item-price">
+                                <div class="price-circle">
+                                    <span>{{ number_format($meal->price, 2) }} €</span>
+                                </div>
+                            </div>
+                            <div class="item-actions">
+                                <a href="{{ route('gerant.meals.edit', $meal->id) }}" class="action-btn edit-btn"><i class="fa fa-pencil"></i></a>
+                                <button class="action-btn delete-btn" onclick="confirmDelete({{ $meal->id }})"><i class="fa fa-times"></i></button>
+                            </div>
                         </div>
-                    </div>
-                    <div class="item-actions">
-                        <button class="action-btn edit-btn"><i class="fa fa-pencil"></i></button>
-                        <button class="action-btn delete-btn"><i class="fa fa-times"></i></button>
-                    </div>
-                </div>
-                
-                <div class="menu-item">
-                    <div class="item-image">
-                        <img src="{{ asset('images/placeholder-food.jpg') }}" alt="Café Américain">
-                    </div>
-                    <div class="item-details">
-                        <h4 class="item-name">Café Américain</h4>
-                        <p class="item-description">Café filtre</p>
-                    </div>
-                    <div class="item-price">
-                        <div class="price-circle">
-                            <span>1.50 €</span>
-                        </div>
-                    </div>
-                    <div class="item-actions">
-                        <button class="action-btn edit-btn"><i class="fa fa-pencil"></i></button>
-                        <button class="action-btn delete-btn"><i class="fa fa-times"></i></button>
-                    </div>
-                </div>
-                
-                <div class="menu-item">
-                    <div class="item-image">
-                        <img src="{{ asset('images/placeholder-food.jpg') }}" alt="Omelette">
-                    </div>
-                    <div class="item-details">
-                        <h4 class="item-name">Omelette</h4>
-                        <p class="item-description">Omelette aux fines herbes</p>
-                    </div>
-                    <div class="item-price">
-                        <div class="price-circle">
-                            <span>6.50 €</span>
-                        </div>
-                    </div>
-                    <div class="item-actions">
-                        <button class="action-btn edit-btn"><i class="fa fa-pencil"></i></button>
-                        <button class="action-btn delete-btn"><i class="fa fa-times"></i></button>
-                    </div>
-                </div>
+                    @endforeach
+                @else
+                    <p class="no-items-message">Aucun repas pour le petit déjeuner. Ajoutez-en un !</p>
+                @endif
             </div>
         </div>
         
         <!-- Déjeuner Section -->
-        <div id="dejeuner-section" class="menu-section">
+        <div id="dejeuner-section" class="menu-section" data-menu-id="{{ $menusByType['dejeuner'][0]->id ?? '' }}">
             <div class="menu-section-header">
                 <div class="menu-title">
                     <i class="fa fa-cutlery section-icon"></i>
                     <h3>Déjeuner</h3>
                 </div>
-                <button class="btn btn-primary add-item-btn" data-meal-type="dejeuner">
+                <a href="{{ route('gerant.meals.create', ['menu_id' => $menusByType['dejeuner'][0]->id ?? '', 'type' => 'dejeuner']) }}" class="btn btn-primary">
                     <i class="fa fa-plus"></i> Ajouter un item
-                </button>
+                </a>
             </div>
             
             <div class="menu-items">
-                <div class="menu-item">
-                    <div class="item-image">
-                        <img src="{{ asset('images/placeholder-food.jpg') }}" alt="Salade César">
-                    </div>
-                    <div class="item-details">
-                        <h4 class="item-name">Salade César</h4>
-                        <p class="item-description">Salade romaine, croûtons, parmesan, sauce César</p>
-                    </div>
-                    <div class="item-price">
-                        <div class="price-circle">
-                            <span>8.50 €</span>
+                @if(isset($menusByType['dejeuner']))
+                    @foreach($menusByType['dejeuner'][0]->meals as $meal)
+                        <div class="menu-item" data-meal-id="{{ $meal->id }}">
+                            <div class="item-image">
+                                @if($meal->getFirstMediaUrl('meal'))
+                                    <img src="{{ $meal->getFirstMediaUrl('meal') }}" alt="{{ $meal->name }}">
+                                @else
+                                    <img src="{{ asset('images/placeholder-food.jpg') }}" alt="{{ $meal->name }}">
+                                @endif
+                            </div>
+                            <div class="item-details">
+                                <h4 class="item-name">{{ $meal->name }}</h4>
+                                <p class="item-description">{{ $meal->description }}</p>
+                            </div>
+                            <div class="item-price">
+                                <div class="price-circle">
+                                    <span>{{ number_format($meal->price, 2) }} €</span>
+                                </div>
+                            </div>
+                            <div class="item-actions">
+                                <a href="{{ route('gerant.meals.edit', $meal->id) }}" class="action-btn edit-btn"><i class="fa fa-pencil"></i></a>
+                                <button class="action-btn delete-btn" onclick="confirmDelete({{ $meal->id }})"><i class="fa fa-times"></i></button>
+                            </div>
                         </div>
-                    </div>
-                    <div class="item-actions">
-                        <button class="action-btn edit-btn"><i class="fa fa-pencil"></i></button>
-                        <button class="action-btn delete-btn"><i class="fa fa-times"></i></button>
-                    </div>
-                </div>
-                
-                <div class="menu-item">
-                    <div class="item-image">
-                        <img src="{{ asset('images/placeholder-food.jpg') }}" alt="Burger Maison">
-                    </div>
-                    <div class="item-details">
-                        <h4 class="item-name">Burger Maison</h4>
-                        <p class="item-description">Bœuf, cheddar, bacon, sauce spéciale</p>
-                    </div>
-                    <div class="item-price">
-                        <div class="price-circle">
-                            <span>12.90 €</span>
-                        </div>
-                    </div>
-                    <div class="item-actions">
-                        <button class="action-btn edit-btn"><i class="fa fa-pencil"></i></button>
-                        <button class="action-btn delete-btn"><i class="fa fa-times"></i></button>
-                    </div>
-                </div>
+                    @endforeach
+                @else
+                    <p class="no-items-message">Aucun repas pour le déjeuner. Ajoutez-en un !</p>
+                @endif
             </div>
         </div>
         
         <!-- Dîner Section -->
-        <div id="diner-section" class="menu-section">
+        <div id="diner-section" class="menu-section" data-menu-id="{{ $menusByType['diner'][0]->id ?? '' }}">
             <div class="menu-section-header">
                 <div class="menu-title">
                     <i class="fa fa-glass section-icon"></i>
                     <h3>Dîner</h3>
                 </div>
-                <button class="btn btn-primary add-item-btn" data-meal-type="diner">
+                <a href="{{ route('gerant.meals.create', ['menu_id' => $menusByType['diner'][0]->id ?? '', 'type' => 'diner']) }}" class="btn btn-primary">
                     <i class="fa fa-plus"></i> Ajouter un item
-                </button>
+                </a>
             </div>
             
             <div class="menu-items">
-                <div class="menu-item">
-                    <div class="item-image">
-                        <img src="{{ asset('images/placeholder-food.jpg') }}" alt="Foie Gras">
-                    </div>
-                    <div class="item-details">
-                        <h4 class="item-name">Foie Gras</h4>
-                        <p class="item-description">Foie gras maison et son chutney de figues</p>
-                    </div>
-                    <div class="item-price">
-                        <div class="price-circle">
-                            <span>14.50 €</span>
+                @if(isset($menusByType['diner']))
+                    @foreach($menusByType['diner'][0]->meals as $meal)
+                        <div class="menu-item" data-meal-id="{{ $meal->id }}">
+                            <div class="item-image">
+                                @if($meal->getFirstMediaUrl('meal'))
+                                    <img src="{{ $meal->getFirstMediaUrl('meal') }}" alt="{{ $meal->name }}">
+                                @else
+                                    <img src="{{ asset('images/placeholder-food.jpg') }}" alt="{{ $meal->name }}">
+                                @endif
+                            </div>
+                            <div class="item-details">
+                                <h4 class="item-name">{{ $meal->name }}</h4>
+                                <p class="item-description">{{ $meal->description }}</p>
+                            </div>
+                            <div class="item-price">
+                                <div class="price-circle">
+                                    <span>{{ number_format($meal->price, 2) }} €</span>
+                                </div>
+                            </div>
+                            <div class="item-actions">
+                                <a href="{{ route('gerant.meals.edit', $meal->id) }}" class="action-btn edit-btn"><i class="fa fa-pencil"></i></a>
+                                <button class="action-btn delete-btn" onclick="confirmDelete({{ $meal->id }})"><i class="fa fa-times"></i></button>
+                            </div>
                         </div>
-                    </div>
-                    <div class="item-actions">
-                        <button class="action-btn edit-btn"><i class="fa fa-pencil"></i></button>
-                        <button class="action-btn delete-btn"><i class="fa fa-times"></i></button>
-                    </div>
-                </div>
-                
-                <div class="menu-item">
-                    <div class="item-image">
-                        <img src="{{ asset('images/placeholder-food.jpg') }}" alt="Filet de Bœuf">
-                    </div>
-                    <div class="item-details">
-                        <h4 class="item-name">Filet de Bœuf</h4>
-                        <p class="item-description">Sauce au poivre, pommes de terre rôties</p>
-                    </div>
-                    <div class="item-price">
-                        <div class="price-circle">
-                            <span>24.90 €</span>
-                        </div>
-                    </div>
-                    <div class="item-actions">
-                        <button class="action-btn edit-btn"><i class="fa fa-pencil"></i></button>
-                        <button class="action-btn delete-btn"><i class="fa fa-times"></i></button>
-                    </div>
-                </div>
+                    @endforeach
+                @else
+                    <p class="no-items-message">Aucun repas pour le dîner. Ajoutez-en un !</p>
+                @endif
             </div>
         </div>
     </div>
 </div>
 
-<!-- Modal pour ajouter/modifier un item -->
-<div class="modal fade" id="addItemModal" tabindex="-1" role="dialog" aria-labelledby="addItemModalLabel">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title" id="addItemModalLabel">Ajouter un item au menu</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            </div>
-            <div class="modal-body">
-                <form id="menuItemForm">
-                    <input type="hidden" id="mealType" name="meal_type">
-                    
-                    <div class="form-group">
-                        <label for="itemName">Nom</label>
-                        <input type="text" class="form-control" id="itemName" name="name" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="itemDescription">Description</label>
-                        <textarea class="form-control" id="itemDescription" name="description" rows="3"></textarea>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="itemPrice">Prix (€)</label>
-                        <input type="number" step="0.01" class="form-control" id="itemPrice" name="price" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="itemCategory">Catégorie</label>
-                        <select class="form-control" id="itemCategory" name="category">
-                            <option value="">Sélectionner une catégorie</option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="itemStatus">Statut</label>
-                        <select class="form-control" id="itemStatus" name="status">
-                            <option value="available">Disponible</option>
-                            <option value="unavailable">Indisponible</option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="itemImage">Image</label>
-                        <input type="file" id="itemImage" name="image">
-                        <p class="help-block">Format recommandé: JPG, PNG. Max 2MB.</p>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
-                <button type="button" class="btn btn-primary" id="saveMenuItem">Enregistrer</button>
-            </div>
-        </div>
-    </div>
-</div>
+<!-- Formulaire de suppression caché -->
+<form id="delete-form" method="POST" style="display: none;">
+    @csrf
+    @method('DELETE')
+</form>
+@endsection
+
+@section('scripts')
+<script>
+    function confirmDelete(id) {
+        if (confirm('Êtes-vous sûr de vouloir supprimer ce repas?')) {
+            const form = document.getElementById('delete-form');
+            form.action = "{{ route('gerant.meals.delete', '') }}/" + id;
+            form.submit();
+        }
+    }
+</script>
 @endsection

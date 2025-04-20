@@ -18,7 +18,6 @@ class CreateMealRequest extends FormRequest
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'price' => 'required|numeric|min:0',
-            'status' => 'required|in:available,unavailable',
             'menu_id' => 'required|exists:menus,id',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240'
         ];
@@ -32,8 +31,6 @@ class CreateMealRequest extends FormRequest
             'price.required' => 'Le prix du repas est requis.',
             'price.numeric' => 'Le prix doit être un nombre.',
             'price.min' => 'Le prix ne peut pas être négatif.',
-            'status.required' => 'Le statut du repas est requis.',
-            'status.in' => 'Le statut doit être disponible ou indisponible.',
             'menu_id.required' => 'Le menu est requis.',
             'menu_id.exists' => 'Le menu sélectionné n\'existe pas.',
             'image.image' => 'Le fichier doit être une image.',

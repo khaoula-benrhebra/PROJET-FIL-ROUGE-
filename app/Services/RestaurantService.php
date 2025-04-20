@@ -9,10 +9,13 @@ use Illuminate\Http\UploadedFile;
 class RestaurantService
 {
     protected $restaurantRepository;
+    protected $menuService;
     
-    public function __construct(RestaurantRepository $restaurantRepository)
+    public function __construct(RestaurantRepository $restaurantRepository ,  MenuService $menuService)
     {
         $this->restaurantRepository = $restaurantRepository;
+        $this->menuService = $menuService;
+
     }
     public function getRestaurantByCurrentUser()
     {
@@ -23,20 +26,23 @@ class RestaurantService
         return $this->restaurantRepository->getAllWithCategories();
     }
     public function createRestaurant(array $data, ?UploadedFile $image = null)
-    {
-        if (!Gate::allows('add_restaurant')) {
-            throw new \Exception('Vous n\'avez pas la permission d\'ajouter un restaurant.');
-        }
-        
-        $restaurant = $this->restaurantRepository->createRestaurant($data);
-        
-        if ($image) {
-            $restaurant->addMedia($image)
-                ->toMediaCollection('restaurant');
-        }
-        
-        return $restaurant;
+{
+    if (!Gate::allows('add_restaurant')) {
+        throw new \Exception('Vous n\'avez pas la permission d\'ajouter un restaurant.');
     }
+    
+    $restaurant = $this->restaurantRepository->createRestaurant($data);
+    
+    if ($image) {
+        $restaurant->addMedia($image)
+            ->toMediaCollection('restaurant');
+    }
+    
+    
+    $this->menuService->initializeMenusForRestaurant($restaurant->id);
+    
+    return $restaurant;
+}
     
     public function updateRestaurant($id, array $data, ?UploadedFile $image = null)
     {
