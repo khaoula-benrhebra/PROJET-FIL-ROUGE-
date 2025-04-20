@@ -11,7 +11,7 @@ class Restaurant extends Model implements HasMedia
 {
     use HasFactory, InteractsWithMedia;
     
-    protected $fillable = ['name', 'address', 'description', 'user_id'];
+    protected $fillable = ['name', 'address', 'description', 'user_id' , 'number_of_tables', 'seats_per_table'];
   
     public function user()
     {
@@ -32,5 +32,10 @@ class Restaurant extends Model implements HasMedia
     public function menus()
 {
     return $this->hasMany(Menu::class);
+}
+
+public function tables()
+{
+    return $this->hasMany(Table::class);
 }
 }
