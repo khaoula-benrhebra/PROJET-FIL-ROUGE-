@@ -52,7 +52,7 @@
                     <a href="{{ route('gerant.restaurant.index') }}"><i class="fa fa-coffee"></i> <span>Mon Restaurant</span></a>
                 </li>
                 <li>
-                    <a href="#"><i class="fa fa-calendar"></i> <span>Tables</span></a>
+                    <a href="{{ route('gerant.tables.index') }}"><i class="fa fa-calendar"></i> <span>Tables</span></a>
                 </li>
                 <li>
                     <a href="{{ route('gerant.profile') }}"><i class="fa fa-cog"></i> <span>Paramètres</span></a>

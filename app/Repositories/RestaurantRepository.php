@@ -31,6 +31,8 @@ class RestaurantRepository extends BaseRepository
             'name' => $data['name'],
             'address' => $data['address'],
             'description' => $data['description'] ?? null,
+            'number_of_tables' => $data['number_of_tables'] ?? null,
+            'seats_per_table' => $data['seats_per_table'] ?? null,
             'user_id' => Auth::id()
         ]);
         
@@ -49,6 +51,8 @@ class RestaurantRepository extends BaseRepository
             'name' => $data['name'],
             'address' => $data['address'],
             'description' => $data['description'] ?? null,
+            'number_of_tables' => $data['number_of_tables'] ?? null,
+            'seats_per_table' => $data['seats_per_table'] ?? null,
         ]);
         
         if (isset($data['categories'])) {

@@ -1,0 +1,155 @@
+.tables-container {
+    padding: 20px;
+}
+
+.page-title {
+    margin-bottom: 30px;
+    color: #333;
+    font-weight: 600;
+}
+
+.tables-section {
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 30px;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 15px;
+}
+
+.section-header h2 {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0;
+    color: #333;
+}
+
+.table-form-container {
+    margin-bottom: 30px;
+}
+
+.table-form-group {
+    margin-bottom: 15px;
+}
+
+.tables-container .btn-add {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.tables-container .btn-remove {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.table-inputs {
+    margin-bottom: 15px;
+}
+
+.table-input-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.table-input-row input {
+    flex: 1;
+    margin-right: 10px;
+}
+
+.form-actions {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+}
+
+.table-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 15px;
+}
+
+.table-card {
+    background-color: #f8f9fa;
+    border-radius: 5px;
+    padding: 15px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+}
+
+.table-card:hover {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.table-card h3 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+}
+
+.table-card .table-status {
+    margin-top: 10px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+}
+
+.table-card .status-indicator {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 5px;
+}
+
+.table-card .status-available {
+    background-color: #28a745;
+}
+
+.table-card .status-unavailable {
+    background-color: #dc3545;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 30px;
+    color: #6c757d;
+}
+
+.empty-state i {
+    font-size: 48px;
+    margin-bottom: 10px;
+}
+
+/* Style responsive */
+@media (max-width: 768px) {
+    .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .section-header h2 {
+        margin-bottom: 10px;
+    }
+    
+    .table-list {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    }
+}

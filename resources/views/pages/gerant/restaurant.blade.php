@@ -91,6 +91,25 @@
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
+
+                
+<div class="form-group">
+    <label for="number_of_tables">Nombre de tables *</label>
+    <input type="number" class="form-control @error('number_of_tables') is-invalid @enderror" id="number_of_tables" name="number_of_tables" value="{{ old('number_of_tables') }}" min="1" required>
+    <small class="form-text text-muted">Indiquez le nombre total de tables dans votre restaurant.</small>
+    @error('number_of_tables')
+        <div class="invalid-feedback">{{ $message }}</div>
+    @enderror
+</div>
+
+<div class="form-group">
+    <label for="seats_per_table">Places par table *</label>
+    <input type="number" class="form-control @error('seats_per_table') is-invalid @enderror" id="seats_per_table" name="seats_per_table" value="{{ old('seats_per_table') }}" min="1" max="20" required>
+    <small class="form-text text-muted">Indiquez le nombre moyen de places par table.</small>
+    @error('seats_per_table')
+        <div class="invalid-feedback">{{ $message }}</div>
+    @enderror
+</div>
                 
                 <div class="form-group">
                     <label for="image">Image du restaurant</label>
