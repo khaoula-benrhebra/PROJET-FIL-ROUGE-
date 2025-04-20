@@ -4,6 +4,7 @@
 
 @section('styles')
     <link rel="stylesheet" href="{{ asset('css/restaurant-detail.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/restaurant-menu.css') }}">
 @endsection
 
 @section('content')
@@ -40,12 +41,11 @@
         </div>
     </div>
     
-    
     <div class="restaurant-content">
         <div class="container">
             <div class="row">
                 <div class="col-lg-8">
-                  
+                    <!-- À propos -->
                     <div class="content-section">
                         <h2>À propos</h2>
                         <div class="about-content">
@@ -53,15 +53,135 @@
                         </div>
                     </div>
                     
-                
-                    <div class="content-section">
+                    <!-- Menu Section -->
+                    <div class="content-section" id="menu-section">
                         <h2>Menu</h2>
-                        <div class="menu-content">
-                            <p class="placeholder-text">Le menu sera bientôt disponible.</p>
+                        
+                        <!-- Menu Navigation -->
+                        <div class="menu-navigation">
+                            <ul class="nav menu-nav" id="restaurant-menu-tabs" role="tablist">
+                                <li class="menu-nav-item active">
+                                    <a href="#petit-dejeuner" class="menu-nav-link active" data-toggle="tab" role="tab">
+                                        <span class="menu-icon"><i class="fa fa-coffee"></i></span>
+                                        <span class="menu-text">Petit Déjeuner</span>
+                                    </a>
+                                </li>
+                                <li class="menu-nav-item">
+                                    <a href="#dejeuner" class="menu-nav-link" data-toggle="tab" role="tab">
+                                        <span class="menu-icon"><i class="fa fa-cutlery"></i></span>
+                                        <span class="menu-text">Déjeuner</span>
+                                    </a>
+                                </li>
+                                <li class="menu-nav-item">
+                                    <a href="#diner" class="menu-nav-link" data-toggle="tab" role="tab">
+                                        <span class="menu-icon"><i class="fa fa-glass"></i></span>
+                                        <span class="menu-text">Dîner</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <!-- Menu Content -->
+                        <div class="tab-content menu-content" id="restaurant-menu-content">
+                            <!-- Petit Déjeuner -->
+                            <div class="tab-pane fade show active" id="petit-dejeuner" role="tabpanel">
+                                @if(isset($menus['petit-dejeuner']) && count($menus['petit-dejeuner']->meals) > 0)
+                                    <div class="menu-items-grid">
+                                        @foreach($menus['petit-dejeuner']->meals as $meal)
+                                            <div class="menu-card">
+                                                <div class="menu-card-img">
+                                                    @if($meal->getFirstMediaUrl('meal'))
+                                                        <img src="{{ $meal->getFirstMediaUrl('meal') }}" alt="{{ $meal->name }}">
+                                                    @else
+                                                        <div class="menu-img-placeholder">
+                                                            <i class="fa fa-coffee"></i>
+                                                        </div>
+                                                    @endif
+                                                </div>
+                                                <div class="menu-card-body">
+                                                    <div class="menu-card-header">
+                                                        <h4 class="menu-item-title">{{ $meal->name }}</h4>
+                                                        <div class="menu-item-price">{{ number_format($meal->price, 2) }} €</div>
+                                                    </div>
+                                                    <p class="menu-item-desc">{{ $meal->description }}</p>
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                @else
+                                    <div class="menu-empty-message">
+                                        <p>Aucun plat disponible pour le petit déjeuner.</p>
+                                    </div>
+                                @endif
+                            </div>
+                            
+                            <!-- Déjeuner -->
+                            <div class="tab-pane fade" id="dejeuner" role="tabpanel">
+                                @if(isset($menus['dejeuner']) && count($menus['dejeuner']->meals) > 0)
+                                    <div class="menu-items-grid">
+                                        @foreach($menus['dejeuner']->meals as $meal)
+                                            <div class="menu-card">
+                                                <div class="menu-card-img">
+                                                    @if($meal->getFirstMediaUrl('meal'))
+                                                        <img src="{{ $meal->getFirstMediaUrl('meal') }}" alt="{{ $meal->name }}">
+                                                    @else
+                                                        <div class="menu-img-placeholder">
+                                                            <i class="fa fa-cutlery"></i>
+                                                        </div>
+                                                    @endif
+                                                </div>
+                                                <div class="menu-card-body">
+                                                    <div class="menu-card-header">
+                                                        <h4 class="menu-item-title">{{ $meal->name }}</h4>
+                                                        <div class="menu-item-price">{{ number_format($meal->price, 2) }} €</div>
+                                                    </div>
+                                                    <p class="menu-item-desc">{{ $meal->description }}</p>
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                @else
+                                    <div class="menu-empty-message">
+                                        <p>Aucun plat disponible pour le déjeuner.</p>
+                                    </div>
+                                @endif
+                            </div>
+                            
+                            <!-- Dîner -->
+                            <div class="tab-pane fade" id="diner" role="tabpanel">
+                                @if(isset($menus['diner']) && count($menus['diner']->meals) > 0)
+                                    <div class="menu-items-grid">
+                                        @foreach($menus['diner']->meals as $meal)
+                                            <div class="menu-card">
+                                                <div class="menu-card-img">
+                                                    @if($meal->getFirstMediaUrl('meal'))
+                                                        <img src="{{ $meal->getFirstMediaUrl('meal') }}" alt="{{ $meal->name }}">
+                                                    @else
+                                                        <div class="menu-img-placeholder">
+                                                            <i class="fa fa-glass"></i>
+                                                        </div>
+                                                    @endif
+                                                </div>
+                                                <div class="menu-card-body">
+                                                    <div class="menu-card-header">
+                                                        <h4 class="menu-item-title">{{ $meal->name }}</h4>
+                                                        <div class="menu-item-price">{{ number_format($meal->price, 2) }} €</div>
+                                                    </div>
+                                                    <p class="menu-item-desc">{{ $meal->description }}</p>
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                @else
+                                    <div class="menu-empty-message">
+                                        <p>Aucun plat disponible pour le dîner.</p>
+                                    </div>
+                                @endif
+                            </div>
                         </div>
                     </div>
                     
-              
+                    <!-- Avis Section -->
                     <div class="content-section">
                         <h2>Avis des clients</h2>
                         <div class="reviews-content">
@@ -71,6 +191,7 @@
                     </div>
                 </div>
                 
+                <!-- Sidebar -->
                 <div class="col-lg-4">
                     <div class="sidebar-section">
                         <h3>Informations</h3>
@@ -80,48 +201,46 @@
                             <li><i class="fa fa-clock-o"></i> <strong>Horaires:</strong> Non renseignés</li>
                         </ul>
                     </div>
-                    
-                    <div class="sidebar-section">
-                        <h3>Localisation</h3>
-                        <div class="map-container">
-                            <div class="map-placeholder">
-                                <i class="fa fa-map"></i>
-                                <p>Carte interactive bientôt disponible</p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="sidebar-section">
-                        <h3>Gérant</h3>
-                        <div class="owner-info">
-                            <div class="owner-avatar">
-                                @if($restaurant->user->getFirstMediaUrl('profile'))
-                                    <img src="{{ $restaurant->user->getFirstMediaUrl('profile') }}" alt="{{ $restaurant->user->name }}">
-                                @else
-                                    <div class="no-avatar">
-                                        <i class="fa fa-user"></i>
-                                    </div>
-                                @endif
-                            </div>
-                            <div class="owner-details">
-                                <h4>{{ $restaurant->user->name }}</h4>
-                                <p>Gérant depuis {{ $restaurant->created_at->format('d/m/Y') }}</p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="sidebar-section">
-                        <h3>Partager</h3>
-                        <div class="social-share">
-                            <a href="#" class="social-btn"><i class="fa fa-facebook"></i></a>
-                            <a href="#" class="social-btn"><i class="fa fa-twitter"></i></a>
-                            <a href="#" class="social-btn"><i class="fa fa-instagram"></i></a>
-                            <a href="#" class="social-btn"><i class="fa fa-envelope"></i></a>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<!-- Script pour activer les onglets -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Gestion des onglets du menu
+    const menuTabs = document.querySelectorAll('.menu-nav-link');
+    
+    menuTabs.forEach(tab => {
+        tab.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // Remove active class from all tabs
+            menuTabs.forEach(t => {
+                t.classList.remove('active');
+                t.parentElement.classList.remove('active');
+            });
+            
+            // Add active class to current tab
+            this.classList.add('active');
+            this.parentElement.classList.add('active');
+            
+            // Hide all tab contents
+            const tabContents = document.querySelectorAll('.tab-pane');
+            tabContents.forEach(content => {
+                content.classList.remove('show', 'active');
+            });
+            
+            // Show current tab content
+            const targetId = this.getAttribute('href');
+            const targetContent = document.querySelector(targetId);
+            if (targetContent) {
+                targetContent.classList.add('show', 'active');
+            }
+        });
+    });
+});
+</script>
 @endsection
