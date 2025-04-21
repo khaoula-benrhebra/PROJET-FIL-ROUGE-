@@ -23,4 +23,11 @@ class Meal extends Model implements HasMedia
         $this->addMediaCollection('meal')
             ->singleFile();
     }
+
+    public function reservations()
+{
+    return $this->belongsToMany(Reservation::class)
+        ->withPivot('quantity', 'unit_price')
+        ->withTimestamps();
+}
 }

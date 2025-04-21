@@ -38,4 +38,9 @@ public function tables()
 {
     return $this->hasMany(Table::class);
 }
+
+public function reservations()
+{
+    return $this->hasMany(Reservation::class);
+}
 }

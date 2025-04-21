@@ -92,6 +92,7 @@ Route::middleware(['auth'])->group(function () {
 
         Route::get('/tables', [App\Http\Controllers\Gerant\TableController::class, 'index'])->name('tables.index');
         Route::post('/tables', [App\Http\Controllers\Gerant\TableController::class, 'store'])->name('tables.store');
+
     
        
     
@@ -109,3 +110,8 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('/profile/image', 'App\Http\Controllers\Client\ProfileController@deleteImage')->name('client.profile.delete_image');
     });
 });
+
+
+Route::post('/reservations', function() {
+    return redirect()->back()->with('success', 'Démo : Votre réservation a été enregistrée avec succès!');
+})->name('reservations.store');

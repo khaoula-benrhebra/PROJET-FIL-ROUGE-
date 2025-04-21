@@ -132,4 +132,48 @@
     .restaurant-meta .location {
         margin-bottom: 10px;
     }
+
+    
 }
+
+    .reservation-meal-list {
+        max-height: 300px;
+        overflow-y: auto;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 10px;
+        margin-bottom: 15px;
+    }
+    
+    .reservation-meal-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 8px 0;
+        border-bottom: 1px solid #eee;
+    }
+    
+    .reservation-meal-item:last-child {
+        border-bottom: none;
+    }
+    
+    .meal-info {
+        flex: 1;
+    }
+    
+    .meal-name {
+        font-weight: 500;
+    }
+    
+    .meal-price {
+        color: #666;
+        margin-left: 10px;
+    }
+    
+    .meal-quantity {
+        width: 80px;
+    }
+    
+    .meal-quantity input {
+        text-align: center;
+    }

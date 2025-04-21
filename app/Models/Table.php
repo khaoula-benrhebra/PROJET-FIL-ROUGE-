@@ -15,4 +15,10 @@ class Table extends Model
     {
         return $this->belongsTo(Restaurant::class);
     }
+
+    public function reservations()
+{
+    return $this->belongsToMany(Reservation::class)
+        ->withTimestamps();
+}
 }

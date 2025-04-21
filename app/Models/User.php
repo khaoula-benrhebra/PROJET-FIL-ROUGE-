@@ -41,4 +41,9 @@ class User extends Authenticatable implements HasMedia
         $this->addMediaCollection('profile')
             ->singleFile();
     }
+
+    public function reservations()
+{
+    return $this->hasMany(Reservation::class);
+}
 }
