@@ -1,0 +1,417 @@
+/* Styles pour la navigation */
+.navbar {
+    background-color: rgb(32, 32, 32) !important;
+    padding: 8px 68px; /* Réduit la hauteur de la navbar */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+body {
+    padding-top: 60px; /* Ajusté pour la navbar plus petite */
+}
+
+.navbar-brand {
+    padding-left: 80px; /* Espace à gauche du logo */
+    margin-right: 30px; /* Plus d'espace à droite du logo */
+}
+
+.navbar-brand img {
+    max-height: 40px; /* Logo un peu plus petit */
+}
+
+.navbar-nav {
+    margin-left: 20px; /* Espace entre le logo et les liens */
+}
+
+.navbar-nav .nav-link {
+    color: #fff !important;
+    font-weight: 500;
+    padding: 10px 15px !important;
+    transition: color 0.3s ease;
+}
+
+.navbar-nav .nav-link:hover, 
+.navbar-nav .nav-link.active {
+    color: #e75b1e !important;
+}
+
+.navbar-toggler {
+    border-color: #fff;
+}
+
+.navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(255, 255, 255, 1)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+/* Styles pour la page de réservation */
+.reservation-main {
+    background-color: #f5f5f5;
+    position: relative;
+    padding: 40px 0 80px 0; /* Ajusté pour la navbar plus petite */
+}
+
+.block-title {
+    color: #333;
+    font-size: 36px;
+    margin-bottom: 15px;
+    font-weight: 700;
+    position: relative;
+    text-transform: uppercase;
+}
+
+.block-title:after {
+    content: "";
+    position: absolute;
+    width: 60px;
+    height: 3px;
+    background-color: #e75b1e;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.title-caption {
+    color: #666;
+    font-size: 18px;
+    margin-bottom: 40px;
+}
+
+.reservation-form-box {
+    background-color: #fff;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    padding: 40px;
+    border-radius: 8px;
+    margin-top: 30px;
+    position: relative;
+}
+
+.form-box {
+    margin-bottom: 25px;
+    position: relative;
+}
+
+.form-box label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: #333;
+    font-size: 15px;
+}
+
+.form-box input,
+.form-box select,
+.form-box textarea {
+    width: 100%;
+    padding: 15px;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    font-size: 15px;
+    transition: all 0.3s ease;
+    background-color: #f9f9f9;
+}
+
+.form-box input:focus,
+.form-box select:focus,
+.form-box textarea:focus {
+    border-color: #e75b1e;
+    box-shadow: 0 0 8px rgba(231, 91, 30, 0.3);
+    background-color: #fff;
+    outline: none;
+}
+
+.form-box textarea {
+    height: 140px;
+    resize: none;
+}
+
+.meal-title {
+    border-bottom: 2px solid #e75b1e;
+    padding-bottom: 12px;
+    margin-bottom: 25px;
+    font-weight: 600;
+    color: #333;
+    font-size: 20px;
+}
+
+.meal-selection {
+    margin-bottom: 20px;
+}
+
+.meal-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    transition: all 0.3s ease;
+    background-color: #f9f9f9;
+}
+
+.meal-item:hover {
+    border-color: #e75b1e;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    transform: translateY(-3px);
+}
+
+.meal-info {
+    flex: 1;
+}
+
+.meal-info h5 {
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: #333;
+    font-size: 17px;
+}
+
+.meal-info p {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 8px;
+    line-height: 1.4;
+}
+
+.meal-price {
+    font-weight: 700;
+    color: #e75b1e;
+    font-size: 16px;
+    display: block;
+    margin-top: 5px;
+}
+
+.meal-quantity {
+    width: 120px;
+    text-align: right;
+}
+
+.meal-quantity label {
+    font-size: 14px;
+    display: inline-block;
+    margin-right: 8px;
+    color: #555;
+}
+
+.quantity-select {
+    width: 70px !important;
+    display: inline-block;
+    padding: 8px 10px;
+    border-radius: 4px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    cursor: pointer;
+}
+
+.reserve-book-btn {
+    margin-top: 20px;
+}
+
+.reserve-book-btn button {
+    background: #e75b1e;
+    border: 2px solid #e75b1e;
+    color: #fff;
+    padding: 15px 45px;
+    font-size: 16px;
+    text-transform: uppercase;
+    border-radius: 50px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    letter-spacing: 1px;
+    box-shadow: 0 5px 15px rgba(231, 91, 30, 0.3);
+}
+
+.reserve-book-btn button:hover {
+    background: transparent;
+    color: #e75b1e;
+    box-shadow: 0 8px 20px rgba(231, 91, 30, 0.4);
+    transform: translateY(-2px);
+}
+
+.reservation-image {
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-top: 30px;
+    height: 100%;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+.reservation-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+    transition: transform 0.5s ease;
+}
+
+.reservation-image:hover img {
+    transform: scale(1.05);
+}
+
+.reservation-info {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.8);
+    padding: 25px;
+    color: #fff;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
+
+.reservation-info h3 {
+    color: #e75b1e;
+    margin-bottom: 15px;
+    font-weight: 700;
+    font-size: 22px;
+}
+
+.reservation-info ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.reservation-info ul li {
+    padding: 8px 0;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+}
+
+.reservation-info ul li i {
+    color: #e75b1e;
+    margin-right: 10px;
+    font-size: 16px;
+}
+
+/* Responsive Styles */
+@media (max-width: 991px) {
+    .reservation-image {
+        margin-top: 50px;
+    }
+}
+
+@media (max-width: 767px) {
+    .reservation-main {
+        padding: 50px 0;
+    }
+    
+    .reservation-form-box {
+        padding: 25px;
+    }
+    
+    .block-title {
+        font-size: 28px;
+    }
+    
+    .title-caption {
+        font-size: 16px;
+    }
+    
+    .meal-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .meal-quantity {
+        width: 100%;
+        text-align: left;
+        margin-top: 15px;
+        display: flex;
+        align-items: center;
+    }
+    
+    .meal-quantity label {
+        margin-right: 15px;
+    }
+    
+    .reserve-book-btn button {
+        width: 100%;
+    }
+}
+
+/* Override Bootstrap styles to match theme */
+.bootstrap-select .btn {
+    border: 1px solid #e0e0e0;
+    padding: 15px;
+    border-radius: 6px;
+    font-size: 15px;
+    background-color: #f9f9f9;
+    color: #333;
+}
+
+.bootstrap-select.show .btn {
+    background-color: #fff;
+    border-color: #e75b1e;
+    box-shadow: 0 0 8px rgba(231, 91, 30, 0.3);
+}
+
+.bootstrap-select .dropdown-menu {
+    border-radius: 6px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e0e0e0;
+    padding: 5px;
+}
+
+.bootstrap-select .dropdown-menu li a {
+    padding: 12px 15px;
+    color: #333;
+    transition: all 0.2s ease;
+}
+
+.bootstrap-select .dropdown-menu li a:hover {
+    background-color: rgba(231, 91, 30, 0.1);
+    color: #e75b1e;
+}
+
+.bootstrap-select .dropdown-menu li.selected a {
+    background-color: #e75b1e;
+    color: #fff;
+}
+
+/* Datepicker customization */
+.datepicker table tr td.active,
+.datepicker table tr td.active:hover,
+.datepicker table tr td.active.disabled,
+.datepicker table tr td.active.disabled:hover {
+    background-color: #e75b1e !important;
+    background-image: none;
+}
+
+.datepicker table tr td.today {
+    background-color: rgba(231, 91, 30, 0.2) !important;
+    background-image: none;
+}
+
+.datepicker-dropdown {
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e0e0e0;
+    padding: 10px;
+}
+
+.ui-timepicker-container {
+    z-index: 2000 !important;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.ui-timepicker-list li {
+    padding: 8px 12px;
+    color: #333;
+}
+
+.ui-timepicker-list li.ui-timepicker-selected,
+.ui-timepicker-list li:hover,
+.ui-timepicker-list .ui-timepicker-selected:hover {
+    background: #e75b1e;
+    color: #fff;
+}

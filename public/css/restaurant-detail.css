@@ -1,4 +1,3 @@
-
 .restaurant-header {
     background-size: cover;
     background-position: center;
@@ -6,10 +5,10 @@
     padding: 100px 0 50px;
     position: relative;
     margin-bottom: 30px;
-}
-
-.restaurant-header::before {
-    content: '';
+  }
+  
+  .restaurant-header::before {
+    content: "";
     position: absolute;
     top: 0;
     left: 0;
@@ -17,39 +16,39 @@
     bottom: 0;
     background: rgba(0, 0, 0, 0.6);
     z-index: 1;
-}
-
-.restaurant-header-content {
+  }
+  
+  .restaurant-header-content {
     position: relative;
     z-index: 2;
-}
-
-.restaurant-header h1 {
+  }
+  
+  .restaurant-header h1 {
     font-size: 3rem;
     margin-bottom: 15px;
-}
-
-.restaurant-meta {
+  }
+  
+  .restaurant-meta {
     display: flex;
     align-items: center;
     margin-bottom: 20px;
     flex-wrap: wrap;
-}
-
-.restaurant-meta .location {
+  }
+  
+  .restaurant-meta .location {
     margin-right: 30px;
     font-size: 16px;
-}
-
-.rating {
+  }
+  
+  .rating {
     color: #ffc107;
-}
-
-.restaurant-categories {
+  }
+  
+  .restaurant-categories {
     margin-bottom: 20px;
-}
-
-.category-badge {
+  }
+  
+  .category-badge {
     display: inline-block;
     background: #5a67d8;
     color: white;
@@ -58,122 +57,193 @@
     margin-right: 10px;
     margin-bottom: 10px;
     font-size: 14px;
-}
-
-.restaurant-actions {
+  }
+  
+  .restaurant-actions {
     margin-top: 20px;
-}
-
-.restaurant-actions .btn {
+  }
+  
+  .restaurant-actions .btn {
     margin-right: 10px;
     margin-bottom: 10px;
-}
-
-.restaurant-content {
+  }
+  
+  /* Adjusted container to be wider with minimal side space */
+  .container {
+    max-width: 95%; /* Augmenté de 90% à 95% */
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .restaurant-content {
     padding: 30px 0;
-}
-
-.content-section, .sidebar-section {
+    width: 100%;
+  }
+  
+  /* Centering the row content */
+  .restaurant-content .row {
+    justify-content: center;
+    width: 120%;
+    margin-left: 90px;
+  }
+  
+  /* Making the main column take up more space */
+  .restaurant-content .col-lg-8 {
+    flex: 0 0 100%; /* Take up 100% of the container width */
+    max-width: 1400px; /* Ajout d'une largeur maximale plus grande */
+    padding: 0;
+    margin: 0 auto; /* Centre la colonne */
+  }
+  
+  .content-section,
+  .sidebar-section {
     background: white;
     border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    padding: 25px;
+    padding: 30px;
     margin-bottom: 30px;
-}
-
-.content-section h2, .sidebar-section h3 {
-    color: #333;
+    width: 100%;
+    max-width: 1400px; /* Ajout d'une largeur maximale plus grande */
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  /* Centered titles */
+  .content-section h2,
+  .sidebar-section h3 {
+    color: #dc3545;
     border-bottom: 2px solid #f0f0f0;
     padding-bottom: 15px;
-    margin-bottom: 20px;
-}
-
-.sidebar-section h3 {
+    margin-bottom: 25px;
+    text-align: center;
+    font-size: 1.8rem;
+  }
+  
+  .sidebar-section h3 {
     font-size: 1.5rem;
-}
-
-.info-list {
+  }
+  
+  /* Ensuring menu section takes full width */
+  #menu-section {
+    width: 100%;
+  }
+  
+  .menu-navigation,
+  .menu-content,
+  .about-content,
+  .reviews-content {
+    width: 100%;
+  }
+  
+  .info-list {
     list-style: none;
     padding: 0;
-}
-
-.info-list li {
+  }
+  
+  .info-list li {
     padding: 10px 0;
     border-bottom: 1px solid #f0f0f0;
-}
-
-.info-list li:last-child {
+  }
+  
+  .info-list li:last-child {
     border-bottom: none;
-}
-
-.info-list i {
+  }
+  
+  .info-list i {
     color: #5a67d8;
     width: 20px;
     text-align: center;
     margin-right: 10px;
-}
-
-.placeholder-text {
+  }
+  
+  .placeholder-text {
     color: #777;
     font-style: italic;
-}
-
-
-@media (max-width: 768px) {
-    .restaurant-header h1 {
-        font-size: 2rem;
+  }
+  
+  /* Réservation */
+  .reservation-meal-list {
+    max-height: 300px;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 10px;
+    margin-bottom: 15px;
+  }
+  
+  .reservation-meal-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .reservation-meal-item:last-child {
+    border-bottom: none;
+  }
+  
+  .meal-info {
+    flex: 1;
+  }
+  
+  .meal-name {
+    font-weight: 500;
+  }
+  
+  .meal-price {
+    color: #666;
+    margin-left: 10px;
+  }
+  
+  .meal-quantity {
+    width: 80px;
+  }
+  
+  .meal-quantity input {
+    text-align: center;
+  }
+  
+  /* Menu items grid - make it use more space */
+  .menu-items-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Réduction de la taille minimale pour plus d'éléments par ligne */
+    gap: 20px;
+    width: 100%;
+  }
+  
+  /* Media queries adjusted */
+  @media (max-width: 992px) {
+    .container {
+      max-width: 95%;
+      width: 95%;
     }
-    
-    .restaurant-meta {
-        flex-direction: column;
-        align-items: flex-start;
+  
+    .content-section {
+      padding: 25px 20px;
     }
-    
-    .restaurant-meta .location {
-        margin-bottom: 10px;
+  }
+  
+  @media (max-width: 768px) {
+    .container {
+      max-width: 98%;
+      width: 98%;
+      padding-left: 10px;
+      padding-right: 10px;
     }
-
-    
-}
-
-    .reservation-meal-list {
-        max-height: 300px;
-        overflow-y: auto;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-        padding: 10px;
-        margin-bottom: 15px;
+  }
+  
+  /* Ajustement pour les écrans plus larges */
+  @media (min-width: 1400px) {
+    .container {
+      max-width: 1320px; /* Valeur standard de Bootstrap pour les grands écrans */
     }
-    
-    .reservation-meal-item {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 8px 0;
-        border-bottom: 1px solid #eee;
+  }
+  
+  /* Ajustement pour les écrans très larges */
+  @media (min-width: 1600px) {
+    .container {
+      max-width: 1500px;
     }
-    
-    .reservation-meal-item:last-child {
-        border-bottom: none;
-    }
-    
-    .meal-info {
-        flex: 1;
-    }
-    
-    .meal-name {
-        font-weight: 500;
-    }
-    
-    .meal-price {
-        color: #666;
-        margin-left: 10px;
-    }
-    
-    .meal-quantity {
-        width: 80px;
-    }
-    
-    .meal-quantity input {
-        text-align: center;
-    }
+  }
