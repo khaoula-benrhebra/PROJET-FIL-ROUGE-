@@ -27,7 +27,7 @@ class PermissionsTableSeeder extends Seeder
             'view_statistics' => 'Voir les statistiques',
             'create_reservation' => 'Créer une réservation',
            'manage_profile' => 'Gérer son profil et ses médias',
-            'manage_reservations' => 'Gérer les réservations',
+            'view_reservations' => 'Voir les réservations',
             'add_review' => 'Ajouter un avis',
             'respond_to_review' => 'Répondre aux avis',
             'manage_favorites' => 'Gérer les favoris'
@@ -61,7 +61,7 @@ class PermissionsTableSeeder extends Seeder
         
         $gerantPermissions = [
             $permissionIds['view_dashboard'],
-            $permissionIds['manage_reservations'],
+            $permissionIds['view_reservations'],
             $permissionIds['respond_to_review'],
             $permissionIds['view_statistics'],
             $permissionIds['manage_profile'],

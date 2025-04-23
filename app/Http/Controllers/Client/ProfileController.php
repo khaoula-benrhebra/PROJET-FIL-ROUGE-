@@ -5,24 +5,33 @@ namespace App\Http\Controllers\Client;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UpdateProfileRequest;
 use App\Services\ProfileService;
+use App\Services\ReservationService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class ProfileController extends Controller
 {
     protected $profileService;
+    protected $reservationService;
     
-    public function __construct(ProfileService $profileService)
+    public function __construct(ProfileService $profileService, ReservationService $reservationService)
     {
         $this->middleware('auth');
         $this->profileService = $profileService;
+        $this->reservationService = $reservationService;
     }
     
     public function index()
     {
         $user = Auth::user();
+        
+        // Si l'utilisateur est un client, récupérer ses réservations
+        $reservations = [];
+        if ($user->role->name === 'Client') {
+            $reservations = $this->reservationService->getReservationsByUser();
+        }
 
-        return view('pages.client.profile', compact('user'));
+        return view('pages.client.profile', compact('user', 'reservations'));
     }
     
     public function edit()
