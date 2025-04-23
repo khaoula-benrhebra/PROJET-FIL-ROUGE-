@@ -16,7 +16,9 @@ Route::get('/contact', function () { return view('pages.contact');})->name('cont
 Route::get('/restaurants', [App\Http\Controllers\RestaurantController::class, 'index'])->name('restaurants');
 Route::get('/restaurant/{id}', [App\Http\Controllers\RestaurantController::class, 'show'])->name('restaurant.show');
 
-// Route::get('/reservations/available-tables', [App\Http\Controllers\Client\ReservationController::class, 'getAvailableTables'])->name('reservations.available-tables');
+// Routes pour vérifier les tables disponibles et les dates réservées
+Route::post('/reservations/available-tables', [App\Http\Controllers\Client\ReservationController::class, 'getAvailableTables'])->name('reservations.available-tables');
+Route::post('/reservations/booked-dates', [App\Http\Controllers\Client\ReservationController::class, 'getBookedDates'])->name('reservations.booked-dates');
 
 // Routes d'authentification
 use App\Http\Controllers\Auth\LoginController;
@@ -50,14 +52,12 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/categories/{id}/edit', [App\Http\Controllers\Admin\CategoryController::class, 'edit'])->name('admin.categories.edit');
         Route::put('/categories/{id}', [App\Http\Controllers\Admin\CategoryController::class, 'update'])->name('admin.categories.update');
         Route::delete('/categories/{id}', [App\Http\Controllers\Admin\CategoryController::class, 'destroy'])->name('admin.categories.destroy');
-
-        // Route::get('/restaurants', [App\Http\Controllers\Admin\RestaurantController::class, 'index'])->name('admin.restaurants.index');
-        // Route::delete('/restaurants/{id}', [App\Http\Controllers\Admin\RestaurantController::class, 'destroy'])->name('admin.restaurants.destroy');
     });
     
     // Routes pour le gérant (nécessite un compte approuvé)
     Route::middleware(['role:Gérant'])->prefix('gerant')->name('gerant.')->group(function () {
         Route::get('/dashboard', [App\Http\Controllers\Gerant\DashboardController::class, 'index'])->name('dashboard');
+        Route::post('/reservations/{id}/status', [App\Http\Controllers\Gerant\DashboardController::class, 'updateReservationStatus'])->name('reservations.update-status');
     
         Route::get('/profile', 'App\Http\Controllers\Gerant\ProfileController@index')->name('profile');
         Route::get('/profile/edit', 'App\Http\Controllers\Gerant\ProfileController@edit')->name('profile.edit');
@@ -81,8 +81,6 @@ Route::middleware(['auth'])->group(function () {
 
         Route::get('/tables', [App\Http\Controllers\Gerant\TableController::class, 'index'])->name('tables.index');
         Route::post('/tables', [App\Http\Controllers\Gerant\TableController::class, 'store'])->name('tables.store');
-
-        // Route::get('/reservations', [App\Http\Controllers\Gerant\ReservationController::class, 'index'])->name('reservations.index');
     });
 
     // Routes pour le client
@@ -94,21 +92,18 @@ Route::middleware(['auth'])->group(function () {
         Route::put('/profile', 'App\Http\Controllers\Client\ProfileController@update')->name('profile.update');
         Route::delete('/profile/image', 'App\Http\Controllers\Client\ProfileController@deleteImage')->name('profile.delete_image');
         
-        // Route::get('/reservations', [App\Http\Controllers\Client\ReservationController::class, 'index'])->name('reservations.index');
-        // Route::get('/reservations/create', [App\Http\Controllers\Client\ReservationController::class, 'create'])->name('reservations.create');
-        // Route::post('/reservations', [App\Http\Controllers\Client\ReservationController::class, 'store'])->name('reservations.store');
-        // Route::put('/reservations/{id}/cancel', [App\Http\Controllers\Client\ReservationController::class, 'cancel'])->name('reservations.cancel');
+        // Routes pour les réservations
+        Route::get('/reservations/create', [App\Http\Controllers\Client\ReservationController::class, 'create'])->name('reservations.create');
+        Route::post('/reservations', [App\Http\Controllers\Client\ReservationController::class, 'store'])->name('reservations.store');
+        Route::put('/reservations/{id}/cancel', [App\Http\Controllers\Client\ReservationController::class, 'cancel'])->name('reservations.cancel');
     });
 });
 
+// Modification de la route de réservation pour rediriger vers notre controller
 Route::get('/reservation', function () {
-    // Création d'un tableau de repas factice pour l'affichage
-    $meals = [
-        (object)['id' => 1, 'name' => 'Burger Deluxe', 'description' => 'Burger avec steak, fromage et légumes frais', 'price' => 12.99],
-        (object)['id' => 2, 'name' => 'Pizza Margherita', 'description' => 'Pizza classique avec tomate et mozzarella', 'price' => 10.50],
-        (object)['id' => 3, 'name' => 'Salade César', 'description' => 'Laitue romaine, parmesan, croûtons et sauce César', 'price' => 8.75],
-        (object)['id' => 4, 'name' => 'Pasta Carbonara', 'description' => 'Pâtes avec sauce crémeuse, lardons et parmesan', 'price' => 11.25]
-    ];
-    
-    return view('pages.reservation', compact('meals'));
+    return redirect()->route('restaurants')->with('info', 'Veuillez choisir un restaurant pour effectuer une réservation.');
 })->name('reservation');
+
+// Routes pour vérifier les tables disponibles et les dates réservées
+Route::post('/reservations/available-tables', [App\Http\Controllers\Client\ReservationController::class, 'getAvailableTables']);
+Route::post('/reservations/booked-dates', [App\Http\Controllers\Client\ReservationController::class, 'getBookedDates']);

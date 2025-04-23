@@ -74,12 +74,12 @@
                             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                                 <div class="form-box">
                                     <label for="guests">Nombre de personnes*</label>
-                                    <select name="guests" id="guests" class="form-control" required>
-                                        <option value="" disabled selected>Sélectionnez le nombre</option>
-                                        @for($i = 1; $i <= 8; $i++)
-                                            <option value="{{ $i }}" {{ old('guests') == $i ? 'selected' : '' }}>{{ $i }} personne{{ $i > 1 ? 's' : '' }}</option>
-                                        @endfor
-                                    </select>
+                                    <div class="input-group guests-input-group">
+                                        <input type="number" name="guests" id="guests" class="form-control" placeholder="Nombre de personnes" required min="1" max="20" value="{{ old('guests') }}">
+                                        <div class="input-group-append">
+                                            <span class="input-group-text"><i class="fa fa-users"></i></span>
+                                        </div>
+                                    </div>
                                     @error('guests')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
@@ -115,6 +115,15 @@
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Bouton de recherche des tables disponibles centré -->
+                        <div class="row mt-3">
+                            <div class="col-12 text-center">
+                                <button type="button" id="search-tables-btn" class="btn-search-tables">
+                                    <i class="fa fa-search"></i> Rechercher des tables disponibles
+                                </button>
                             </div>
                         </div>
                         
@@ -228,85 +237,4 @@
 <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/fr.js"></script>
 <script src="{{ asset('js/reservation.js') }}"></script>
-
-<script>
-// Script d'initialisation direct - en cas d'échec du script principal
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('Initialisation directe des pickers');
-    
-    // Vérifier si Flatpickr est disponible
-    if (typeof flatpickr === 'undefined') {
-        console.error('Flatpickr n\'est pas chargé !');
-        
-        // Tentative de rechargement dynamique de Flatpickr
-        const script = document.createElement('script');
-        script.src = 'https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.js';
-        script.onload = function() {
-            console.log('Flatpickr chargé dynamiquement');
-            initializePickers();
-        };
-        document.head.appendChild(script);
-        return;
-    }
-    
-    // Initialiser directement les pickers
-    initializePickers();
-    
-    function initializePickers() {
-        // Datepicker
-        const datePicker = document.getElementById('reservation_date');
-        if (datePicker && !datePicker._flatpickr) {
-            const dateInstance = flatpickr(datePicker, {
-                dateFormat: "d/m/Y",
-                minDate: "today",
-                locale: "fr",
-                clickOpens: true,
-                allowInput: false
-            });
-            
-            console.log('Datepicker initialisé directement', dateInstance);
-            
-            // Ajouter un gestionnaire d'événements pour l'icône du calendrier
-            const dateIcon = document.querySelector('.date-picker-group .input-group-text');
-            if (dateIcon) {
-                dateIcon.addEventListener('click', function() {
-                    if (datePicker._flatpickr) {
-                        datePicker._flatpickr.open();
-                    }
-                });
-            }
-        }
-        
-        // Timepicker
-        const timePicker = document.getElementById('reservation_time');
-        if (timePicker && !timePicker._flatpickr) {
-            const timeInstance = flatpickr(timePicker, {
-                enableTime: true,
-                noCalendar: true,
-                dateFormat: "H:i",
-                time_24hr: true,
-                minTime: "10:00",
-                maxTime: "22:00",
-                defaultHour: 12,
-                defaultMinute: 0,
-                minuteIncrement: 30,
-                clickOpens: true,
-                allowInput: false
-            });
-            
-            console.log('Timepicker initialisé directement', timeInstance);
-            
-            // Ajouter un gestionnaire d'événements pour l'icône de l'horloge
-            const timeIcon = document.querySelector('.time-picker-group .input-group-text');
-            if (timeIcon) {
-                timeIcon.addEventListener('click', function() {
-                    if (timePicker._flatpickr) {
-                        timePicker._flatpickr.open();
-                    }
-                });
-            }
-        }
-    }
-});
-</script>
 @endsection
