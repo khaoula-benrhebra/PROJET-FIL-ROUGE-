@@ -67,9 +67,9 @@
                         <p class="restaurant-description">
                             {{ Str::limit($restaurant->description, 100) ?? 'Aucune description disponible.' }}
                         </p>
-                        <div class="restaurant-footer">
+                       <div class="restaurant-footer">
                             <a href="{{ route('restaurant.show', $restaurant->id) }}" class="btn view-btn">Voir le restaurant</a>
-                            <a href="#" class="btn reserve-btn">Réserver</a>
+                            <a href="{{ route('client.reservations.create', ['restaurant_id' => $restaurant->id]) }}" class="btn reserve-btn">Réserver</a>
                         </div>
                     </div>
                 </div>

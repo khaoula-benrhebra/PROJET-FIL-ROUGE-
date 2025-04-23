@@ -9,8 +9,8 @@
     <meta name="keywords" content="">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="shortcut icon" href="{{ asset('images/favicon.ico') }}" type="image/x-icon" />
-    <link rel="apple-touch-icon" href="{{ asset('images/apple-touch-icon.png') }}">
+    {{-- <link rel="shortcut icon" href="{{ asset('images/favicon.ico') }}" type="image/x-icon" /> --}}
+    {{-- <link rel="apple-touch-icon" href="{{ asset('images/apple-touch-icon.png') }}"> --}}
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('css/custom.css') }}">

@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, maximum-scale=1, initial-scale=1, user-scalable=0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Food Funday Restaurant - @yield('title')</title>
     <meta name="keywords" content="">
     <meta name="description" content="">
@@ -26,5 +27,6 @@
     @yield('content')
     @include('partials.footer')
     @include('partials.scripts')
+    @yield('scripts')
 </body>
 </html>
