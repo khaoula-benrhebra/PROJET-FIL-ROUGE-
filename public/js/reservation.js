@@ -12,7 +12,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const reservationTotalSpan = document.getElementById('reservation-total');
     const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
     
-  
     let allBookedDates = [];
     let allBookedTimes = {};
     
@@ -25,7 +24,6 @@ document.addEventListener('DOMContentLoaded', function() {
         initAll();
     }
     
-  
     function initAll() {
         if (restaurantIdInput) {
             fetch('/reservations/booked-dates', {
@@ -33,7 +31,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 headers: {'Content-Type': 'application/json', 'X-CSRF-TOKEN': csrfToken},
                 body: JSON.stringify({ restaurant_id: restaurantIdInput.value })
             })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Erreur lors de la récupération des dates réservées');
+                }
+                return response.json();
+            })
             .then(data => {
                 if (data.success) {
                     allBookedDates = data.fullyBookedDates || [];
@@ -41,7 +44,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
                 initPickers();
             })
-            .catch(() => initPickers());
+            .catch(error => {
+                initPickers();
+            });
         } else {
             initPickers();
         }
@@ -98,6 +103,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     function checkAvailableTables() {
         if (!restaurantIdInput || !reservationDateInput || !reservationTimeInput || !guestsInput || !availableTablesDiv) {
+            alert("Certains éléments du formulaire sont manquants");
             return;
         }
         
@@ -111,29 +117,51 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
     
+        // Afficher un indicateur de chargement
         availableTablesDiv.innerHTML = '<p class="text-center"><i class="fa fa-spinner fa-spin"></i> Recherche des tables disponibles...</p>';
         tablesContainer.style.display = 'block';
     
+        // Récupérer les tables disponibles via AJAX
         fetch('/reservations/available-tables', {
             method: 'POST',
-            headers: {'Content-Type': 'application/json', 'X-CSRF-TOKEN': csrfToken},
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': csrfToken,
+                'Accept': 'application/json'
+            },
             body: JSON.stringify({
                 restaurant_id: restaurantId,
                 reservation_date: reservationDate,
                 reservation_time: reservationTime,
-                guests: guests
+                guests: parseInt(guests)
             })
         })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                return response.json().then(data => {
+                    throw new Error(data.message || 'Une erreur est survenue lors de la communication avec le serveur.');
+                });
+            }
+            return response.json();
+        })
         .then(data => {
             if (data.success) {
                 displayAvailableTables(data.tables);
             } else {
-                availableTablesDiv.innerHTML = `<p class="alert alert-danger">${data.message || 'Une erreur est survenue.'}</p>`;
+                availableTablesDiv.innerHTML = `
+                    <div class="alert alert-warning">
+                        <i class="fa fa-exclamation-triangle"></i> 
+                        ${data.message || "Aucune table disponible pour cette date et heure."}
+                    </div>`;
             }
         })
-        .catch(() => {
-            availableTablesDiv.innerHTML = '<p class="alert alert-danger">Une erreur est survenue.</p>';
+        .catch(error => {
+            console.error('Erreur:', error);
+            availableTablesDiv.innerHTML = `
+                <div class="alert alert-danger">
+                    <i class="fa fa-exclamation-circle"></i> 
+                    ${error.message || "Une erreur est survenue lors de la communication avec le serveur."}
+                </div>`;
         });
     }
 
@@ -141,8 +169,15 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!availableTablesDiv) return;
         availableTablesDiv.innerHTML = '';
     
-        if (!tables || tables.length === 0) {
-            availableTablesDiv.innerHTML = '<p class="alert alert-warning">Aucune table disponible pour cette date et heure.</p>';
+        // S'assurer que tables est un tableau
+        const tablesArray = Array.isArray(tables) ? tables : Object.values(tables || {});
+        
+        if (!tablesArray || tablesArray.length === 0) {
+            availableTablesDiv.innerHTML = `
+                <div class="alert alert-warning">
+                    <i class="fa fa-exclamation-triangle"></i> 
+                    Aucune table disponible pour cette date et heure.
+                </div>`;
             return;
         }
     
@@ -159,8 +194,14 @@ document.addEventListener('DOMContentLoaded', function() {
         const tablesList = document.createElement('div');
         tablesList.className = 'tables-list row';
     
-        tables.sort((a, b) => a.capacity - b.capacity);
-        tables.forEach(table => {
+        // Trier les tables par capacité si la propriété existe
+        tablesArray.sort((a, b) => {
+            const capA = a.capacity || 4;
+            const capB = b.capacity || 4;
+            return capA - capB;
+        });
+    
+        tablesArray.forEach(table => {
             const tableItem = document.createElement('div');
             tableItem.className = 'table-item col-md-3 col-sm-6 mb-2';
     
@@ -197,8 +238,8 @@ document.addEventListener('DOMContentLoaded', function() {
     
         availableTablesDiv.appendChild(tablesList);
         
-        if (tables.length > 0) {
-            const firstCheckbox = document.getElementById(`table_${tables[0].id}`);
+        if (tablesArray.length > 0) {
+            const firstCheckbox = document.getElementById(`table_${tablesArray[0].id}`);
             if (firstCheckbox) {
                 firstCheckbox.checked = true;
                 firstCheckbox.dispatchEvent(new Event('change'));
@@ -206,5 +247,72 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    function updateTotalAmount() {
+        if (!quantitySelects || !reservationTotalSpan) return;
+        
+        let total = 0;
+        quantitySelects.forEach(select => {
+            const mealId = select.id.replace('meal_', '');
+            const quantity = parseInt(select.value);
+            const priceElement = document.querySelector(`input[name="meals[${mealId}][price]"]`);
+            
+            if (priceElement) {
+                const price = parseFloat(priceElement.value);
+                if (quantity > 0 && !isNaN(price)) {
+                    total += quantity * price;
+                }
+            }
+        });
+        
+        reservationTotalSpan.textContent = total.toFixed(2);
+    }
+
+    if (searchTablesBtn) {
+        searchTablesBtn.addEventListener('click', function() {
+            if (guestsInput?.value && reservationDateInput?.value && reservationTimeInput?.value) {
+                checkAvailableTables();
+            } else {
+                alert('Veuillez remplir tous les champs requis (date, heure et nombre de personnes).');
+            }
+        });
+    }
+    
+    if (quantitySelects && quantitySelects.length > 0) {
+        quantitySelects.forEach(select => {
+            select.addEventListener('change', updateTotalAmount);
+        });
+        updateTotalAmount();
+    }
+    
+    if (reservationForm) {
+        reservationForm.addEventListener('submit', function(event) {
+            const selectedTables = document.querySelectorAll('input[name="tables[]"]:checked');
+            if (selectedTables.length === 0 && tablesContainer?.style.display === 'block') {
+                event.preventDefault();
+                alert('Veuillez sélectionner au moins une table.');
+                return;
+            }
+            
+            let hasMeals = false;
+            if (quantitySelects) {
+                quantitySelects.forEach(select => { if (parseInt(select.value) > 0) hasMeals = true; });
+                
+                if (!hasMeals && !confirm('Vous n\'avez sélectionné aucun repas. Voulez-vous continuer?')) {
+                    event.preventDefault();
+                }
+            }
+        });
+    }
+    
+    if (guestsInput) {
+        guestsInput.addEventListener('input', function() {
+            let value = parseInt(this.value);
+            if (isNaN(value) || value < 1) value = 1;
+            else if (value > 20) value = 20;
+            
+            if (this.value != value) this.value = value;
+        });
+    }
+    
     window.checkAvailableTables = checkAvailableTables;
 });

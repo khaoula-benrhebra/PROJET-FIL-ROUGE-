@@ -10,6 +10,7 @@ use App\Services\MealService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Log;
 
 class ReservationController extends Controller
 {
@@ -27,10 +28,7 @@ class ReservationController extends Controller
         $this->restaurantService = $restaurantService;
         $this->mealService = $mealService;
     }
-    
-    /**
-     * Affiche le formulaire de réservation pour un restaurant spécifique
-     */
+
     public function create(Request $request)
     {
         $restaurantId = $request->input('restaurant_id');
@@ -48,7 +46,6 @@ class ReservationController extends Controller
                     ->with('error', 'Restaurant non trouvé.');
             }
             
-            // Récupérer les repas de tous les menus du restaurant
             $menus = $restaurant->menus;
             $meals = [];
             
@@ -67,22 +64,18 @@ class ReservationController extends Controller
         }
     }
     
-    /**
-     * Enregistre une nouvelle réservation
-     */
+   
     public function store(CreateReservationRequest $request)
     {
         try {
             $validated = $request->validated();
             
-            // Vérifier que l'utilisateur est connecté
             if (!Auth::check()) {
                 return redirect()->route('login')
                     ->with('error', 'Vous devez être connecté pour effectuer une réservation.')
                     ->with('redirect', route('client.reservations.create', ['restaurant_id' => $validated['restaurant_id']]));
             }
             
-            // Créer la réservation en incluant une durée de 2 heures
             $reservationDateTime = Carbon::createFromFormat('d/m/Y H:i', $validated['reservation_date'] . ' ' . $validated['reservation_time']);
             $validated['reservation_datetime'] = $reservationDateTime;
             
@@ -97,22 +90,55 @@ class ReservationController extends Controller
                 ->withInput();
         }
     }
-    
-    /**
-     * Récupère les tables disponibles pour un restaurant à une date et heure spécifiques
-     */
+
     public function getAvailableTables(Request $request)
     {
         try {
             $request->validate([
                 'restaurant_id' => 'required|exists:restaurants,id',
-                'reservation_date' => 'required|date_format:d/m/Y',
-                'reservation_time' => 'required|date_format:H:i',
+                'reservation_date' => 'required|string',
+                'reservation_time' => 'required|string',
                 'guests' => 'required|integer|min:1'
             ]);
             
-            // Formater la date et l'heure pour la requête
-            $reservationDateTime = Carbon::createFromFormat('d/m/Y H:i', $request->reservation_date . ' ' . $request->reservation_time);
+            $dateString = $request->reservation_date;
+            $timeString = $request->reservation_time;
+            
+            $dateParts = explode('/', $dateString);
+            if (count($dateParts) !== 3) {
+                throw new \InvalidArgumentException('Format de date invalide. Utilisez JJ/MM/AAAA pour la date.');
+            }
+            
+            $timeParts = explode(':', $timeString);
+            if (count($timeParts) !== 2) {
+                throw new \InvalidArgumentException('Format d\'heure invalide. Utilisez HH:MM pour l\'heure.');
+            }
+            
+            try {
+                $reservationDateTime = Carbon::create(
+                    intval($dateParts[2]), // année
+                    intval($dateParts[1]), // mois
+                    intval($dateParts[0]), // jour
+                    intval($timeParts[0]), // heure
+                    intval($timeParts[1])  // minute
+                );
+                
+                if (!$reservationDateTime) {
+                    throw new \InvalidArgumentException('Date ou heure invalide.');
+                }
+            } catch (\Exception $e) {
+                throw new \InvalidArgumentException('Date ou heure invalide. Veuillez vérifier le format.');
+            }
+            
+            $now = Carbon::now();
+            if ($reservationDateTime->lessThan($now)) {
+                throw new \InvalidArgumentException('La date et l\'heure de réservation doivent être dans le futur.');
+            }
+            
+            $hour = intval($timeParts[0]);
+            if ($hour < 10 || $hour >= 22) {
+                throw new \InvalidArgumentException('Les réservations sont possibles uniquement entre 10h00 et 22h00.');
+            }
             
             $availableTables = $this->reservationService->getAvailableTables(
                 $request->restaurant_id,
@@ -120,22 +146,62 @@ class ReservationController extends Controller
                 $request->guests
             );
             
+            if (empty($availableTables)) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Aucune table disponible pour cette date et heure.'
+                ], 200);
+            }
+            
             return response()->json([
                 'success' => true,
                 'tables' => $availableTables
-            ]);
+            ], 200);
             
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return $this->handleValidationException($e);
+        } catch (\InvalidArgumentException $e) {
+            return $this->handleInvalidArgumentException($e);
         } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage()
-            ], 422);
+            return $this->handleGeneralException($e);
         }
     }
-    
-    /**
-     * Récupère les dates où toutes les tables sont réservées
-     */
+
+   
+    private function handleValidationException(\Illuminate\Validation\ValidationException $e)
+    {
+        return response()->json([
+            'success' => false,
+            'message' => 'Données de réservation invalides.',
+            'errors' => $e->errors()
+        ], 422);
+    }
+    private function handleInvalidArgumentException(\InvalidArgumentException $e)
+    {
+        return response()->json([
+            'success' => false,
+            'message' => $e->getMessage()
+        ], 400);
+    }
+
+    private function handleGeneralException(\Exception $e)
+    {
+        $errorMessage = sprintf(
+            "Erreur de réservation - Date: %s, Message: %s, Fichier: %s, Ligne: %d",
+            date('Y-m-d H:i:s'),
+            $e->getMessage(),
+            $e->getFile(),
+            $e->getLine()
+        );
+        
+        \Illuminate\Support\Facades\Log::channel('reservations')->error($errorMessage);
+        
+        return response()->json([
+            'success' => false,
+            'message' => 'Une erreur est survenue lors de la recherche des tables disponibles.'
+        ], 500);
+    }
+
     public function getBookedDates(Request $request)
     {
         try {
@@ -143,12 +209,10 @@ class ReservationController extends Controller
                 'restaurant_id' => 'required|exists:restaurants,id'
             ]);
             
-            // Récupérer les heures d'ouverture et de fermeture du restaurant
             $restaurant = $this->restaurantService->getRestaurantById($request->restaurant_id);
-            $openingTime = "10:00"; // Par défaut 10h
-            $closingTime = "22:00"; // Par défaut 22h
+            $openingTime = "10:00"; 
+            $closingTime = "22:00";
             
-            // Récupérer les dates entièrement réservées et les créneaux réservés
             $bookingData = $this->reservationService->getBookedDatesList(
                 $request->restaurant_id,
                 $openingTime,
@@ -169,9 +233,7 @@ class ReservationController extends Controller
         }
     }
     
-    /**
-     * Annule une réservation existante
-     */
+   
     public function cancel($id)
     {
         try {

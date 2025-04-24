@@ -16,9 +16,6 @@ Route::get('/contact', function () { return view('pages.contact');})->name('cont
 Route::get('/restaurants', [App\Http\Controllers\RestaurantController::class, 'index'])->name('restaurants');
 Route::get('/restaurant/{id}', [App\Http\Controllers\RestaurantController::class, 'show'])->name('restaurant.show');
 
-// Routes pour vérifier les tables disponibles et les dates réservées
-Route::post('/reservations/available-tables', [App\Http\Controllers\Client\ReservationController::class, 'getAvailableTables'])->name('reservations.available-tables');
-Route::post('/reservations/booked-dates', [App\Http\Controllers\Client\ReservationController::class, 'getBookedDates'])->name('reservations.booked-dates');
 
 // Routes d'authentification
 use App\Http\Controllers\Auth\LoginController;

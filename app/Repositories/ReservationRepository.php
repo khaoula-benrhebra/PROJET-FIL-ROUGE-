@@ -16,9 +16,7 @@ class ReservationRepository extends BaseRepository
         parent::__construct($model);
     }
     
-    /**
-     * Récupère les réservations d'un restaurant spécifique
-     */
+   
     public function getReservationsByRestaurant($restaurantId)
     {
         return $this->model->where('restaurant_id', $restaurantId)
@@ -27,9 +25,7 @@ class ReservationRepository extends BaseRepository
             ->get();
     }
     
-    /**
-     * Récupère les réservations d'un restaurant pour une date spécifique
-     */
+   
     public function getReservationsByRestaurantAndDate($restaurantId, Carbon $date)
     {
         return $this->model->where('restaurant_id', $restaurantId)
@@ -38,9 +34,7 @@ class ReservationRepository extends BaseRepository
             ->get();
     }
     
-    /**
-     * Récupère les réservations de l'utilisateur connecté
-     */
+  
     public function getReservationsByCurrentUser()
     {
         return $this->model->where('user_id', Auth::id())
@@ -48,44 +42,64 @@ class ReservationRepository extends BaseRepository
             ->orderBy('reservation_datetime', 'desc')
             ->get();
     }
-    
-    /**
-     * Vérifie la disponibilité des tables à une date et heure spécifiques
-     */
+
+
     public function getAvailableTables($restaurantId, $reservationDatetime, $guests)
     {
-        // Récupérer toutes les tables du restaurant
-        $tables = Table::where('restaurant_id', $restaurantId)->get();
+        $tables = DB::table('tables')
+            ->where('restaurant_id', $restaurantId)
+            ->where('is_available', true)
+            ->get();
         
-        // Récupérer les IDs des tables déjà réservées à cette date et heure
-        $startTime = Carbon::parse($reservationDatetime)->subHours(2); // 2 heures avant
-        $endTime = Carbon::parse($reservationDatetime)->addHours(2);   // 2 heures après
+        if ($tables->isEmpty()) {
+            return collect([]);
+        }
         
-        $reservedTableIds = DB::table('reservation_table')
-            ->join('reservations', 'reservation_table.reservation_id', '=', 'reservations.id')
-            ->where('reservations.restaurant_id', $restaurantId)
-            ->where('reservations.status', '!=', 'canceled')
-            ->whereBetween('reservations.reservation_datetime', [$startTime, $endTime])
-            ->pluck('reservation_table.table_id')
-            ->toArray();
+       
+        $reservationStart = $reservationDatetime->copy();
+        $reservationEnd = $reservationDatetime->copy()->addHours(2);
         
-        // Filtrer les tables disponibles
-        $availableTables = $tables->reject(function($table) use ($reservedTableIds) {
-            return in_array($table->id, $reservedTableIds);
+        if ($reservationStart->isPast()) {
+            return collect([]);
+        }
+        
+      
+        $overlappingReservations = $this->model
+            ->where('restaurant_id', $restaurantId)
+            ->where('status', '!=', 'canceled')
+            ->where(function ($query) use ($reservationStart, $reservationEnd) {
+                $query->where(function ($q) use ($reservationStart, $reservationEnd) {
+                    $q->where('reservation_datetime', '>=', $reservationStart)
+                      ->where('reservation_datetime', '<', $reservationEnd);
+                })
+                ->orWhere(function ($q) use ($reservationStart) {
+                    $q->where('reservation_datetime', '<', $reservationStart)
+                      ->whereRaw('DATE_ADD(reservation_datetime, INTERVAL 2 HOUR) > ?', [$reservationStart]);
+                });
+            })
+            ->with(['tables'])
+            ->get();
+        
+        
+        $reservedTableIds = collect([]);
+        foreach ($overlappingReservations as $reservation) {
+            $reservedTableIds = $reservedTableIds->merge($reservation->tables->pluck('id'));
+        }
+        
+        
+        $availableTables = collect($tables)->filter(function ($table) use ($reservedTableIds) {
+            return !$reservedTableIds->contains($table->id);
         });
         
         return $availableTables;
     }
     
-    /**
-     * Crée une nouvelle réservation
-     */
     public function createReservation(array $data)
     {
         DB::beginTransaction();
         
         try {
-            // Créer la réservation de base
+            
             $reservation = $this->model->create([
                 'user_id' => Auth::id(),
                 'restaurant_id' => $data['restaurant_id'],
@@ -99,12 +113,10 @@ class ReservationRepository extends BaseRepository
                 'status' => 'pending'
             ]);
             
-            // Attacher les tables si présentes
             if (isset($data['tables']) && is_array($data['tables'])) {
                 $reservation->tables()->attach($data['tables']);
             }
             
-            // Attacher les repas si présents
             if (isset($data['meals']) && is_array($data['meals'])) {
                 foreach ($data['meals'] as $mealId => $mealData) {
                     if (isset($mealData['quantity']) && $mealData['quantity'] > 0) {
@@ -124,9 +136,7 @@ class ReservationRepository extends BaseRepository
         }
     }
     
-    /**
-     * Met à jour le statut d'une réservation
-     */
+  
     public function updateReservationStatus($id, $status)
     {
         $reservation = $this->getById($id);
