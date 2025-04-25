@@ -92,7 +92,6 @@ Route::middleware(['auth'])->group(function () {
         // Routes pour les réservations
         Route::get('/reservations/create', [App\Http\Controllers\Client\ReservationController::class, 'create'])->name('reservations.create');
         Route::post('/reservations', [App\Http\Controllers\Client\ReservationController::class, 'store'])->name('reservations.store');
-        Route::put('/reservations/{id}/cancel', [App\Http\Controllers\Client\ReservationController::class, 'cancel'])->name('reservations.cancel');
     });
 });
 

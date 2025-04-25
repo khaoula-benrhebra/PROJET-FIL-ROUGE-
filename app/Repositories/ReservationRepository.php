@@ -99,6 +99,32 @@ class ReservationRepository extends BaseRepository
         DB::beginTransaction();
         
         try {
+           
+            if (empty($data['name']) || empty($data['email']) || empty($data['guests']) || 
+                empty($data['reservation_datetime']) || empty($data['tables'])) {
+                throw new \Exception('Toutes les informations requises doivent être fournies.');
+            }
+
+          
+            $availableTables = $this->getAvailableTables(
+                $data['restaurant_id'],
+                Carbon::parse($data['reservation_datetime']),
+                $data['guests']
+            );
+
+            if ($availableTables->isEmpty()) {
+                throw new \Exception('Aucune table disponible pour cette réservation.');
+            }
+
+            
+            $requestedTableIds = collect($data['tables']);
+            $availableTableIds = $availableTables->pluck('id');
+            
+            if (!$requestedTableIds->every(function ($tableId) use ($availableTableIds) {
+                return $availableTableIds->contains($tableId);
+            })) {
+                throw new \Exception('Certaines tables demandées ne sont pas disponibles.');
+            }
             
             $reservation = $this->model->create([
                 'user_id' => Auth::id(),
@@ -110,7 +136,7 @@ class ReservationRepository extends BaseRepository
                 'reservation_datetime' => Carbon::parse($data['reservation_datetime']),
                 'special_requests' => $data['special_requests'] ?? null,
                 'total_amount' => $data['total_amount'] ?? 0,
-                'status' => 'pending'
+                'status' => 'confirmed' 
             ]);
             
             if (isset($data['tables']) && is_array($data['tables'])) {

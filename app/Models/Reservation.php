@@ -51,23 +51,8 @@ class Reservation extends Model
             ->withTimestamps();
     }
     
-    public function isPending()
-    {
-        return $this->status === 'pending';
-    }
-    
     public function isConfirmed()
     {
         return $this->status === 'confirmed';
-    }
-    
-    public function isCanceled()
-    {
-        return $this->status === 'canceled';
-    }
-    
-    public function isCompleted()
-    {
-        return $this->status === 'completed';
     }
 }

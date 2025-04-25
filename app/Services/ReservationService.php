@@ -182,23 +182,6 @@ class ReservationService
             'bookedTimeSlots' => $bookedTimeSlots
         ];
     }
-    
-    
-    public function cancelReservation($id)
-    {
-        $reservation = $this->reservationRepository->getById($id);
-        
-        if ($reservation->user_id !== Auth::id()) {
-            throw new \Exception('Vous n\'êtes pas autorisé à annuler cette réservation.');
-        }
-        
-        if ($reservation->reservation_datetime < Carbon::now()) {
-            throw new \Exception('Impossible d\'annuler une réservation passée.');
-        }
-        
-        return $this->reservationRepository->updateReservationStatus($id, 'canceled');
-    }
-
 
     public function getReservationsByRestaurant($restaurantId)
     {
@@ -210,8 +193,8 @@ class ReservationService
         return $this->reservationRepository->getReservationsByRestaurantAndDate($restaurantId, $date);
     }
 
-public function getReservationsByUser()
-{
-    return $this->reservationRepository->getReservationsByCurrentUser();
-}
+    public function getReservationsByUser()
+    {
+        return $this->reservationRepository->getReservationsByCurrentUser();
+    }
 }

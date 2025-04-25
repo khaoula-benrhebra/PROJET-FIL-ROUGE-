@@ -50,19 +50,7 @@
             
             <div class="reservation-filters mb-4">
                 <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="status-filter">Filtrer par statut</label>
-                            <select id="status-filter" class="form-control">
-                                <option value="all">Tous les statuts</option>
-                                <option value="pending">En attente</option>
-                                <option value="confirmed">Confirmées</option>
-                                <option value="canceled">Annulées</option>
-                                <option value="completed">Terminées</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                         <div class="form-group">
                             <label for="date-filter">Filtrer par date</label>
                             <input type="date" id="date-filter" class="form-control" value="{{ date('Y-m-d') }}">
@@ -81,14 +69,13 @@
                             <th>Personnes</th>
                             <th>Tables</th>
                             <th>Montant Total</th>
-                            <th>Statut</th>
                             <th>Détails</th>
                         </tr>
                     </thead>
                     <tbody>
                         @if(isset($allReservations) && $allReservations->count() > 0)
                             @foreach($allReservations as $reservation)
-                                <tr class="reservation-row status-{{ $reservation->status }}" data-date="{{ $reservation->reservation_datetime->format('Y-m-d') }}">
+                                <tr class="reservation-row" data-date="{{ $reservation->reservation_datetime->format('Y-m-d') }}">
                                     <td>{{ $reservation->name }}</td>
                                     <td>{{ $reservation->reservation_datetime->format('d/m/Y') }}</td>
                                     <td>{{ $reservation->reservation_datetime->format('H:i') }}</td>
@@ -99,17 +86,6 @@
                                         @endforeach
                                     </td>
                                     <td>{{ number_format($reservation->total_amount, 2) }} €</td>
-                                    <td>
-                                        @if($reservation->isPending())
-                                            <span class="badge badge-warning">En attente</span>
-                                        @elseif($reservation->isConfirmed())
-                                            <span class="badge badge-success">Confirmée</span>
-                                        @elseif($reservation->isCanceled())
-                                            <span class="badge badge-danger">Annulée</span>
-                                        @elseif($reservation->isCompleted())
-                                            <span class="badge badge-secondary">Terminée</span>
-                                        @endif
-                                    </td>
                                     <td>
                                         <button type="button" class="btn btn-info btn-sm view-details" data-id="{{ $reservation->id }}">Détails</button>
                                     </td>

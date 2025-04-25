@@ -58,7 +58,7 @@
 <!-- Section des réservations -->
 @if($user->role->name === 'Client' && isset($reservations))
 <div class="profile-reservations mt-4">
-    <h2 class="section-title">Mes réservations</h2>
+    <h2 class="section-title">Historique de mes réservations</h2>
     
     @if(count($reservations) > 0)
         <div class="reservation-list">
@@ -67,15 +67,9 @@
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h5 class="mb-0">{{ $reservation->restaurant->name }}</h5>
                         <span class="reservation-status 
-                            @if($reservation->isPending()) badge badge-warning
-                            @elseif($reservation->isConfirmed()) badge badge-success
-                            @elseif($reservation->isCanceled()) badge badge-danger
-                            @elseif($reservation->isCompleted()) badge badge-secondary
+                            @if($reservation->isConfirmed()) badge badge-success
                             @endif">
-                            @if($reservation->isPending()) En attente
-                            @elseif($reservation->isConfirmed()) Confirmée
-                            @elseif($reservation->isCanceled()) Annulée
-                            @elseif($reservation->isCompleted()) Terminée
+                            @if($reservation->isConfirmed()) Confirmée
                             @endif
                         </span>
                     </div>
@@ -118,20 +112,6 @@
                             </div>
                         @endif
                     </div>
-                    <div class="card-footer text-right">
-                        @if($reservation->isPending() || $reservation->isConfirmed())
-                            @php
-                                $reservationDateTime = clone $reservation->reservation_datetime;
-                                $canCancel = $reservationDateTime->subHours(24)->isFuture();
-                            @endphp
-                            
-                            @if($canCancel)
-                                <button class="btn btn-danger btn-sm cancel-reservation" data-id="{{ $reservation->id }}">Annuler</button>
-                            @else
-                                <button class="btn btn-danger btn-sm" disabled>Annulation impossible (< 24h)</button>
-                            @endif
-                        @endif
-                    </div>
                 </div>
             @endforeach
         </div>
@@ -142,49 +122,5 @@
         </div>
     @endif
 </div>
-
-<!-- Modal de confirmation d'annulation -->
-<div class="modal fade" id="cancelModal" tabindex="-1" role="dialog" aria-labelledby="cancelModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="cancelModalLabel">Confirmer l'annulation</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                Êtes-vous sûr de vouloir annuler cette réservation ?
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Non, garder ma réservation</button>
-                <form id="cancel-form" action="" method="POST">
-                    @csrf
-                    @method('PUT')
-                    <button type="submit" class="btn btn-danger">Oui, annuler ma réservation</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
 @endif
-@endsection
-
-@section('scripts')
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const cancelButtons = document.querySelectorAll('.cancel-reservation');
-        const cancelForm = document.getElementById('cancel-form');
-        
-        if (cancelButtons.length > 0 && cancelForm) {
-            cancelButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    const reservationId = this.dataset.id;
-                    cancelForm.action = `/client/reservations/${reservationId}/cancel`;
-                    $('#cancelModal').modal('show');
-                });
-            });
-        }
-    });
-</script>
 @endsection
