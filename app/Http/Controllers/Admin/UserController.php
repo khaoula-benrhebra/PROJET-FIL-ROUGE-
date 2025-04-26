@@ -4,7 +4,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Services\UserService;
 use App\Services\CategoryService;
-use App\Services\RestaurantService; 
+use App\Services\RestaurantService;
+use App\Services\StatisticsService;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -12,13 +13,19 @@ class UserController extends Controller
     protected $userService;
     protected $categoryService;
     protected $restaurantService;
+    protected $statisticsService;
     
-    public function __construct(UserService $userService, CategoryService $categoryService ,  RestaurantService $restaurantService)
-    {
+    public function __construct(
+        UserService $userService, 
+        CategoryService $categoryService,
+        RestaurantService $restaurantService,
+        StatisticsService $statisticsService
+    ) {
         $this->middleware('role:Administrateur');
         $this->userService = $userService;
         $this->categoryService = $categoryService;
-        $this->restaurantService = $restaurantService; ;
+        $this->restaurantService = $restaurantService;
+        $this->statisticsService = $statisticsService;
     }
     
     public function index()
@@ -27,7 +34,15 @@ class UserController extends Controller
         $allManagers = $this->userService->getAllManagers();
         $categories = $this->categoryService->getAllCategories();
         $restaurants = $this->restaurantService->getAllRestaurants();
-        return view('pages.admin.dashboard', compact('pendingManagers', 'allManagers', 'categories' , 'restaurants'));
+        $statistics = $this->statisticsService->getDashboardStatistics();
+        
+        return view('pages.admin.dashboard', compact(
+            'pendingManagers', 
+            'allManagers', 
+            'categories',
+            'restaurants',
+            'statistics'
+        ));
     }
     
     public function approve($id)

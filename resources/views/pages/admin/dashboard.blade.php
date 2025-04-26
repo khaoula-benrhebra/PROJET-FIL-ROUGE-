@@ -8,29 +8,20 @@
         <div class="stats-container">
             <div class="stat-card">
                 <div class="stat-icon">
-                    <i class="fas fa-list"></i>
-                </div>
-                <div class="stat-info">
-                    <h3>8</h3>
-                    <p>Catégories</p>
-                </div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon">
                     <i class="fas fa-users"></i>
                 </div>
                 <div class="stat-info">
-                    <h3>120</h3>
+                    <h3>{{ $statistics['users_count'] }}</h3>
                     <p>Utilisateurs</p>
                 </div>
             </div>
             <div class="stat-card">
                 <div class="stat-icon">
-                    <i class="fas fa-shopping-cart"></i>
+                    <i class="fas fa-list"></i>
                 </div>
                 <div class="stat-info">
-                    <h3>67</h3>
-                    <p>Commandes</p>
+                    <h3>{{ $statistics['categories_count'] }}</h3>
+                    <p>Catégories</p>
                 </div>
             </div>
             <div class="stat-card">
@@ -38,7 +29,7 @@
                     <i class="fas fa-utensils"></i>
                 </div>
                 <div class="stat-info">
-                    <h3>12</h3>
+                    <h3>{{ $statistics['restaurants_count'] }}</h3>
                     <p>Restaurants</p>
                 </div>
             </div>
@@ -133,7 +124,7 @@
                                 <tr>
                                     <td>{{ $category->id }}</td>
                                     <td>{{ $category->name }}</td>
-                                    <td>{{ $category->description ?? 'Aucune description' }}</td>
+                                    <td>{{ $category->description }}</td>
                                     <td>
                                         <div class="action-buttons">
                                             <a href="{{ route('admin.categories.edit', $category->id) }}" class="action-btn edit">
