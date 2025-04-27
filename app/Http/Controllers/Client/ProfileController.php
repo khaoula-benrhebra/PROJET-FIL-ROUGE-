@@ -24,9 +24,7 @@ class ProfileController extends Controller
     public function index()
     {
         $user = Auth::user();
-        
-        // Si l'utilisateur est un client, récupérer ses réservations
-        $reservations = [];
+                $reservations = [];
         if ($user->role->name === 'Client') {
             $reservations = $this->reservationService->getReservationsByUser();
         }

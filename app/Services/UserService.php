@@ -55,8 +55,21 @@ class UserService
         return $this->userRepository->approveManager($id);
     }
     
-    public function deleteUser($id)
-    {
-        return $this->userRepository->delete($id);
+    // Dans App\Services\UserService.php
+public function deleteUser($id)
+{
+    $user = $this->userRepository->getById($id);
+    
+    // Si c'est un gérant, supprimer son restaurant
+    if ($user->role->name === 'Gérant') {
+        $restaurant = $user->restaurant;
+        if ($restaurant) {
+            // Suppression du restaurant qui devrait à son tour supprimer 
+            // les menus, repas, et tables grâce aux contraintes onDelete cascade
+            $restaurant->delete();
+        }
     }
+    
+    return $this->userRepository->delete($id);
+}
 }

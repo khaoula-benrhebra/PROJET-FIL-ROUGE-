@@ -53,8 +53,8 @@ class PermissionsTableSeeder extends Seeder
             $permissionIds['delete_categories'],
             $permissionIds['manage_profile'],
             $permissionIds['delete_restaurant'],
-            $permissionIds['view_statistics'],
-            $permissionIds['manage_reservations']
+            $permissionIds['view_statistics']
+            
         ];
         $adminRole->permissions()->attach($adminPermissions);
         

@@ -99,13 +99,13 @@ class ReservationRepository extends BaseRepository
         DB::beginTransaction();
         
         try {
-            // Validation stricte des données requises
+          
             if (empty($data['name']) || empty($data['email']) || empty($data['guests']) || 
                 empty($data['reservation_datetime']) || empty($data['tables'])) {
                 throw new \Exception('Toutes les informations requises doivent être fournies.');
             }
 
-            // Vérification de la disponibilité des tables
+           
             $availableTables = $this->getAvailableTables(
                 $data['restaurant_id'],
                 Carbon::parse($data['reservation_datetime']),
@@ -116,7 +116,7 @@ class ReservationRepository extends BaseRepository
                 throw new \Exception('Aucune table disponible pour cette réservation.');
             }
 
-            // Vérification que toutes les tables demandées sont disponibles
+         
             $requestedTableIds = collect($data['tables']);
             $availableTableIds = $availableTables->pluck('id');
             
@@ -136,7 +136,7 @@ class ReservationRepository extends BaseRepository
                 'reservation_datetime' => Carbon::parse($data['reservation_datetime']),
                 'special_requests' => $data['special_requests'] ?? null,
                 'total_amount' => $data['total_amount'] ?? 0,
-                'status' => 'confirmed' // Statut directement confirmé
+                'status' => 'confirmed' 
             ]);
             
             if (isset($data['tables']) && is_array($data['tables'])) {
@@ -160,5 +160,17 @@ class ReservationRepository extends BaseRepository
             DB::rollback();
             throw $e;
         }
+    }
+
+    public function getDailyStatistics($restaurantId, $date)
+    {
+        return Reservation::where('restaurant_id', $restaurantId)
+            ->whereDate('reservation_datetime', $date)
+            ->select(
+                DB::raw('COUNT(*) as reservations_count'),
+                DB::raw('SUM(guests) as total_guests'),
+                DB::raw('SUM(total_amount) as daily_revenue')
+            )
+            ->first();
     }
 }

@@ -60,14 +60,26 @@ class RestaurantService
             return $restaurant;
         }
         
-        public function deleteRestaurant($id)
-        {
-            if (!Gate::allows('delete_restaurant')) {
-                throw new \Exception('Vous n\'avez pas la permission de supprimer ce restaurant.');
-            }
-            
-            return $this->restaurantRepository->delete($id);
-        }
+        // Fichier : App/Services/RestaurantService.php
+
+// Recherchez la méthode deleteRestaurant et remplacez-la par celle-ci :
+public function deleteRestaurant($id)
+{
+    if (!Gate::allows('delete_restaurant')) {
+        throw new \Exception('Vous n\'avez pas la permission de supprimer ce restaurant.');
+    }
+    
+    // Récupérer le restaurant avant de le supprimer
+    $restaurant = $this->restaurantRepository->getById($id);
+    
+    if (!$restaurant) {
+        throw new \Exception('Restaurant non trouvé.');
+    }
+    
+    // Supprimer le restaurant (les menus, repas et tables seront supprimés en cascade
+    // grâce aux contraintes définies dans les migrations)
+    return $this->restaurantRepository->delete($id);
+}
         
 
         public function getRestaurantsForPublicPage()

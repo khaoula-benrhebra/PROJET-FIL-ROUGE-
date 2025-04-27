@@ -4,24 +4,36 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Services\RestaurantService;
+use App\Services\StatisticsService;
+use App\Services\UserService;
+use App\Services\CategoryService;
 use Illuminate\Http\Request;
 
 class RestaurantController extends Controller
 {
     protected $restaurantService;
+    protected $statisticsService;
+    protected $userService;
+    protected $categoryService;
     
-    public function __construct(RestaurantService $restaurantService)
+    public function __construct(RestaurantService $restaurantService, StatisticsService $statisticsService, UserService $userService, CategoryService $categoryService)
     {
         $this->middleware('auth');
         $this->middleware('role:Administrateur');
         $this->restaurantService = $restaurantService;
+        $this->statisticsService = $statisticsService;
+        $this->userService = $userService;
+        $this->categoryService = $categoryService;
     }
     
    
     public function index()
     {
         $restaurants = $this->restaurantService->getAllRestaurants();
-        return view('pages.admin.restaurants.index', compact('restaurants'));
+        $statistics = $this->statisticsService->getDashboardStatistics();
+        $allManagers = $this->userService->getAllManagers();
+        $categories = $this->categoryService->getAllCategories();
+        return view('pages.admin.dashboard', compact('restaurants', 'statistics', 'allManagers', 'categories'));
     }
     
   

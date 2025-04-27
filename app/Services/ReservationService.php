@@ -197,4 +197,23 @@ class ReservationService
     {
         return $this->reservationRepository->getReservationsByCurrentUser();
     }
+
+    public function getDailyStatistics($restaurantId, $date)
+    {
+        try {
+            return $this->reservationRepository->getDailyStatistics($restaurantId, $date);
+        } catch (\Exception $e) {
+            throw new \Exception('Erreur lors de la récupération des statistiques journalières: ' . $e->getMessage());
+        }
+    }
+
+
+
+
+
+
+
+
+
+    
 }

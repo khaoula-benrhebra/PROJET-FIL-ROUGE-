@@ -56,18 +56,18 @@
                         @forelse($restaurants as $restaurant)
                             <tr>
                                 <td>{{ $restaurant->id }}</td>
-                                <td>{{ $restaurant->name }}</td>
-                                <td>{{ $restaurant->user->name }}</td>
+                                <td>{{ $restaurant ? $restaurant->name : 'Restaurant supprimé' }}</td>
+                                <td>{{ $restaurant->user ? $restaurant->user->name : 'Gérant supprimé' }}</td>
                                 <td>{{ $restaurant->address }}</td>
                                 <td>
                                     @foreach($restaurant->categories as $category)
-                                        {{ $category->name }}{{ !$loop->last ? ', ' : '' }}
+                                        {{ $category ? $category->name : 'Catégorie supprimée' }}{{ !$loop->last ? ', ' : '' }}
                                     @endforeach
                                 </td>
                                 <td>
                                     <div class="action-buttons">
                                         <button type="button" class="action-btn delete restaurant-delete-btn"
-                                            data-id="{{ $restaurant->id }}" data-name="{{ $restaurant->name }}">
+                                            data-id="{{ $restaurant->id }}" data-name="{{ $restaurant ? $restaurant->name : 'Restaurant supprimé' }}">
                                             <i class="fas fa-trash"></i>
                                         </button>
                                     </div>
@@ -121,9 +121,10 @@
                         </thead>
                         <tbody>
                             @forelse($categories as $category)
+                                @if($category)
                                 <tr>
                                     <td>{{ $category->id }}</td>
-                                    <td>{{ $category->name }}</td>
+                                    <td>{{ $category ? $category->name : 'Catégorie supprimée' }}</td>
                                     <td>{{ $category->description }}</td>
                                     <td>
                                         <div class="action-buttons">
@@ -131,12 +132,17 @@
                                                 <i class="fas fa-edit"></i>
                                             </a>
                                             <button type="button" class="action-btn delete category-delete-btn"
-                                                data-id="{{ $category->id }}" data-name="{{ $category->name }}">
+                                                data-id="{{ $category ? $category->id : '' }}" data-name="{{ $category ? $category->name : 'Catégorie supprimée' }}">
                                                 <i class="fas fa-trash"></i>
                                             </button>
                                         </div>
                                     </td>
                                 </tr>
+                                @else
+                                <tr>
+                                    <td colspan="4">Catégorie supprimée</td>
+                                </tr>
+                                @endif
                             @empty
                                 <tr>
                                     <td colspan="4" class="empty-table">Aucune catégorie trouvée.</td>
@@ -182,7 +188,7 @@
                     <div class="user-card">
                         <div class="user-card-header"
                             style="{{ $manager->is_approved ? 'background-color: var(--success);' : '' }}">
-                            <h3>{{ $manager->is_approved ? 'Gérant Approuvé' : 'Nouvel Utilisateur' }}</h3>
+                            <h3>{{ $manager ? $manager->name : 'Utilisateur supprimé' }}</h3>
                         </div>
                         <div class="user-card-body">
                             <div class="user-avatar">
@@ -247,9 +253,13 @@
                     const categoryId = this.dataset.id;
                     const categoryName = this.dataset.name;
 
+                    if (!categoryName) {
+                        console.error('Category name not found');
+                        return;
+                    }
+
                     document.getElementById('categoryNameToDelete').textContent = categoryName;
                     document.getElementById('deleteCategoryForm').action = `{{ url('admin/categories') }}/${categoryId}`;
-
 
                     const modal = document.getElementById('deleteCategoryModal');
                     modal.style.display = "block";
@@ -295,6 +305,24 @@
                             modal.style.display = "none";
                         }
                     }
+                });
+            });
+
+            // Rafraîchir la page après suppression d'un gérant
+            document.querySelectorAll('.delete-form').forEach(form => {
+                form.addEventListener('submit', function (e) {
+                    setTimeout(function() {
+                        window.location.reload();
+                    }, 500);
+                });
+            });
+
+            // Rafraîchir la page après approbation d'un gérant
+            document.querySelectorAll('.approve-form').forEach(form => {
+                form.addEventListener('submit', function (e) {
+                    setTimeout(function() {
+                        window.location.reload();
+                    }, 500);
                 });
             });
         });

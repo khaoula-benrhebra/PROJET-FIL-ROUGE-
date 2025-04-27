@@ -94,7 +94,6 @@ class ReservationController extends Controller
 
     public function getAvailableTables(Request $request)
     {
-        // 1. Validation des données de base
         if (!$request->restaurant_id || !$request->reservation_date || !$request->reservation_time || !$request->guests) {
             return response()->json([
                 'success' => false,
@@ -102,7 +101,7 @@ class ReservationController extends Controller
             ], 400);
         }
 
-        // 2. Vérification du format de la date
+        
         $dateParts = explode('/', $request->reservation_date);
         if (count($dateParts) !== 3) {
             return response()->json([
@@ -111,7 +110,7 @@ class ReservationController extends Controller
             ], 400);
         }
 
-        // 3. Vérification du format de l'heure
+      
         $timeParts = explode(':', $request->reservation_time);
         if (count($timeParts) !== 2) {
             return response()->json([
@@ -121,16 +120,14 @@ class ReservationController extends Controller
         }
 
         try {
-            // 4. Création de la date et heure de réservation
             $reservationDateTime = Carbon::create(
-                intval($dateParts[2]), // année
-                intval($dateParts[1]), // mois
-                intval($dateParts[0]), // jour
-                intval($timeParts[0]), // heure
-                intval($timeParts[1])  // minute
+                intval($dateParts[2]), 
+                intval($dateParts[1]), 
+                intval($dateParts[0]), 
+                intval($timeParts[0]), 
+                intval($timeParts[1])  
             );
 
-            // 5. Vérification si la date est dans le passé
             if ($reservationDateTime->isPast()) {
                 return response()->json([
                     'success' => false,
@@ -138,7 +135,6 @@ class ReservationController extends Controller
                 ], 400);
             }
 
-            // 6. Vérification des heures d'ouverture
             $heure = intval($timeParts[0]);
             if ($heure < 10 || $heure >= 22) {
                 return response()->json([
@@ -147,14 +143,12 @@ class ReservationController extends Controller
                 ], 400);
             }
 
-            // 7. Recherche des tables disponibles
             $tables = $this->reservationService->getAvailableTables(
                 $request->restaurant_id,
                 $reservationDateTime,
                 $request->guests
             );
 
-            // 8. Vérification si des tables sont disponibles
             if (empty($tables)) {
                 return response()->json([
                     'success' => false,
@@ -162,14 +156,12 @@ class ReservationController extends Controller
                 ], 200);
             }
 
-            // 9. Retour des tables disponibles
             return response()->json([
                 'success' => true,
                 'tables' => $tables
             ], 200);
 
         } catch (Exception $erreur) {
-            // En cas d'erreur, on retourne un message simple
             return response()->json([
                 'success' => false,
                 'message' => 'Désolé, une erreur est survenue. Veuillez réessayer.'
