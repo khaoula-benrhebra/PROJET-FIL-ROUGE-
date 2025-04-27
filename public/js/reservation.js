@@ -117,11 +117,9 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
     
-        // Afficher un indicateur de chargement
         availableTablesDiv.innerHTML = '<p class="text-center"><i class="fa fa-spinner fa-spin"></i> Recherche des tables disponibles...</p>';
         tablesContainer.style.display = 'block';
     
-        // Récupérer les tables disponibles via AJAX
         fetch('/reservations/available-tables', {
             method: 'POST',
             headers: {
@@ -169,7 +167,6 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!availableTablesDiv) return;
         availableTablesDiv.innerHTML = '';
     
-        // S'assurer que tables est un tableau
         const tablesArray = Array.isArray(tables) ? tables : Object.values(tables || {});
         
         if (!tablesArray || tablesArray.length === 0) {
@@ -194,7 +191,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const tablesList = document.createElement('div');
         tablesList.className = 'tables-list row';
     
-        // Trier les tables par capacité si la propriété existe
         tablesArray.sort((a, b) => {
             const capA = a.capacity || 4;
             const capB = b.capacity || 4;

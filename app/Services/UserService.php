@@ -35,7 +35,6 @@ class UserService
             'is_approved' => $roleName === 'Client' 
         ];
         
-        // dd($userData); 
         
         return $this->userRepository->create($userData);
     }
@@ -55,17 +54,13 @@ class UserService
         return $this->userRepository->approveManager($id);
     }
     
-    // Dans App\Services\UserService.php
 public function deleteUser($id)
 {
     $user = $this->userRepository->getById($id);
     
-    // Si c'est un gérant, supprimer son restaurant
     if ($user->role->name === 'Gérant') {
         $restaurant = $user->restaurant;
         if ($restaurant) {
-            // Suppression du restaurant qui devrait à son tour supprimer 
-            // les menus, repas, et tables grâce aux contraintes onDelete cascade
             $restaurant->delete();
         }
     }
