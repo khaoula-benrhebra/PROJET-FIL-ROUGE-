@@ -20,12 +20,8 @@
                 <div class="restaurant-meta">
                     <span class="location"><i class="fa fa-map-marker"></i> {{ $restaurant->address }}</span>
                     <div class="rating">
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star-half-o"></i>
-                        <i class="fa fa-star-o"></i>
-                        <span>(0 avis)</span>
+                        <span class="rating-text">{{ number_format($restaurant->average_rating, 1) }}/5</span>
+                        <span class="review-count">({{ $restaurant->reviews->count() }} avis)</span>
                     </div>
                 </div>
                 <div class="restaurant-categories">
@@ -182,26 +178,69 @@
                     </div>
                     
                     <!-- Avis Section -->
-                    <div class="content-section">
+                    <div class="content-section" id="reviews-section">
                         <h2>Avis des clients</h2>
                         <div class="reviews-content">
-                            <p class="placeholder-text">Aucun avis pour le moment. Soyez le premier à donner votre avis!</p>
-                            <a href="#" class="btn btn-primary">Laisser un avis</a>
+                            @if($restaurant->reviews->count() > 0)
+                                <div class="reviews-summary">
+                                    <div class="average-rating">
+                                        <span class="rating-value">{{ number_format($restaurant->average_rating, 1) }}</span>
+                                        <span class="rating-max">/5</span>
+                                    </div>
+                                    <div class="rating-count">
+                                        <span>{{ $restaurant->reviews->count() }} avis</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="reviews-list">
+                                    @foreach($restaurant->reviews as $review)
+                                        <div class="review-card">
+                                            <div class="review-header">
+                                                <div class="reviewer-info">
+                                                    <div class="reviewer-avatar">
+                                                        @if($review->user->getFirstMediaUrl('profile'))
+                                                            <img src="{{ $review->user->getFirstMediaUrl('profile') }}" alt="{{ $review->user->name }}">
+                                                        @else
+                                                            <div class="avatar-placeholder">
+                                                                {{ strtoupper(substr($review->user->name, 0, 1)) }}
+                                                            </div>
+                                                        @endif
+                                                    </div>
+                                                    <div class="reviewer-name">
+                                                        <h4>{{ $review->user->name }}</h4>
+                                                        <span class="review-date">{{ $review->created_at->format('d/m/Y') }}</span>
+                                                    </div>
+                                                </div>
+                                                <div class="review-rating">
+                                                    @for($i = 1; $i <= 5; $i++)
+                                                        @if($i <= $review->rating)
+                                                            <i class="fa fa-star"></i>
+                                                        @else
+                                                            <i class="fa fa-star-o"></i>
+                                                        @endif
+                                                    @endfor
+                                                </div>
+                                            </div>
+                                            <div class="review-body">
+                                                <p>{{ $review->comment }}</p>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            @else
+                                <p class="placeholder-text">Aucun avis pour le moment. Soyez le premier à donner votre avis!</p>
+                            @endif
+                            
+                            @auth
+                                <a href="{{ route('client.reviews.create', ['restaurant_id' => $restaurant->id]) }}" class="btn btn-primary">Laisser un avis</a>
+                            @else
+                                <a href="{{ route('login') }}" class="btn btn-primary">Connectez-vous pour laisser un avis</a>
+                            @endauth
                         </div>
                     </div>
                 </div>
                 
-                <!-- Sidebar -->
-                {{-- <div class="col-lg-4">
-                    <div class="sidebar-section">
-                        <h3>Informations</h3>
-                        <ul class="info-list">
-                            <li><i class="fa fa-map-marker"></i> <strong>Adresse:</strong> {{ $restaurant->address }}</li>
-                            <li><i class="fa fa-phone"></i> <strong>Téléphone:</strong> Non renseigné</li>
-                            <li><i class="fa fa-clock-o"></i> <strong>Horaires:</strong> Non renseignés</li>
-                        </ul>
-                    </div>
-                </div> --}}
+               
             </div>
         </div>
     </div>

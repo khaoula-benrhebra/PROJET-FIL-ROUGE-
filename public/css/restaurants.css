@@ -221,6 +221,29 @@
     font-size: 14px;
 }
 
+/* Ajouter ces styles à votre fichier restaurants.css */
+.rating {
+    display: flex;
+    align-items: center;
+    margin-top: 5px;
+}
+
+.rating-text {
+    font-weight: bold;
+    font-size: 14px;
+    color: #ff6347; /* Couleur orange-rouge pour les notes */
+    margin-right: 5px;
+}
+
+.review-count {
+    font-size: 13px;
+    color: #777;
+}
+
+.restaurant-card .rating {
+    margin-bottom: 10px;
+}
+
 .rating span {
     color: var(--gray-color);
     margin-left: 5px;
