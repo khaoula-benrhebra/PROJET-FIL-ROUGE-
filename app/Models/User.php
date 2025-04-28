@@ -52,4 +52,9 @@ public function restaurant()
 {
     return $this->hasOne(Restaurant::class);
 }
+
+public function reviews()
+{
+    return $this->hasMany(Review::class);
+}
 }
