@@ -97,10 +97,13 @@ Route::middleware(['auth'])->group(function () {
         // Routes pour les réservations
         Route::get('/reservations/create', [App\Http\Controllers\Client\ReservationController::class, 'create'])->name('reservations.create');
         Route::post('/reservations', [App\Http\Controllers\Client\ReservationController::class, 'store'])->name('reservations.store');
+        
+        // Routes pour les avis
+        Route::get('/reviews/create', [App\Http\Controllers\Client\ReviewController::class, 'create'])->name('reviews.create');
+        Route::post('/reviews', [App\Http\Controllers\Client\ReviewController::class, 'store'])->name('reviews.store');
     });
 });
 
-// Modification de la route de réservation pour rediriger vers notre controller
 Route::get('/reservation', function () {
     return redirect()->route('restaurants')->with('info', 'Veuillez choisir un restaurant pour effectuer une réservation.');
 })->name('reservation');

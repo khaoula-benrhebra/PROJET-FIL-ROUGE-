@@ -19,54 +19,36 @@ class ReviewService
         $this->reviewRepository = $reviewRepository;
         $this->reservationRepository = $reservationRepository;
     }
+ 
+    public function canReviewRestaurant($restaurantId)
+    {
+        if (!Gate::allows('add_review')) {
+            return false;
+        }
+        
+        $reservations = $this->reservationRepository->getReservationsByCurrentUser();
+        
+        return $reservations->where('restaurant_id', $restaurantId)->count() > 0;
+    }
     
-    
+   
+    public function createReview(array $data)
+    {
+        if (!$this->canReviewRestaurant($data['restaurant_id'])) {
+            throw new \Exception('Vous devez avoir réservé dans ce restaurant pour pouvoir laisser un avis.');
+        }
+        
+        return $this->reviewRepository->createReview($data);
+    }
+   
     public function getReviewsByRestaurant($restaurantId)
     {
         return $this->reviewRepository->getReviewsByRestaurant($restaurantId);
     }
     
-   
-    public function userCanReviewRestaurant($restaurantId)
-    {
-        if (!Auth::check()) {
-            return false;
-        }
-        
-        if ($this->reviewRepository->hasUserReviewedRestaurant(Auth::id(), $restaurantId)) {
-            return false;
-        }
-        
-        $userReservations = $this->reservationRepository->getReservationsByCurrentUser();
-        $hasConfirmedReservation = $userReservations->where('restaurant_id', $restaurantId)
-            ->where('status', 'confirmed')
-            ->count() > 0;
-            
-        return $hasConfirmedReservation;
-    }
     
-    public function createReview(array $data)
+    public function getAverageRating($restaurantId)
     {
-        if (!Gate::allows('add_review', $data['restaurant_id'])) {
-            throw new \Exception('Vous n\'avez pas la permission d\'ajouter un avis pour ce restaurant.');
-        }
-        
-        return $this->reviewRepository->createReview($data);
-    }
-    
-   
-    public function getAverageRatingForRestaurant($restaurantId)
-    {
-        return $this->reviewRepository->getAverageRatingForRestaurant($restaurantId);
-    }
-    
-    
-    public function hasUserReviewedRestaurant($restaurantId)
-    {
-        if (!Auth::check()) {
-            return false;
-        }
-        
-        return $this->reviewRepository->hasUserReviewedRestaurant(Auth::id(), $restaurantId);
+        return $this->reviewRepository->getAverageRating($restaurantId);
     }
 }

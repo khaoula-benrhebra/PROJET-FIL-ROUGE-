@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Review;
+use App\Models\Restaurant;
 use Illuminate\Support\Facades\Auth;
 
 class ReviewRepository extends BaseRepository
@@ -12,25 +13,23 @@ class ReviewRepository extends BaseRepository
         parent::__construct($model);
     }
     
-   
+    
     public function getReviewsByRestaurant($restaurantId)
     {
-        return $this->model
+        return $this->model->where('restaurant_id', $restaurantId)
             ->with('user')
-            ->where('restaurant_id', $restaurantId)
             ->orderBy('created_at', 'desc')
             ->get();
     }
-   
-    public function hasUserReviewedRestaurant($userId, $restaurantId)
+  
+    public function userHasReviewedRestaurant($userId, $restaurantId)
     {
-        return $this->model
-            ->where('user_id', $userId)
+        return $this->model->where('user_id', $userId)
             ->where('restaurant_id', $restaurantId)
             ->exists();
     }
     
-    
+  
     public function createReview(array $data)
     {
         return $this->model->create([
@@ -40,12 +39,10 @@ class ReviewRepository extends BaseRepository
             'comment' => $data['comment']
         ]);
     }
-    
-    
-    public function getAverageRatingForRestaurant($restaurantId)
+   
+    public function getAverageRating($restaurantId)
     {
-        return $this->model
-            ->where('restaurant_id', $restaurantId)
-            ->avg('rating') ?: 0;
+        return $this->model->where('restaurant_id', $restaurantId)
+            ->avg('rating') ?? 0;
     }
 }

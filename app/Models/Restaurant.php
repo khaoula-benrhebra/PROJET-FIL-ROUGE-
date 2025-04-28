@@ -30,22 +30,29 @@ class Restaurant extends Model implements HasMedia
     }
 
     public function menus()
-{
-    return $this->hasMany(Menu::class);
-}
+    {
+        return $this->hasMany(Menu::class);
+    }
 
-public function tables()
-{
-    return $this->hasMany(Table::class);
-}
+    public function tables()
+    {
+        return $this->hasMany(Table::class);
+    }
 
-public function reservations()
-{
-    return $this->hasMany(Reservation::class);
-}
-
-public function reviews()
-{
-    return $this->hasMany(Review::class);
-}
+    public function reservations()
+    {
+        return $this->hasMany(Reservation::class);
+    }
+    
+   
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
+    
+  
+    public function getAverageRatingAttribute()
+    {
+        return $this->reviews()->avg('rating') ?? 0;
+    }
 }

@@ -43,18 +43,17 @@ class User extends Authenticatable implements HasMedia
     }
 
     public function reservations()
-{
-    return $this->hasMany(Reservation::class);
-}
+    {
+        return $this->hasMany(Reservation::class);
+    }
 
-
-public function restaurant()
-{
-    return $this->hasOne(Restaurant::class);
-}
-
-public function reviews()
-{
-    return $this->hasMany(Review::class);
-}
+    public function restaurant()
+    {
+        return $this->hasOne(Restaurant::class);
+    }
+    
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
 }

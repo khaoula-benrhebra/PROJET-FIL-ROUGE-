@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Services\RestaurantService;
 use App\Services\MenuService;
+use App\Services\ReviewService;
 use App\Repositories\CategoryRepository;
 use Illuminate\Http\Request;
 
@@ -12,15 +13,18 @@ class RestaurantController extends Controller
     protected $restaurantService;
     protected $categoryRepository;
     protected $menuService;
+    protected $reviewService;
     
     public function __construct(
         RestaurantService $restaurantService, 
         CategoryRepository $categoryRepository,
-        MenuService $menuService
+        MenuService $menuService,
+        ReviewService $reviewService
     ) {
         $this->restaurantService = $restaurantService;
         $this->categoryRepository = $categoryRepository;
         $this->menuService = $menuService;
+        $this->reviewService = $reviewService;
     }
 
     public function index(Request $request)
@@ -51,21 +55,23 @@ class RestaurantController extends Controller
     {
         $restaurant = $this->restaurantService->getRestaurantById($id);
         
-        // Récupérer les menus du restaurant
+        if (!$restaurant) {
+            return redirect()->route('restaurants')->with('error', 'Restaurant introuvable.');
+        }
+        
         $menus = [];
         
-        // Vérifier si le restaurant existe
-        if ($restaurant) {
-            $menusByType = $this->menuService->getMenusByRestaurant($restaurant->id);
-            
-            // Organiser les menus par type
-            foreach ($menusByType as $type => $typeMenus) {
-                if (!empty($typeMenus) && count($typeMenus) > 0) {
-                    $menus[$type] = $typeMenus[0]; // On prend le premier menu de chaque type
-                }
+        $menusByType = $this->menuService->getMenusByRestaurant($restaurant->id);
+        foreach ($menusByType as $type => $typeMenus) {
+            if (!empty($typeMenus) && count($typeMenus) > 0) {
+                $menus[$type] = $typeMenus[0]; 
             }
         }
         
-        return view('pages.restaurant_detail', compact('restaurant', 'menus'));
+        $reviews = $this->reviewService->getReviewsByRestaurant($restaurant->id);
+        
+        $averageRating = $this->reviewService->getAverageRating($restaurant->id);
+        
+        return view('pages.restaurant_detail', compact('restaurant', 'menus', 'reviews', 'averageRating'));
     }
-} 
+}
