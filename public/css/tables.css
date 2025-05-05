@@ -1,19 +1,61 @@
+/* Main Container Styles */
 .tables-container {
-    padding: 20px;
+    padding: 25px;
+    max-width: 1200px;
+    margin: 0 auto;
+    font-family: 'Poppins', sans-serif;
+    color: #333;
 }
 
 .page-title {
     margin-bottom: 30px;
-    color: #333;
-    font-weight: 600;
+    color: #d65106;
+    font-weight: 700;
+    font-size: 28px;
+    position: relative;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #f5f5f5;
 }
 
+.page-title:after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 60px;
+    height: 3px;
+    background-color: #d65106;
+}
+
+/* Alert Messages */
+.alert {
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 25px;
+    position: relative;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+}
+
+.alert-success {
+    background-color: #ebfaef;
+    border-left: 4px solid #28a745;
+    color: #1e7e34;
+}
+
+.alert-danger {
+    background-color: #fdf2f2;
+    border-left: 4px solid #dc3545;
+    color: #bd2130;
+}
+
+/* Section Styles */
 .tables-section {
     background-color: #fff;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    margin-bottom: 30px;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    padding: 25px;
+    margin-bottom: 35px;
+    transition: all 0.3s ease;
 }
 
 .section-header {
@@ -21,125 +63,348 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
-    border-bottom: 1px solid #eee;
     padding-bottom: 15px;
+    border-bottom: 1px solid #eee;
 }
 
 .section-header h2 {
-    font-size: 18px;
+    font-size: 22px;
     font-weight: 600;
     margin: 0;
     color: #333;
+    position: relative;
+    padding-left: 15px;
 }
 
+.section-header h2:before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 4px;
+    background-color: #d65106;
+    border-radius: 2px;
+}
+
+/* Restaurant Info Section */
+.restaurant-info {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.05);
+}
+
+.restaurant-info p {
+    margin: 0;
+    padding: 10px 15px;
+    font-size: 16px;
+    color: #555;
+    border-left: 3px solid #d65106;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    display: flex;
+    align-items: center;
+    transition: all 0.3s ease;
+}
+
+.restaurant-info p:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.restaurant-info strong {
+    display: inline-block;
+    width: 150px;
+    color: #333;
+    font-weight: 600;
+}
+
+/* Table Grid Layout */
+.table-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 20px;
+}
+
+.table-card {
+    position: relative;
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+.table-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.table-card:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background-color: #d65106;
+}
+
+.table-card h3 {
+    margin: 0 0 15px 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+    padding-bottom: 10px;
+    border-bottom: 1px dashed #eee;
+}
+
+.table-card .table-status {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    color: #666;
+    font-weight: 500;
+}
+
+.table-card .status-indicator {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-right: 8px;
+}
+
+.table-card .status-available {
+    background-color: #28a745;
+    box-shadow: 0 0 5px rgba(40, 167, 69, 0.5);
+}
+
+.table-card .status-unavailable {
+    background-color: #dc3545;
+    box-shadow: 0 0 5px rgba(220, 53, 69, 0.5);
+}
+
+/* Alternatively, Table View */
+.table-view {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background-color: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+}
+
+.table-view thead th {
+    background-color: #d65106;
+    color: white;
+    padding: 15px;
+    text-align: left;
+    font-weight: 600;
+}
+
+.table-view thead th:first-child {
+    border-top-left-radius: 8px;
+}
+
+.table-view thead th:last-child {
+    border-top-right-radius: 8px;
+}
+
+.table-view tbody tr {
+    transition: all 0.3s ease;
+}
+
+.table-view tbody tr:hover {
+    background-color: rgba(214, 81, 6, 0.05);
+}
+
+.table-view tbody tr:not(:last-child) {
+    border-bottom: 1px solid #eee;
+}
+
+.table-view tbody td {
+    padding: 15px;
+    vertical-align: middle;
+}
+
+.table-view .status-cell {
+    display: flex;
+    align-items: center;
+}
+
+/* Form Styles */
 .table-form-container {
     margin-bottom: 30px;
 }
 
 .table-form-group {
+    margin-bottom: 25px;
+}
+
+.table-form-group label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: 600;
+    color: #333;
+    font-size: 16px;
+}
+
+.form-text {
+    margin-top: 8px;
     margin-bottom: 15px;
+    color: #6c757d;
+    font-size: 14px;
 }
 
-.tables-container .btn-add {
-    background-color: #28a745;
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 3px;
-    cursor: pointer;
+.text-info {
+    color: #17a2b8;
+    font-weight: 500;
+    margin-bottom: 15px;
+    padding: 8px 15px;
+    background-color: rgba(23, 162, 184, 0.1);
+    border-radius: 4px;
+    display: inline-block;
 }
 
-.tables-container .btn-remove {
-    background-color: #dc3545;
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 3px;
-    cursor: pointer;
+.text-warning {
+    color: #ffc107;
+    font-weight: 500;
+    padding: 8px 15px;
+    background-color: rgba(255, 193, 7, 0.1);
+    border-radius: 4px;
+    display: inline-block;
 }
 
 .table-inputs {
-    margin-bottom: 15px;
+    margin-bottom: 20px;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
 }
 
 .table-input-row {
     display: flex;
     align-items: center;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 .table-input-row input {
     flex: 1;
     margin-right: 10px;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 15px;
+    transition: all 0.3s;
+    background-color: #fff;
+}
+
+.table-input-row input:focus {
+    border-color: #d65106;
+    box-shadow: 0 0 0 3px rgba(214, 81, 6, 0.2);
+    outline: none;
+}
+
+/* Button Styles */
+.btn-add, .btn-remove {
+    padding: 10px 18px;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-add {
+    background-color: #d65106;
+    color: white;
+}
+
+.btn-add:hover {
+    background-color: #b94805;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 10px rgba(214, 81, 6, 0.3);
+}
+
+.btn-remove {
+    background-color: #e74c3c;
+    color: white;
+}
+
+.btn-remove:hover {
+    background-color: #c0392b;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 10px rgba(231, 76, 60, 0.3);
+}
+
+.btn-add i, .btn-remove i {
+    margin-right: 8px;
 }
 
 .form-actions {
-    margin-top: 20px;
+    margin-top: 30px;
     display: flex;
-    gap: 10px;
+    justify-content: flex-end;
 }
 
-.table-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 15px;
-}
-
-.table-card {
-    background-color: #f8f9fa;
-    border-radius: 5px;
-    padding: 15px;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.05);
-    transition: all 0.3s ease;
-}
-
-.table-card:hover {
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-.table-card h3 {
-    margin: 0;
+.btn-primary {
+    background-color: #d65106;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 4px;
     font-size: 16px;
-    font-weight: 600;
-    color: #333;
-}
-
-.table-card .table-status {
-    margin-top: 10px;
-    font-size: 14px;
-    display: flex;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: inline-flex;
     align-items: center;
 }
 
-.table-card .status-indicator {
-    display: inline-block;
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    margin-right: 5px;
+.btn-primary:hover {
+    background-color: #b94805;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(214, 81, 6, 0.3);
 }
 
-.table-card .status-available {
-    background-color: #28a745;
+.btn-primary i {
+    margin-right: 8px;
 }
 
-.table-card .status-unavailable {
-    background-color: #dc3545;
+/* Responsive Styles */
+@media (max-width: 992px) {
+    .table-list {
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    }
+    
+    .restaurant-info {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    }
 }
 
-.empty-state {
-    text-align: center;
-    padding: 30px;
-    color: #6c757d;
-}
-
-.empty-state i {
-    font-size: 48px;
-    margin-bottom: 10px;
-}
-
-/* Style responsive */
 @media (max-width: 768px) {
+    .tables-container {
+        padding: 15px;
+    }
+    
     .section-header {
         flex-direction: column;
         align-items: flex-start;
@@ -150,6 +415,76 @@
     }
     
     .table-list {
-        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        gap: 15px;
+    }
+    
+    .table-card {
+        padding: 15px;
+    }
+    
+    .form-actions {
+        justify-content: center;
+    }
+    
+    .btn-primary {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .table-view thead {
+        display: none;
+    }
+    
+    .table-view tbody, .table-view tr, .table-view td {
+        display: block;
+        width: 100%;
+    }
+    
+    .table-view tr {
+        margin-bottom: 15px;
+        border: 1px solid #eee;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+    
+    .table-view td {
+        text-align: right;
+        position: relative;
+        padding-left: 50%;
+    }
+    
+    .table-view td:before {
+        content: attr(data-label);
+        position: absolute;
+        left: 15px;
+        width: 45%;
+        padding-right: 10px;
+        white-space: nowrap;
+        text-align: left;
+        font-weight: 600;
+    }
+}
+
+@media (max-width: 576px) {
+    .page-title {
+        font-size: 24px;
+    }
+    
+    .restaurant-info {
+        grid-template-columns: 1fr;
+    }
+    
+    .restaurant-info p {
+        padding: 12px;
+    }
+    
+    .restaurant-info strong {
+        width: 120px;
+        font-size: 14px;
+    }
+    
+    .table-list {
+        grid-template-columns: 1fr;
     }
 }

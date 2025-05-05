@@ -35,9 +35,10 @@
         <div class="tables-section">
             <div class="section-header">
                 <h2>Tables existantes</h2>
-                <p>Nombre total de tables: {{ count($tables) }}</p>
+                <span class="badge">Nombre total: {{ count($tables) }}</span>
             </div>
             
+            <!-- Option 1: Grid Layout (Cards) -->
             <div class="table-list">
                 @foreach($tables as $table)
                     <div class="table-card">
@@ -49,25 +50,45 @@
                     </div>
                 @endforeach
             </div>
+            
+            <!-- Option 2: Table Layout
+            <table class="table-view">
+                <thead>
+                    <tr>
+                        <th>Libellé</th>
+                        <th>Statut</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($tables as $table)
+                        <tr>
+                            <td data-label="Libellé">{{ $table->table_label }}</td>
+                            <td data-label="Statut" class="status-cell">
+                                <span class="status-indicator {{ $table->is_available ? 'status-available' : 'status-unavailable' }}"></span>
+                                {{ $table->is_available ? 'Disponible' : 'Non disponible' }}
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+            -->
         </div>
     @endif
 
     <div class="tables-section">
         <div class="section-header">
             <h2>{{ count($tables) > 0 ? 'Ajouter plus de tables' : 'Créer des tables' }}</h2>
-            
-            @php
-                $remainingTables = $restaurant->number_of_tables - count($tables);
-            @endphp
-            
-            @if($remainingTables > 0)
-                <p class="text-info">Vous pouvez encore créer {{ $remainingTables }} table(s).</p>
-            @else
-                <p class="text-warning">Vous avez atteint le nombre maximum de tables ({{ $restaurant->number_of_tables }}).</p>
-            @endif
         </div>
         
+        @php
+            $remainingTables = $restaurant->number_of_tables - count($tables);
+        @endphp
+        
         @if($remainingTables > 0)
+            <div class="text-info">
+                <i class="fa fa-info-circle"></i> Vous pouvez encore créer {{ $remainingTables }} table(s).
+            </div>
+            
             <form action="{{ route('gerant.tables.store') }}" method="POST" id="tableForm">
                 @csrf
                 
@@ -75,8 +96,6 @@
                     <div class="table-form-group">
                         <label>Libellés des tables</label>
                         <p class="form-text text-muted">Entrez un libellé unique pour chaque table (ex: Table 1, Table VIP, etc.)</p>
-                        
-                        <p id="tablesRemainingCounter" class="text-info">Vous pouvez encore ajouter {{ $remainingTables - 1 }} table(s).</p>
                         
                         <div class="table-inputs" id="tableInputs">
                             <div class="table-input-row">
@@ -99,6 +118,10 @@
                     </div>
                 </div>
             </form>
+        @else
+            <div class="text-warning">
+                <i class="fa fa-exclamation-triangle"></i> Vous avez atteint le nombre maximum de tables ({{ $restaurant->number_of_tables }}).
+            </div>
         @endif
     </div>
 </div>
@@ -108,7 +131,6 @@
     let currentTableCount = 1; // On commence avec un champ
     
     function addTableInput() {
-       
         if (currentTableCount >= maxRemainingTables) {
             alert('Vous ne pouvez pas créer plus de ' + {{ $restaurant->number_of_tables }} + ' tables.');
             return;
@@ -127,9 +149,9 @@
         
         tableInputs.appendChild(inputRow);
         currentTableCount++;
-       
+        
         updateTableCounter();
-       
+        
         if (tableInputs.children.length > 1) {
             const removeButtons = tableInputs.querySelectorAll('.btn-remove');
             removeButtons.forEach(button => {
@@ -148,6 +170,7 @@
             
             updateTableCounter();
         }
+        
         if (tableInputs.children.length === 1) {
             const removeButton = tableInputs.querySelector('.btn-remove');
             if (removeButton) {
@@ -157,10 +180,10 @@
     }
     
     function updateTableCounter() {
-        const counterElement = document.getElementById('tablesRemainingCounter');
-        if (counterElement) {
+        const infoElement = document.querySelector('.text-info');
+        if (infoElement) {
             const remaining = maxRemainingTables - currentTableCount;
-            counterElement.textContent = 'Vous pouvez encore ajouter ' + remaining + ' table(s).';
+            infoElement.innerHTML = '<i class="fa fa-info-circle"></i> Vous pouvez encore créer ' + remaining + ' table(s).';
         }
     }
 </script>

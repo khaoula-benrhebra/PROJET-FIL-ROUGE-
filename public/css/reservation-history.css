@@ -1,0 +1,132 @@
+/* Styles pour la section d'historique des réservations sous forme de tableau */
+.reservation-history-section {
+    margin-top: 40px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    padding: 0 0 30px 0;
+}
+
+.reservation-title {
+    color: #fff;
+    background: linear-gradient(135deg, #ff7e5f, #e75b1e);
+    padding: 20px 30px;
+    margin: 0 0 30px 0;
+    font-size: 24px;
+    font-weight: 600;
+    position: relative;
+}
+
+.reservation-title:after {
+    content: '';
+    height: 3px;
+    width: 50px;
+    background-color: #fff;
+    position: absolute;
+    bottom: 15px;
+    left: 30px;
+}
+
+.table-responsive {
+    padding: 0 30px;
+    overflow-x: auto;
+}
+
+.reservation-table {
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+    background-color: #fff;
+    color: #333;
+}
+
+.reservation-table thead th {
+    background-color: #f5f5f5;
+    color: #333;
+    font-weight: 600;
+    text-align: left;
+    padding: 15px;
+    border-bottom: 2px solid #e75b1e;
+}
+
+.reservation-table tbody tr {
+    transition: all 0.3s ease;
+}
+
+.reservation-table tbody tr:hover {
+    background-color: rgba(231, 91, 30, 0.05);
+}
+
+.reservation-table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.reservation-table tbody td {
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.status-badge.confirmed {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+}
+
+.status-badge.pending {
+    background-color: #fff8e1;
+    color: #ff8f00;
+}
+
+.no-reservations {
+    text-align: center;
+    padding: 30px;
+    color: #6c757d;
+}
+
+.btn-discover {
+    display: inline-block;
+    background-color: #e75b1e;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 4px;
+    margin-top: 15px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.btn-discover:hover {
+    background-color: #d04c10;
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(231, 91, 30, 0.3);
+}
+
+/* Responsive design */
+@media (max-width: 767px) {
+    .reservation-table {
+        min-width: 650px; /* Assure que le tableau est scrollable sur mobile */
+    }
+    
+    .reservation-title {
+        font-size: 20px;
+        padding: 15px 20px;
+    }
+    
+    .reservation-title:after {
+        bottom: 10px;
+        left: 20px;
+    }
+    
+    .reservation-history-section {
+        margin-top: 30px;
+    }
+}

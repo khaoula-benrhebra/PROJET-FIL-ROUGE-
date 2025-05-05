@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
     <link rel="stylesheet" href="{{ asset('css/profile.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/reservation-history.css') }}">
     <link id="changeable-colors" rel="stylesheet" href="{{ asset('css/colors/orange.css') }}" />
     <script src="{{ asset('js/modernizer.js') }}"></script>
 </head>
