@@ -1,4 +1,3 @@
-/* Styles pour la section d'historique des réservations sous forme de tableau */
 .reservation-history-section {
     margin-top: 40px;
     background-color: #fff;
@@ -110,10 +109,9 @@
     box-shadow: 0 5px 15px rgba(231, 91, 30, 0.3);
 }
 
-/* Responsive design */
 @media (max-width: 767px) {
     .reservation-table {
-        min-width: 650px; /* Assure que le tableau est scrollable sur mobile */
+        min-width: 650px; 
     }
     
     .reservation-title {

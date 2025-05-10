@@ -70,4 +70,11 @@ class RestaurantRepository extends BaseRepository
             })
             ->get();
     }
+    public function getTopRestaurantsByReservations($limit = 6)
+{
+    return $this->model->withCount('reservations')
+        ->orderBy('reservations_count', 'desc')
+        ->limit($limit)
+        ->get();
+}
 }

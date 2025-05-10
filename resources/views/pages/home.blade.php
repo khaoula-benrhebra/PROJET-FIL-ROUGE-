@@ -14,7 +14,6 @@
                                     data-words="Friends:Family:Officemates" data-colors="red"></span><span class="cursor"
                                     data-cursorDisplay="_" data-owner="some-id"></span></h1>
                             <h2>Accidental appearances</h2>
-                            <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diem nonummy nibh euismod</p>
                             <div class="book-btn">
                                 <a href="#reservation" class="table-btn hvr-underline-from-center">Book my Table</a>
                             </div>
@@ -28,6 +27,79 @@
         </div>
     </div>
 
+    <!-- Ajoutez cette section où vous voulez afficher les meilleurs restaurants -->
+<div class="restaurants-section pad-top-100 pad-bottom-100">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="wow fadeIn" data-wow-duration="1s" data-wow-delay="0.1s">
+                    <h2 class="block-title text-center">Nos meilleurs restaurants</h2>
+                    <p class="title-caption text-center">Découvrez les restaurants les plus populaires choisis par nos clients</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            @forelse($topRestaurants as $restaurant)
+                <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
+                    <div class="restaurant-card">
+                        <div class="restaurant-image">
+                            @if($restaurant->getFirstMediaUrl('restaurant'))
+                                <img src="{{ $restaurant->getFirstMediaUrl('restaurant') }}" alt="{{ $restaurant->name }}">
+                            @else
+                                <img src="{{ asset('images/default-restaurant.jpg') }}" alt="{{ $restaurant->name }}">
+                            @endif
+                            <div class="category-tag">
+                                {{ $restaurant->categories->first() ? $restaurant->categories->first()->name : 'Non catégorisé' }}
+                            </div>
+                        </div>
+                        <div class="restaurant-content">
+                            <h3>{{ $restaurant->name }}</h3>
+                            <div class="restaurant-info">
+                                <p><i class="fa fa-map-marker"></i> {{ $restaurant->address }}</p>
+                                <div class="rating">
+                                    <span class="rating-text">
+                                        @if(isset($restaurant->average_rating))
+                                            {{ number_format($restaurant->average_rating, 1) }}
+                                        @else
+                                            0.0
+                                        @endif
+                                        /5
+                                    </span>
+                                    <span class="review-count">({{ $restaurant->reviews->count() ?? 0 }} avis)</span>
+                                </div>
+                            </div>
+                            <p class="restaurant-description">
+                                {{ Str::limit($restaurant->description, 100) ?? 'Aucune description disponible.' }}
+                            </p>
+                            <div class="restaurant-footer">
+                                <a href="{{ route('restaurant.show', $restaurant->id) }}" class="btn view-btn">Voir le
+                                    restaurant</a>
+                                <a href="{{ route('client.reservations.create', ['restaurant_id' => $restaurant->id]) }}"
+                                    class="btn reserve-btn">Réserver</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @empty
+                <div class="col-lg-12">
+                    <div class="empty-restaurants">
+                        <i class="fa fa-utensils"></i>
+                        <h3>Pas encore de restaurant</h3>
+                        <p>Soyez le premier à ajouter votre restaurant.</p>
+                    </div>
+                </div>
+            @endforelse
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-lg-12 text-center">
+                <a href="{{ route('restaurants') }}" class="btn btn-primary">Voir tous les restaurants</a>
+            </div>
+        </div>
+    </div>
+</div>
+
     <!-- Gallery -->
     <div id="gallery" class="gallery-main pad-top-100 pad-bottom-100">
         <div class="container">
@@ -35,7 +107,7 @@
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="wow fadeIn" data-wow-duration="1s" data-wow-delay="0.1s">
                         <h2 class="block-title text-center">Our Gallery</h2>
-                        <p class="title-caption text-center">There are many variations of passages of Lorem Ipsum available
+                        <p class="title-caption text-center">Une variété de repas issus de plusieurs pays pour un voyage culinaire unique.
                         </p>
                     </div>
                     <div class="gal-container clearfix">
@@ -99,13 +171,13 @@
                         <div class="col-md-4 col-sm-6 co-xs-12 gal-item">
                             <div class="box">
                                 <a href="#" data-toggle="modal" data-target="#4"><img
-                                        src="{{ asset('images/gallery_04.jpg') }}" alt="" /></a>
+                                        src="{{ asset('images/image4.jpg') }}" alt="" /></a>
                                 <div class="modal fade" id="4" tabindex="-1" role="dialog">
                                     <div class="modal-dialog" role="document">
                                         <div class="modal-content">
                                             <button type="button" class="close" data-dismiss="modal"
                                                 aria-label="Close"><span aria-hidden="true">×</span></button>
-                                            <div class="modal-body"><img src="{{ asset('images/gallery_04.jpg') }}"
+                                            <div class="modal-body"><img src="{{ asset('images/image4.jpg') }}"
                                                     alt="" /></div>
                                             <div class="col-md-12 description">
                                                 <h4>This is the 4 one on my Gallery</h4>
@@ -235,159 +307,4 @@
         </div>
     </div>
 
-    <!-- Team -->
-    <div id="our_team" class="team-main pad-top-100 pad-bottom-100 parallax">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <div class="wow fadeIn" data-wow-duration="1s" data-wow-delay="0.1s">
-                        <h2 class="block-title text-center">Our Team</h2>
-                        <p class="title-caption text-center">There are many variations of passages of Lorem Ipsum available,
-                            but the majority have suffered alteration in some form, by injected humour, or randomised words
-                            which don't look even slightly believable.</p>
-                    </div>
-                    <div class="team-box">
-                        <div class="row">
-                            <div class="col-md-4 col-sm-6">
-                                <div class="sf-team">
-                                    <div class="thumb"><a href="#"><img src="{{ asset('images/staff-01.jpg') }}" alt=""></a>
-                                    </div>
-                                    <div class="text-col">
-                                        <h3>John Doggett</h3>
-                                        <p>Nullam quis ante. Etiam sit amet orci eget eros faucibus tincidunt. Duis leo. Sed
-                                            fringilla mauris sit amet nibh. Donec sodales sagittis magna. Aenean commodo
-                                            ligula.</p>
-                                        <ul class="team-social">
-                                            <li><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
-                                            <li><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
-                                            <li><a href="#"><i class="fa fa-linkedin" aria-hidden="true"></i></a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4 col-sm-6">
-                                <div class="sf-team">
-                                    <div class="thumb"><a href="#"><img src="{{ asset('images/staff-02.jpg') }}" alt=""></a>
-                                    </div>
-                                    <div class="text-col">
-                                        <h3>Jeffrey Spender</h3>
-                                        <p>Nullam quis ante. Etiam sit amet orci eget eros faucibus tincidunt. Duis leo. Sed
-                                            fringilla mauris sit amet nibh. Donec sodales sagittis magna. Aenean commodo
-                                            ligula.</p>
-                                        <ul class="team-social">
-                                            <li><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
-                                            <li><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
-                                            <li><a href="#"><i class="fa fa-linkedin" aria-hidden="true"></i></a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4 col-sm-6">
-                                <div class="sf-team">
-                                    <div class="thumb"><a href="#"><img src="{{ asset('images/staff-03.jpg') }}" alt=""></a>
-                                    </div>
-                                    <div class="text-col">
-                                        <h3>Monica Reyes</h3>
-                                        <p>Nullam quis ante. Etiam sit amet orci eget eros faucibus tincidunt. Duis leo. Sed
-                                            fringilla mauris sit amet nibh. Donec sodales sagittis magna. Aenean commodo
-                                            ligula.</p>
-                                        <ul class="team-social">
-                                            <li><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
-                                            <li><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
-                                            <li><a href="#"><i class="fa fa-linkedin" aria-hidden="true"></i></a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Reservation -->
-    <div id="reservation" class="reservations-main pad-top-100 pad-bottom-100">
-        <div class="container">
-            <div class="row">
-                <div class="form-reservations-box">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <div class="wow fadeIn" data-wow-duration="1s" data-wow-delay="0.1s">
-                            <h2 class="block-title text-center">Reservations</h2>
-                        </div>
-                        <h4 class="form-title">BOOKING FORM</h4>
-                        <p>PLEASE FILL OUT ALL REQUIRED* FIELDS. THANKS!</p>
-                        <form id="contact-form" method="post" class="reservations-box" name="contactform" action="mail.php">
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                <div class="form-box">
-                                    <input type="text" name="form_name" id="form_name" placeholder="Name"
-                                        required="required" data-error="Firstname is required.">
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                <div class="form-box">
-                                    <input type="email" name="email" id="email" placeholder="E-Mail ID" required="required"
-                                        data-error="E-mail id is required.">
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                <div class="form-box">
-                                    <input type="text" name="phone" id="phone" placeholder="contact no.">
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                <div class="form-box">
-                                    <select name="no_of_persons" id="no_of_persons" class="selectpicker">
-                                        <option selected disabled>No. Of persons</option>
-                                        <option>1</option>
-                                        <option>2</option>
-                                        <option>3</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                <div class="form-box">
-                                    <input type="text" name="date-picker" id="date-picker" placeholder="Date"
-                                        required="required" data-error="Date is required." />
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                <div class="form-box">
-                                    <input type="text" name="time-picker" id="time-picker" placeholder="Time"
-                                        required="required" data-error="Time is required." />
-                                </div>
-                            </div>
-                           
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                <div class="form-box">
-                                    <select name="preferred_food" id="preferred_food" class="selectpicker">
-                                        <option selected disabled>Catégorie</option>
-                                        @foreach($categories as $category)
-                                            <option value="{{ $category->id }}">{{ $category->name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                <div class="form-box">
-                                    <select name="occasion" id="occasion" class="selectpicker">
-                                        <option selected disabled>Restaurant</option>
-                                        <option>Foohd health</option>
-                                        <option>Food test</option>
-                                        <option>test Food</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                <div class="reserve-book-btn text-center">
-                                    <button class="hvr-underline-from-center" type="submit" value="SEND" id="submit">BOOK MY
-                                        TABLE</button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 @endsection

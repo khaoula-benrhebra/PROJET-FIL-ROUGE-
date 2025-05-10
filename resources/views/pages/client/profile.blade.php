@@ -55,7 +55,6 @@
         </div>
     </div>
 
-    <!-- Section des réservations en tableau -->
     @if($user->role->name === 'Client' && isset($reservations))
         <div class="reservation-history-section">
             <h2 class="reservation-title">Historique de mes réservations</h2>

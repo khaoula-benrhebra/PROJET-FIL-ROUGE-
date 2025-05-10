@@ -191,12 +191,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const tablesList = document.createElement('div');
         tablesList.className = 'tables-list row';
     
-        tablesArray.sort((a, b) => {
-            const capA = a.capacity || 4;
-            const capB = b.capacity || 4;
-            return capA - capB;
-        });
-    
         tablesArray.forEach(table => {
             const tableItem = document.createElement('div');
             tableItem.className = 'table-item col-md-3 col-sm-6 mb-2';

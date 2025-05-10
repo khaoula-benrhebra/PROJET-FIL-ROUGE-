@@ -55,7 +55,6 @@ class CategoryController extends Controller
     public function destroy($id)
     {
         try {
-            // Vérifier si la catégorie existe avant de la supprimer
             $category = $this->categoryService->getCategoryById($id);
             if (!$category) {
                 return redirect()->route('admin.categories.index')->with('error', 'Catégorie introuvable');

@@ -86,4 +86,9 @@ public function deleteRestaurant($id)
         {
             return $this->restaurantRepository->getById($id);
         }
+
+        public function getTopRestaurantsByReservations($limit = 6)
+{
+    return $this->restaurantRepository->getTopRestaurantsByReservations($limit);
+}
 }
