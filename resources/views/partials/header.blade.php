@@ -21,9 +21,9 @@
                             <ul class="nav navbar-nav navbar-right">
                                 <li><a href="{{ route('home') }}">Home</a></li>
                                 <li><a href="{{ route('about') }}">About us</a></li>
-                                <li><a href="{{ route('menu') }}">Menu</a></li>
+                               
                                 <li><a href="{{ route('restaurants') }}">Restaurants</a></li>
-                                <li><a href="{{ route('contact') }}">Contact</a></li>
+                               
 
                                 @guest
                                     <li><a href="{{ route('login') }}">Login</a></li>

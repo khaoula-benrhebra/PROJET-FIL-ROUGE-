@@ -6,12 +6,6 @@ Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('ho
 
 Route::get('/about', function () {return view('pages.about');})->name('about');
 
-Route::get('/menu', function () {return view('pages.menu');})->name('menu');
-
-Route::get('/blog', function () { return view('pages.blog');})->name('blog');
-
-Route::get('/contact', function () { return view('pages.contact');})->name('contact');
-
 
 Route::get('/restaurants', [App\Http\Controllers\RestaurantController::class, 'index'])->name('restaurants');
 Route::get('/restaurant/{id}', [App\Http\Controllers\RestaurantController::class, 'show'])->name('restaurant.show');

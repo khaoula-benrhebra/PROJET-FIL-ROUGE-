@@ -1890,7 +1890,7 @@ textarea:focus, input:focus, select:focus, .bootstrap-select .dropdown-toggle:fo
 
 
 .custom-header{
-	background:url(../images/OIP.jpg) no-repeat center top;
+	background:url(../images/lm.jpg) no-repeat center top;
 	background-attachment:fixed;
 	background-size:cover;
 	height:30px;
@@ -1898,16 +1898,6 @@ textarea:focus, input:focus, select:focus, .bootstrap-select .dropdown-toggle:fo
 }
 
 
-/* 
-.custom-header {
-    background-image: url('/images/aboutus.jpg');
-    background-size: cover;
-    background-position: center;
-} */
-
-
-
-/* register and login  */
 .custom-checkbox {
     position: relative;
     padding-left: 30px;
