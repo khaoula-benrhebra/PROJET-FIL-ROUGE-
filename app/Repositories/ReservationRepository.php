@@ -16,7 +16,6 @@ class ReservationRepository extends BaseRepository
         parent::__construct($model);
     }
     
-   
     public function getReservationsByRestaurant($restaurantId)
     {
         return $this->model->where('restaurant_id', $restaurantId)
@@ -25,7 +24,6 @@ class ReservationRepository extends BaseRepository
             ->get();
     }
     
-   
     public function getReservationsByRestaurantAndDate($restaurantId, Carbon $date)
     {
         return $this->model->where('restaurant_id', $restaurantId)
@@ -34,7 +32,6 @@ class ReservationRepository extends BaseRepository
             ->get();
     }
     
-  
     public function getReservationsByCurrentUser()
     {
         return $this->model->where('user_id', Auth::id())
@@ -42,7 +39,6 @@ class ReservationRepository extends BaseRepository
             ->orderBy('reservation_datetime', 'desc')
             ->get();
     }
-
 
     public function getAvailableTables($restaurantId, $reservationDatetime, $guests)
     {
@@ -55,7 +51,6 @@ class ReservationRepository extends BaseRepository
             return collect([]);
         }
         
-       
         $reservationStart = $reservationDatetime->copy();
         $reservationEnd = $reservationDatetime->copy()->addHours(2);
         
@@ -63,10 +58,8 @@ class ReservationRepository extends BaseRepository
             return collect([]);
         }
         
-      
         $overlappingReservations = $this->model
             ->where('restaurant_id', $restaurantId)
-            ->where('status', '!=', 'canceled')
             ->where(function ($query) use ($reservationStart, $reservationEnd) {
                 $query->where(function ($q) use ($reservationStart, $reservationEnd) {
                     $q->where('reservation_datetime', '>=', $reservationStart)
@@ -80,12 +73,10 @@ class ReservationRepository extends BaseRepository
             ->with(['tables'])
             ->get();
         
-        
         $reservedTableIds = collect([]);
         foreach ($overlappingReservations as $reservation) {
             $reservedTableIds = $reservedTableIds->merge($reservation->tables->pluck('id'));
         }
-        
         
         $availableTables = collect($tables)->filter(function ($table) use ($reservedTableIds) {
             return !$reservedTableIds->contains($table->id);
@@ -99,13 +90,11 @@ class ReservationRepository extends BaseRepository
         DB::beginTransaction();
         
         try {
-          
             if (empty($data['name']) || empty($data['email']) || empty($data['guests']) || 
                 empty($data['reservation_datetime']) || empty($data['tables'])) {
                 throw new \Exception('Toutes les informations requises doivent être fournies.');
             }
 
-           
             $availableTables = $this->getAvailableTables(
                 $data['restaurant_id'],
                 Carbon::parse($data['reservation_datetime']),
@@ -116,7 +105,6 @@ class ReservationRepository extends BaseRepository
                 throw new \Exception('Aucune table disponible pour cette réservation.');
             }
 
-         
             $requestedTableIds = collect($data['tables']);
             $availableTableIds = $availableTables->pluck('id');
             
@@ -173,4 +161,6 @@ class ReservationRepository extends BaseRepository
             )
             ->first();
     }
+
+    
 }

@@ -33,7 +33,7 @@ class LoginController extends Controller
                     return redirect()->route('gerant.dashboard');
                 case 'Client':
                 default:
-                    return redirect()->route('home'); // Redirection vers la page d'accueil
+                    return redirect()->route('home'); 
             }
         }
         

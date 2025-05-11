@@ -65,7 +65,6 @@ class ReservationController extends Controller
         }
     }
     
-   
     public function store(CreateReservationRequest $request)
     {
         try {
@@ -101,7 +100,6 @@ class ReservationController extends Controller
             ], 400);
         }
 
-        
         $dateParts = explode('/', $request->reservation_date);
         if (count($dateParts) !== 3) {
             return response()->json([
@@ -110,7 +108,6 @@ class ReservationController extends Controller
             ], 400);
         }
 
-      
         $timeParts = explode(':', $request->reservation_time);
         if (count($timeParts) !== 2) {
             return response()->json([
@@ -169,7 +166,7 @@ class ReservationController extends Controller
         }
     }
 
-    public function getBookedDatesList($request)
+    public function getBookedDatesList(Request $request)
     {
         try {
             $request->validate([

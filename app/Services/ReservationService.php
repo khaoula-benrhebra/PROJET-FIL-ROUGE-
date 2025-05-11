@@ -4,10 +4,8 @@ namespace App\Services;
 
 use App\Repositories\ReservationRepository;
 use App\Models\Restaurant;
-use App\Models\Table;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 
 class ReservationService
 {
@@ -23,7 +21,6 @@ class ReservationService
         return Restaurant::findOrFail($id);
     }
     
- 
     public function createReservation(array $data)
     {
         if (isset($data['reservation_date']) && isset($data['reservation_time'])) {
@@ -79,17 +76,14 @@ class ReservationService
             return [
                 'id' => $table->id,
                 'table_label' => $table->table_label,
-                'capacity' => $defaultCapacity, 
-                'shape' => 'rectangle' 
+                'capacity' => $defaultCapacity
             ];
         })->values()->all();
     }
 
     public function getBookedDatesList($restaurantId, $openingTime = '10:00', $closingTime = '22:00')
     {
-        $restaurant = Restaurant::with(['tables', 'reservations' => function($query) {
-            $query->where('status', '!=', 'canceled');
-        }])->findOrFail($restaurantId);
+        $restaurant = Restaurant::with(['tables', 'reservations'])->findOrFail($restaurantId);
         
         if (!$restaurant) {
             throw new \Exception('Restaurant non trouvé.');
@@ -105,7 +99,6 @@ class ReservationService
         }
         
         $reservations = $restaurant->reservations()
-            ->where('status', '!=', 'canceled')
             ->where('reservation_datetime', '>=', Carbon::now())
             ->get();
         
@@ -206,14 +199,4 @@ class ReservationService
             throw new \Exception('Erreur lors de la récupération des statistiques journalières: ' . $e->getMessage());
         }
     }
-
-
-
-
-
-
-
-
-
-    
 }
